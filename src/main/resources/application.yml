@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: introcks1234
+    url: jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*mapper.xml
+  type-aliases-package: com.example.entity
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper : debug
