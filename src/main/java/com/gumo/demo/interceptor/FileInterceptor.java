@@ -46,11 +46,11 @@ class FileInterceptor implements HandlerInterceptor {
 //                    flag= false;
                 }
 //            获取上传文件尺寸大小
-            long requestSize = multipartFile.getSize();
-            if (requestSize > fileMaxSize) {
-                //当上传文件大小超过指定大小限制后，模拟抛出MaxUploadSizeExceededException异常
-                throw new MaxUploadSizeExceededException(fileMaxSize);
-            }
+//            long requestSize = multipartFile.getSize();
+//            if (requestSize > fileMaxSize) {
+//                //当上传文件大小超过指定大小限制后，模拟抛出MaxUploadSizeExceededException异常
+//                throw new MaxUploadSizeExceededException(fileMaxSize);
+//            }
             }
         }
         return flag;

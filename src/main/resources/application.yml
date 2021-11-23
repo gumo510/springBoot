@@ -5,6 +5,9 @@ server:
 #    context-path: /
 
 spring:
+  servlet:
+    multipart.maxFileSize : 10240KB
+    multipart.maxRequestSize: 102400KB
   datasource:
     username: root
     password: introcks1234
