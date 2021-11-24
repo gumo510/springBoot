@@ -2,6 +2,8 @@ package com.gumo.demo.entity;
 
 import com.gumo.demo.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.entity.ContentType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -62,7 +66,10 @@ public class UnLoadFileZip {
                 if(oneFile.getName().toLowerCase().endsWith(".jpg")) {
                     try {
                         //解析处理图片文件
-//                        parseImageFile(oneFile,createdId,uuid);
+                        InputStream fileInputStream  = new FileInputStream(oneFile);
+                        MultipartFile multipartFile = new MockMultipartFile(oneFile.getName(), oneFile.getName(),
+                                ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream );
+                        System.out.println("1111");
                     } catch (Exception e) {
                         log.error(e.getMessage());
                     }
@@ -74,66 +81,4 @@ public class UnLoadFileZip {
         }
         return uuid;
     }
-
-
-//    public static void main(String[] args) {
-//        String dir = System.getProperty("user.dir");
-//        String excelPath = dir + File.separator +"/doc/测试.zip";
-//        try {
-//            String result = uploadZipFilesAndParse(new MultipartFile(excelPath));
-//            System.out.println(">>>>>oooooo");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
-
-    /**
-     * zipName:要解压缩的文件
-     * targetDirName:指定解压路径
-     */
-/*    public List upzipFile(File zipName, String targetDirName) {
-        if (!targetDirName.endsWith(File.separator)) {
-            targetDirName += File.separator;
-        }
-        List<String> NameList = new ArrayList<String>();
-        try {
-            // 根据zip文件创建ZipFile对象，此类的作用是从zip文件读取条目
-            ZipFile zipFile = new ZipFile(zipName);
-            ZipEntry zn = null;
-            String entryName = null;
-            String targetFileName = null;
-            byte[] buffer = new byte[4096];
-            int bytes_read;
-            Enumeration entrys = zipFile.entries();			// 获取ZIP文件里所有的文件条目的名字
-            while (entrys.hasMoreElements()) {				// 循环遍历所有的文件条目的名字
-                zn = (ZipEntry) entrys.nextElement();
-                entryName = zn.getName();				// 获得每一条文件的名字
-                targetFileName = targetDirName + entryName;
-                if (zn.isDirectory()) {
-                    new File(targetFileName).mkdirs();		// 如果zn是一个目录，则创建目录
-                    continue;
-                } else {
-                    new File(targetFileName).getParentFile().mkdirs();// 如果zn是文件，则创建父目录
-                }
-                File targetFile = new File(targetFileName);	// 否则创建文件
-                System.out.println("正在创建文件：" + targetFile.getAbsolutePath());
-                String returnName = targetFile.getAbsolutePath();
-                FileOutputStream os = new FileOutputStream(targetFile);// 打开文件输出流
-                InputStream is = zipFile.getInputStream(zn);	// 从ZipFile对象中打开entry的输入流
-                NameList.add(returnName);
-                while ((bytes_read = is.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytes_read);
-                }
-                os.close();								// 关闭流
-                is.close();
-            }
-            System.out.println("解压缩"+zipName+"成功！");
-        } catch (IOException err) {
-            System.err.println("解压缩"+zipName+"失败: " + err);
-        }
-        return NameList;
-    }*/
-
 }
