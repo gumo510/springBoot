@@ -84,6 +84,24 @@
             <artifactId>spring-test</artifactId>
             <version>4.3.12.RELEASE</version>
         </dependency>
+        <!-- swagger2 api自动生成工具 -->
+        <!-- 统一指定依赖的guava，否则swagger会导致项目报错 https://github.com/springfox/springfox/issues/2581-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <!-- swagger2 end -->
         <!-- fastdfs -->
         <dependency>
             <groupId>com.github.tobato</groupId>
