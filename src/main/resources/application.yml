@@ -23,3 +23,8 @@ logging:
     com:
       example:
         mapper : debug
+
+# dev环境下启用Swagger文档
+springfox:
+  documentation:
+    enabled: true
