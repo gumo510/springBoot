@@ -4,6 +4,7 @@ package com.gumo.demo.controller;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +25,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @RequestMapping("getUser/{id}")
+    @GetMapping("getUser/{id}")
     public User getUser(@PathVariable int id){
         User user = userService.getById(id);
         return user;

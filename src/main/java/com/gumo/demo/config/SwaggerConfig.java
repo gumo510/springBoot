@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .select()
                 //需要排除一些不必要的接口
                 //.apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.gumo.demo.config"))
+                .apis(RequestHandlerSelectors.basePackage("com.gumo.demo.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
