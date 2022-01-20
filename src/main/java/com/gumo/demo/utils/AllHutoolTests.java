@@ -13,10 +13,13 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.XmlUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.http.webservice.SoapClient;
 import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.gumo.demo.controller.SwaggerController;
 import com.gumo.demo.entity.User;
@@ -108,6 +111,21 @@ public class AllHutoolTests {
         //JSON字符串转化为列表
         brandList = JSONUtil.toList(new JSONArray(jsonListStr), User.class);
         log.info("jsonUtil toList:{}", brandList);
+
+        //JsontoXml: Json转Xml
+        JSONObject put = JSONUtil.createObj()
+                .set("aaa", "你好")
+                .set("键2", "test");
+        // <aaa>你好</aaa><键2>test</键2>
+        String xml = JSONUtil.toXmlStr(put);
+        System.out.println("xml:" + xml);
+
+        //XmltoJson: xml转Json
+        String xmlStr = "<sfzh>123</sfzh><sfz>456</sfz><name>aa</name><gender>1</gender>";
+        JSONObject json = JSONUtil.parseFromXml(xmlStr);
+        json.get("sfzh");
+        json.get("name");
+        System.out.println("json:" + json );
     }
 
     /**
@@ -303,5 +321,53 @@ public class AllHutoolTests {
     public void HttpUtil(){
         String response = HttpUtil.get("http://localhost:8080/hutool/covert");
         log.info("HttpUtil get:{}", response);
+    }
+
+    public static void main(String[] args) {
+
+        JSONObject put = JSONUtil.createObj()
+                .set("aaa", "你好")
+                .set("键2", "test");
+
+        // <aaa>你好</aaa><键2>test</键2>
+        String xml = JSONUtil.toXmlStr(put);
+        System.out.println("xml:" + xml);
+
+        String xmlStr = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<QueryExpression xmlns=\"http://www.powerrich.com.cn/QueryResObj\">\n" +
+                "<Conditions>\n" +
+                "<Condition>\n" +
+                "<ResIndexName>WBJID</ResIndexName>\n" +
+                "<Operation>=</Operation>\n" +
+                "<RightValue>KJ3a76HA</RightValue>\n" +
+                "</Condition>\n" +
+                "<Condition>\n" +
+                "<ResIndexName>QQXX</ResIndexName>\n" +
+                "<Operation>=</Operation>\n" +
+                "<RightValue>\n" +
+                "572b1ef58b3ffd41b4624be75ea31cfb39237f18ff8c37b0f29ff780322ff704577c620313d17245\n" +
+                "5282443eeb0d9cb5287820062de1ae3e3f73dcd92739ad43052655d50ef696f52407b5d6a3dadd1d\n" +
+                "f11729dd6d2a67f963c554249698f2165d244e9e01328fc530545e3f0816adbf9c6c76d0b233422a\n" +
+                "7a887872d12b84e5f4d75cd013bfc666b3103310e495f7b4e4c08263ff0e22ab958b5e9463964c3a\n" +
+                "4d38db9cf464682a0409e065353f50a84e7a51ad2e048d380d72cabc3ffbf813\n" +
+                "</RightValue>\n" +
+                "</Condition>\n" +
+                "</Conditions>\n" +
+                "</QueryExpression>";
+        JSONObject json = JSONUtil.parseFromXml(xmlStr);
+        json.get("sfzh");
+        json.get("name");
+        System.out.println("json:" + json );
+
+        // 新建客户端
+        SoapClient client = SoapClient.create("http://www.webxml.com.cn/WebServices/IpAddressSearchWebService.asmx")
+                // 设置要请求的方法，此接口方法前缀为web，传入对应的命名空间
+                .setMethod("web:getCountryCityByIp", "http://WebXml.com.cn/")
+                // 设置参数，此处自动添加方法的前缀：web
+                .setParam("theIpAddress", "218.21.240.106");
+
+        // 发送请求，参数true表示返回一个格式化后的XML内容
+        // 返回内容为XML字符串，可以配合XmlUtil解析这个响应
+        log.info(client.send(true));
     }
 }
