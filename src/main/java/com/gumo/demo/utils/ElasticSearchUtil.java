@@ -27,7 +27,7 @@ import java.util.List;
 public class ElasticSearchUtil {
 
     @Autowired
-//    @Qualifier("elasticSearchFactory")
+    @Qualifier("elasticSearchClient")
     private RestHighLevelClient restHighLevelClient;
 
     public List<Address> query(String addr, int pageSize) {

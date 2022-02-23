@@ -59,7 +59,7 @@ public class ElasticSearchFactory {
     @Value("${elasticsearch.maxConnectPerRoute:200}")
     private Integer maxConnectPerRoute; // 最大路由连接数
 
-    @Bean(name = "elasticSearchFactory")
+    @Bean(name = "elasticSearchClient")
     public RestHighLevelClient highLevelClient() {
         RestClientBuilder clientBuilder = null;
         try {

@@ -9,10 +9,25 @@ spring:
     multipart.maxFileSize : 10240KB
     multipart.maxRequestSize: 102400KB
   datasource:
-    username: root
-    password: introcks1234
-    url: jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    username: root
+#    password: introcks1234
+#    url: jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
 #    driver-class-name: com.mysql.jdbc.Driver
+#   多数据源
+    dynamic:
+      primary: master #设置默认的数据源或者数据源组,默认值即为master
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        master:
+            username: root
+            password: introcks1234
+            url: jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+#            driver-class-name: com.mysql.cj.jdbc.Driver
+        test:
+            username: root
+            password: introcks1234
+            url: jdbc:mysql://192.168.13.48:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+#            driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
   mapper-locations: classpath:mapping/*mapper.xml
