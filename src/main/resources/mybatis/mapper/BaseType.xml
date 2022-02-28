@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.BaseTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.BaseType">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_delete" property="isDelete" />
+        <result column="type_name" property="typeName" />
+        <result column="seat_num" property="seatNum" />
+        <result column="load_capacity" property="loadCapacity" />
+        <result column="loose_limit" property="looseLimit" />
+        <result column="normal_crowed_limit" property="normalCrowedLimit" />
+        <result column="mid_crowed_limit" property="midCrowedLimit" />
+        <result column="hard_crowed_limit" property="hardCrowedLimit" />
+        <result column="team_org_id" property="teamOrgId" />
+        <result column="door_count" property="doorCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time, update_time, is_delete, type_name, seat_num, load_capacity, loose_limit, normal_crowed_limit, mid_crowed_limit, hard_crowed_limit, team_org_id, door_count
+    </sql>
+
+    <select id="selectBaseBusTypes" resultType="com.gumo.demo.entity.BaseType">
+        select type_name, loose_limit, normal_crowed_limit, mid_crowed_limit, hard_crowed_limit
+        from t_base_type
+        where is_delete = 0
+    </select>
+
+</mapper>

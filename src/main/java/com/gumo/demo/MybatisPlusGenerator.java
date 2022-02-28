@@ -37,7 +37,7 @@ public class MybatisPlusGenerator {
     private static String authorName = "gumo";
     //要生成的表名
 //    private static String[] tables = {"t_drug_hour_abnormal_num"};
-    private static String[] tables = {"user"};
+    private static String[] tables = {"t_base_type"};
     //table前缀
     private static String prefix = "t_";
 
@@ -194,7 +194,7 @@ public class MybatisPlusGenerator {
                 new TemplateConfig().setXml(null)
                 // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用 copy
                 // 至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
-                // .setController("...");
+                 .setController("")
                 // .setEntity("...");
                 // .setMapper("...");
                 // .setXml("...");
