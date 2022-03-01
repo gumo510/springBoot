@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BusTypeCache {
 
-    private final BaseTypeMapper baseBusTypeMapper;
+    private final BaseTypeMapper baseTypeMapper;
     private final RedisTemplate redisTemplate;
 
     @Value("${redis.bus.type.key.timeout:12}")
@@ -41,9 +42,16 @@ public class BusTypeCache {
 
 
     @Autowired
-    public BusTypeCache(BaseTypeMapper baseBusTypeMapper, RedisTemplate<String, String> redisTemplate) {
-        this.baseBusTypeMapper = baseBusTypeMapper;
+    public BusTypeCache(BaseTypeMapper baseTypeMapper, RedisTemplate<String, String> redisTemplate) {
+        this.baseTypeMapper = baseTypeMapper;
         this.redisTemplate = redisTemplate;
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("init postConstruct start...");
+        Map<String, String> carTypeMap = baseTypeMapper.selectBaseBusTypes().stream().filter(carType -> Objects.nonNull(carType.getTypeName())).collect(Collectors.toMap(BaseType::getTypeName, JSON::toJSONString));
+        CarTypeCache.setCarTypeMap(carTypeMap);
     }
 
     public BusTypeCrowedVO getBusTypeCacheByTypeName(String typeName) {
@@ -61,7 +69,7 @@ public class BusTypeCache {
 
     private BusTypeCrowedVO init(String typeName) {
         BusTypeCrowedVO result = null;
-        List<BaseType> baseBusTypes = baseBusTypeMapper.selectBaseBusTypes();
+        List<BaseType> baseBusTypes = baseTypeMapper.selectBaseBusTypes();
         //将车型拥挤度存入缓存，key 为 车型type_name，value为拥挤度集合
         String redisKey = RedisConstants.BUS_TYPE_CACHE;
         if (CollectionUtils.isEmpty(baseBusTypes)) {

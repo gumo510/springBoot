@@ -4,6 +4,7 @@ import com.gumo.demo.entity.BaseType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
