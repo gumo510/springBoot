@@ -1,7 +1,13 @@
 package com.gumo.demo.kafka.consumer.consumer;
 
+import com.gumo.demo.constants.KafkaConstants;
+import com.gumo.demo.kafka.consumer.handler.AntiTencentMsgHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,7 +23,7 @@ public class MessageReceiveListener {
 	@Value("${kafka.receive.retry.milliseconds:60000}")
 	private long RETRY_INTEVAL;
 
-/*	@Autowired
+	@Autowired
 	private AntiTencentMsgHandler antiTencentMsgHandler;
 
 
@@ -29,25 +35,37 @@ public class MessageReceiveListener {
 		}
 	}
 
-	*//**
-	 * 同步人员
-	 *//*
+	@KafkaListener(topics = KafkaConstants.CAMPUS_FACE_SUBSCRIBE, containerFactory = "campusFaceContainerFactory")
+	public void campusFaceListen(ConsumerRecord<?, ?> consumerRecord, Acknowledgment ack) {
+		long startTime = System.currentTimeMillis();
+		boolean success = false;
+		while (!success) {
+			try {
+				antiTencentMsgHandler.syncCampusFace(consumerRecord);
+				ack.acknowledge(); //手动提交
+				success = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("MessageReceiveListener_campusFaceSubscribeListen：e: {}", e);
+//				sleep();
+			}
+		}
+		log.info("campus-face-subscribe kafka message end ：{}   ", System.currentTimeMillis() - startTime);
+	}
 
-	@ConditionalOnBean(name = {"commonContainerFactory"},value ={ConcurrentKafkaListenerContainerFactory.class} )
-	@KafkaListener(id = "campusFaceSubscribeListen",
-			topics = "campus-face-subscribe",
-			containerFactory = "commonContainerFactory")
-	public void campusFaceListen(List<ConsumerRecord> consumerRecords, Acknowledgment ack) {
+/*	@KafkaListener(topics = KafkaConstants.CAMPUS_FACE_SUBSCRIBE_LIST, containerFactory = "campusFaceContainerFactory")
+	public void campusFaceListListen(List<ConsumerRecord<?, ?>> consumerRecords, Acknowledgment ack) {
 		long startTime = System.currentTimeMillis();
 		boolean success = false;
 		while (!success) {
 			try {
 				antiTencentMsgHandler.syncCampusFace(consumerRecords);
-				ack.acknowledge();
+				ack.acknowledge(); //手动提交
 				success = true;
 			} catch (Exception e) {
+				e.printStackTrace();
 				log.error("MessageReceiveListener_campusFaceSubscribeListen：e: {}", e);
-				sleep();
+//				sleep();
 			}
 		}
 		log.info("campus-face-subscribe kafka message end ：{}   ", System.currentTimeMillis() - startTime);

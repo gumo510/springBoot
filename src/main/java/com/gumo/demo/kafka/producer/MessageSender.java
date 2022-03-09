@@ -1,33 +1,34 @@
-//package com.gumo.demo.kafka.producer;
-//
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-//import org.springframework.cloud.stream.annotation.EnableBinding;
-//import org.springframework.messaging.support.MessageBuilder;
-//
-//import javax.annotation.Resource;
-//
-///**
-// * 消息发送者
-// */
-//@EnableBinding(MessageSource.class)
-//public class MessageSender {
-//
-//    private static Logger LOG = LogManager.getLogger(MessageSender.class);
-//
-//    @Resource
-//    private MessageSource source;
-//
-//    /**
-//     * 授权的kafka数据
-//     */
-//    public void sendHikPersonAuth(String json) {
-//        try {
-//            source.pushHikPersonAuth().send(MessageBuilder.withPayload(json).build());
-//            LOG.info("kafka推送授权");
-//        } catch (Exception e) {
-//            LOG.error("sendHikPersonAuth error", e.getMessage());
-//        }
-//
-//    }
-//}
+package com.gumo.demo.kafka.producer;
+
+import com.alibaba.fastjson.JSON;
+import com.gumo.demo.constants.KafkaConstants;
+import com.gumo.demo.entity.User;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
+
+/**
+ * 消息发送者
+ */
+@Component
+@Slf4j
+public class MessageSender {
+    @Autowired
+    private KafkaTemplate kafkaTemplate;
+
+    public void send(){
+
+        User u= new User();
+        u.setUserName("test");
+        u.setPassWord("123456");
+        u.setRealName("admin");
+        try {
+            kafkaTemplate.send(KafkaConstants.CAMPUS_FACE_SUBSCRIBE, JSON.toJSONString(u));
+//            kafkaTemplate.send(KafkaConstants.CAMPUS_FACE_SUBSCRIBE_LIST, JSON.toJSONString(Collections.singletonList(u)));
+            log.info("kafka推送人员信息");
+        } catch (Exception e) {
+            log.error("send error", e.getMessage());
+        }
+    }
+}
