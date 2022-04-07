@@ -1,9 +1,11 @@
 package com.gumo.demo.mapper;
 
-import com.baomidou.dynamic.datasource.annotation.DS;
+import com.gumo.demo.dto.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +19,5 @@ import org.apache.ibatis.annotations.Mapper;
 //@DS("test")
 public interface UserMapper extends BaseMapper<User> {
 
+    List<UserVO> queryUserList();
 }

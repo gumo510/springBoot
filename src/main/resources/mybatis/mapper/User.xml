@@ -15,4 +15,8 @@
         id, userName, passWord, realName
     </sql>
 
+    <select id="queryUserList" resultType="com.gumo.demo.dto.vo.UserVO">
+        select * from user
+    </select>
+
 </mapper>

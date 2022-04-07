@@ -97,3 +97,9 @@ rabbitmq:
     username: guest
     password: guest
     defaultTopic: testTopic
+#
+#fdfs:
+#  so-timeout: 2500
+#  connect-timeout: 5000
+#  tracker-list:
+#    - 192.168.11.103:8080
