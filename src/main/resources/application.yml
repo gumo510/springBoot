@@ -73,6 +73,24 @@ spring:
             password: introcks1234
             url: jdbc:mysql://192.168.13.48:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
 #            driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    # 163 邮箱
+#    host: smtp.163.com
+#    port:
+    # qq 邮箱
+    host: smtp.qq.com
+    port: 587
+    username: 2245594396@qq.com
+    password: jcltmskimiggecja
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.socketFactory.port: 465
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.fallback: false
 
 mybatis-plus:
   mapper-locations: classpath:mybatis/mapper/*.xml
