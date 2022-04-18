@@ -1,7 +1,11 @@
 package com.gumo.demo.service;
 
+import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
+import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-02-28
  */
 public interface IBaseTypeService extends IService<BaseType> {
+
+    List<CorridorTravelTimeVO> getLineCorridorTravelTime(StatisticsReq req);
 
 }

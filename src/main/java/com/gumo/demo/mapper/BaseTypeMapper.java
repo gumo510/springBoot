@@ -1,5 +1,7 @@
 package com.gumo.demo.mapper;
 
+import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
+import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +21,7 @@ import java.util.List;
 public interface BaseTypeMapper extends BaseMapper<BaseType> {
 
     List<BaseType> selectBaseBusTypes();
+
+    List<CorridorTravelTimeVO> selectLineCorridorTravelTime(StatisticsReq req);
+
 }

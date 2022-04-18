@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -469,14 +471,26 @@ public class DateUtil {
         return dateEnd.getTime();
     }
 
-    public static void main(String[] str)
-    {
-
-
-        double onlines = 33.0/64.0;
-        System.out.println(onlines);
-        BigDecimal   online =  onlines == 0 ? BigDecimal.ZERO : new BigDecimal(onlines).setScale(2, BigDecimal.ROUND_DOWN);
-
-        System.out.println(online.doubleValue());
+    /**
+     * 获取天数
+     * @param date
+     * @return
+     */
+    public static List<String> findDayStrList(Date start, Date end) {
+        if (end.getTime() < start.getTime()) {
+            throw new IllegalArgumentException("start time not gt end time");
+        }
+        SimpleDateFormat sdfYmdFormat = getSdfYmdFormat();
+        List<String> result = new ArrayList<>();
+        while (!sdfYmdFormat.format(start).equals(sdfYmdFormat.format(end))) {
+            result.add(sdfYmdFormat.format(start));
+            start = stepDay(start, 1);
+        }
+        if (result.size() == 0) {
+            result.add(sdfYmdFormat.format(start));
+        } else {
+            result.add(sdfYmdFormat.format(end));
+        }
+        return result;
     }
 }
