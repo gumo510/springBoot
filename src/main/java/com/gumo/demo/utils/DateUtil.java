@@ -473,14 +473,14 @@ public class DateUtil {
 
     /**
      * 获取天数
-     * @param date
+     * @param
      * @return
      */
     public static List<String> findDayStrList(Date start, Date end) {
         if (end.getTime() < start.getTime()) {
             throw new IllegalArgumentException("start time not gt end time");
         }
-        SimpleDateFormat sdfYmdFormat = getSdfYmdFormat();
+        SimpleDateFormat sdfYmdFormat = new SimpleDateFormat(DateUtil.DTF_YMD);
         List<String> result = new ArrayList<>();
         while (!sdfYmdFormat.format(start).equals(sdfYmdFormat.format(end))) {
             result.add(sdfYmdFormat.format(start));
