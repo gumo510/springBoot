@@ -1,5 +1,9 @@
 package com.gumo.demo.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
 import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
@@ -10,14 +14,14 @@ import com.gumo.demo.utils.CommonUtil;
 import com.gumo.demo.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,4 +91,48 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
         });
         return TravelTimeList;
     }
+
+    /**
+     *  多线程返回内容缺失问题，使用future.get()获取解决
+     * @param param
+     * @return
+     * @throws Exception
+     */
+/*    public String aspectFlowListExport(AspectFlowReq param) throws Exception {
+        //1.获取数据
+        List<MaxAspectFlowDO> aspectFlowDOS = this.baseMapper.aspectFlowList(param);
+        log.info("aspectFlowListExport_size: ",  aspectFlowDOS.size());
+        if (CollectionUtils.isEmpty(aspectFlowDOS)) {
+            return null;
+        }
+        List<CompletableFuture<MaxAspectFlowExportDO>> futureList = aspectFlowDOS.stream().
+                map(aspectFlowDO -> CompletableFuture.supplyAsync(() -> {
+                    //do something async
+                    MaxAspectFlowExportDO aspectFlowExportDO = new MaxAspectFlowExportDO();
+                    BeanUtils.copyProperties(aspectFlowDO, aspectFlowExportDO);
+                    return aspectFlowExportDO;
+                }, taskExecutor))
+                .collect(Collectors.toList());
+        //等待全部完成
+        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+        List<MaxAspectFlowExportDO> aspectFlowExportDOList = new ArrayList<>(aspectFlowDOS.size());
+        futureList.forEach(future -> {
+            try {
+                aspectFlowExportDOList.add(future.get());
+            } catch (Exception e) {
+                log.info("aspectFlowListExport_CompletableFuture_error: ",  e);
+            }
+        });
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        EasyExcel.write(byteArrayOutputStream, MaxAspectFlowExportDO.class)
+                .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+                .sheet().doWrite(aspectFlowExportDOList);
+        byte[] excel = byteArrayOutputStream.toByteArray();
+        JSONObject fileParam = fileService.uploadByByte(excel, "xlsx");
+        if (fileParam != null) {
+            return fileParam.getString("fileUrl");
+        }
+        return null;
+    }*/
+
 }
