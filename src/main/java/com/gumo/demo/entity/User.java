@@ -36,6 +36,15 @@ public class User extends Model<User> {
     @TableField("realName")
     private String realName;
 
+    public User() {
+
+    }
+
+    public User(String userName, String passWord, String realName) {
+        this.userName = userName;
+        this.passWord = passWord;
+        this.realName = realName;
+    }
 
     @Override
     protected Serializable pkVal() {

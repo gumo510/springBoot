@@ -16,29 +16,26 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.net.ssl.SSLContext;
 
 /**
- * @author Linzhi.Wang
+ * @author gumo
  * @version V1.0
- * @Title: ElasticsearchConfiguration.java
- * @Package com.intellif.datamining.config
  * @Description
- * @date 2020 06-15 12:03.
+ * @date 2022 04-26 12:03.
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "elasticsearch")
+//@ConfigurationProperties(prefix = "elasticsearch")
 @Slf4j
-public class ElasticSearchFactory {
+public class ElasticSearchConfig {
 
     @Value("${elasticsearch.scheme:http}")
     private String scheme;
-    @Value("${elasticsearch.host:192.168.13.31}")
+    @Value("${elasticsearch.host:127.0.0.1}")  //192.168.13.31
     private String host;
     @Value("${elasticsearch.port:9200}")
     private Integer port;
