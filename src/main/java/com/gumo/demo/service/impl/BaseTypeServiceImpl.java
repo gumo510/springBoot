@@ -1,30 +1,28 @@
 package com.gumo.demo.service.impl;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gumo.demo.constants.RedisConstants;
 import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
 import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.mapper.BaseTypeMapper;
 import com.gumo.demo.service.IBaseTypeService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.utils.CommonUtil;
 import com.gumo.demo.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -42,30 +40,43 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
     @Resource
     private BaseTypeMapper baseTypeMapper;
 
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
+
+    @Value("${travelTime.cache.timeout:12}")
+    private Integer redisCacheTimeout;
+
     @Override
     public List<CorridorTravelTimeVO> getLineCorridorTravelTime(StatisticsReq req) {
+        String cacheKey = RedisConstants.BUS_TRAVEL_TIME  + Optional.ofNullable(req.getStartDate()).orElse("") + "-" +
+                Optional.ofNullable(req.getEndDate()).orElse("");
+        if (Objects.nonNull(req.getCancelCache()) && !req.getCancelCache()) {
+            //1.根据请求参数作为key查询缓存，若存在直接返回
+            String travelTimeJson = redisTemplate.opsForValue().get(cacheKey);
+            if (Objects.nonNull(travelTimeJson)) {
+                return JSON.parseArray(travelTimeJson, CorridorTravelTimeVO.class);
+            }
+        }
         //统计天数
         List<String> dayLists = DateUtil.findDayStrList(DateUtil.strToDate(req.getStartDate()), DateUtil.strToDate(req.getEndDate()));
-        List<Map<String, BigDecimal>> TravelTimeList = new ArrayList<>();
         ExecutorService pool = Executors.newFixedThreadPool(dayLists.size());
-        dayLists.forEach(day -> {
+        List<CompletableFuture<Map<String, BigDecimal>>> futureList = dayLists.stream().map(day -> CompletableFuture.supplyAsync(() -> {
+            StatisticsReq futureReq = new StatisticsReq();
             String tableName = "tableName" + day.replaceAll("-", "");
-            req.setTableName(tableName);
-            try {
-                CompletableFuture<Map<String, BigDecimal>> future =  CompletableFuture.supplyAsync(() -> {
-                    long startTime = System.currentTimeMillis();
-                    List<CorridorTravelTimeVO> list = baseTypeMapper.selectLineCorridorTravelTime(req);
-                    log.info("[QUERY SQL] getLineCorridorTravelTime:odLineStatisticsMapper.selectLineCorridorTravelTime, time-consuming = {}ms, day = {}", System.currentTimeMillis() - startTime, day);
-                    //List转Map
-                    Map<String, BigDecimal> corridorTravelTimeMap = list.stream().collect(Collectors.toMap(bi -> bi.getTravelTime(), bi -> bi.getOdNumber()));
-                    return corridorTravelTimeMap;
-                },pool);
-                TravelTimeList.add(future.get());
-            } catch (Exception e) {
-                log.error("getLineCorridorTravelTime_error!", e);
-            }
-        });
+            futureReq.setTableName(tableName);
+            long startTime = System.currentTimeMillis();
+            List<CorridorTravelTimeVO> list = baseTypeMapper.selectLineCorridorTravelTime(futureReq);
+            log.info("[QUERY SQL] getLineCorridorTravelTime:odLineStatisticsMapper.selectLineCorridorTravelTime, time-consuming = {}ms, day = {}", System.currentTimeMillis() - startTime, day);
+            Map<String, BigDecimal> corridorTravelTimeMap = list.stream().collect(Collectors.toMap(bi -> bi.getTravelTime(), bi -> bi.getOdNumber()));
+            return corridorTravelTimeMap;
+        }, pool)).collect(Collectors.toList());
+        //线程聚合等待
+//        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+        List<Map<String, BigDecimal>> TravelTimeList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
         List<CorridorTravelTimeVO> travelTimeVOList = buildTravelTimeStatistics(TravelTimeList);
+        pool.shutdown();
+        //存入缓存
+        redisTemplate.opsForValue().set(cacheKey, JSON.toJSONString(travelTimeVOList), redisCacheTimeout, TimeUnit.HOURS);
         return travelTimeVOList;
     }
 

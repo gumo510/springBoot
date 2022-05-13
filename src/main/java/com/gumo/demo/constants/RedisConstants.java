@@ -24,4 +24,7 @@ public class RedisConstants {
      * 车型缓存
      */
     public static final String BUS_TYPE_CACHE = "bus_type_cache:";
+
+    public static final String BUS_TRAVEL_TIME = "bus_travel_time:";
+
 }

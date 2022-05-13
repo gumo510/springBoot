@@ -2,18 +2,17 @@ package com.gumo.demo.service.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
-import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.dto.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.mapper.UserMapper;
 import com.gumo.demo.service.IUserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.utils.FastClientWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
@@ -41,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public String fileUrl;
 
 
+    @Async
     @Override
     public String getUserExport() {
 

@@ -29,4 +29,6 @@ public class StatisticsReq {
 
     private String tableName;
 
+    private Boolean cancelCache = false;
+
 }
