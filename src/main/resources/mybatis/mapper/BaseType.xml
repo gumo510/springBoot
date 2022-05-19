@@ -23,6 +23,8 @@
     <sql id="Base_Column_List">
         id, create_time, update_time, is_delete, type_name, seat_num, load_capacity, loose_limit, normal_crowed_limit, mid_crowed_limit, hard_crowed_limit, team_org_id, door_count
     </sql>
+    <update id="updateByBusId">
+    </update>
 
     <select id="selectBaseBusTypes" resultType="com.gumo.demo.entity.BaseType">
         select type_name, loose_limit, normal_crowed_limit, mid_crowed_limit, hard_crowed_limit

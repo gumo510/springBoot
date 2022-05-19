@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface IBaseTypeService extends IService<BaseType> {
 
+    void updateByBusId(String busId, String date);
+
     List<CorridorTravelTimeVO> getLineCorridorTravelTime(StatisticsReq req);
 
 }

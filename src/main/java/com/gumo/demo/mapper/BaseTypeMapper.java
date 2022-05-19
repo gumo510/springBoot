@@ -24,4 +24,5 @@ public interface BaseTypeMapper extends BaseMapper<BaseType> {
 
     List<CorridorTravelTimeVO> selectLineCorridorTravelTime(StatisticsReq req);
 
+    void updateByBusId(String busId, String date);
 }
