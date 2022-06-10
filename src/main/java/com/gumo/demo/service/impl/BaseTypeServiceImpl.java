@@ -6,7 +6,6 @@ import com.gumo.demo.constants.RedisConstants;
 import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
 import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
-import com.gumo.demo.lock.annonation.DistributedLock;
 import com.gumo.demo.mapper.BaseTypeMapper;
 import com.gumo.demo.service.IBaseTypeService;
 import com.gumo.demo.utils.CommonUtil;
@@ -46,12 +45,6 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
 
     @Value("${travelTime.cache.timeout:12}")
     private Integer redisCacheTimeout;
-
-    @Override
-    @DistributedLock(lockNamePre = "Statistics_Task", argNum = 2, leaseTime = -1, fairLock = true, lockNamePost = "update") //分布式锁样例
-    public void updateByBusId(String busId, String date) {
-        baseTypeMapper.updateByBusId(busId, date);
-    }
 
     @Override
     public List<CorridorTravelTimeVO> getLineCorridorTravelTime(StatisticsReq req) {
