@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.gumo.demo.cache.BusTypeCache;
 import com.gumo.demo.cache.CarTypeCache;
+import com.gumo.demo.dto.vo.CommonResult;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.entity.UserReq;
@@ -47,8 +48,8 @@ public class UserController {
     }
 
     @PostMapping("getUser/export")
-    public String getUser(){
-        String urlStr = userService.getUserExport();
+    public CommonResult getUser(){
+        CommonResult urlStr = userService.getUserExport();
         return urlStr;
     }
 

@@ -3,6 +3,7 @@ package com.gumo.demo.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gumo.demo.dto.vo.CommonResult;
 import com.gumo.demo.dto.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.lock.annonation.DistributedLock;
@@ -42,10 +43,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private RedissonClient redissonClient;
 
     @Value(value = "${file.url.prefix:http://192.168.11.103:8080}")
-    public String fileUrl;
+    public String prefix;
 
     @Override
-    public String getUserExport() {
+    public CommonResult getUserExport() {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
@@ -58,8 +59,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 //        byte[] backBytes = Base64Utils.decodeFromString(encryptData); //Base64图片
         byte[] bytes = byteArrayOutputStream.toByteArray();
-//        String fileUrl = fastClientWrapper.uploadFile(bytes, "xlsx", null);
-        return fileUrl;
+        String fileUrl = prefix + '/' + fastClientWrapper.uploadFile(bytes, "xlsx", null);
+        return CommonResult.success(fileUrl);
     }
 
     @Async                                                                                                                  //异步执行
