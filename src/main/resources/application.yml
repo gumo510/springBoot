@@ -92,6 +92,18 @@ spring:
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
       mail.smtp.socketFactory.fallback: false
 
+  flyway:
+    #当SpringBoot启动时，这些文件会自动运行。以V开头的文件只会被使用一次，以R开头的文件，在内容发生变化后，再次启动SpringBoot就会被再次执行。
+    # 在没有元数据表的情况下，针对非空Schema执行迁移时是否自动调用基线。 （默认值：false）
+    baseline-on-migrate: true
+    # 下面几个配置不写也行，都是默认配置，这里写了是方便以后改
+    # 执行基线时用来标记已有Schema的版本。（默认值：1）
+    baseline-version: 1
+    enabled: true    #启用flyway
+    encoding: utf-8   #字符编码
+    migration-prefix: V
+    locations: [ "classpath:db/migration" ]  #版本控制文件存放目录
+
 mybatis-plus:
   mapper-locations: classpath:mybatis/mapper/*.xml
 #  config-location: classpath:mybatis/mybatis.cfg.xml
