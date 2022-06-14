@@ -25,7 +25,6 @@ public class MessageSender {
         u.setRealName("admin");
         try {
             kafkaTemplate.send(KafkaConstants.CAMPUS_FACE_SUBSCRIBE, JSON.toJSONString(u));
-//            kafkaTemplate.send(KafkaConstants.CAMPUS_FACE_SUBSCRIBE_LIST, JSON.toJSONString(Collections.singletonList(u)));
             log.info("kafka推送人员信息");
         } catch (Exception e) {
             log.error("send error", e.getMessage());

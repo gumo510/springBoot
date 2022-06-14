@@ -7,7 +7,16 @@ package com.gumo.demo.constants;
 
 public class KafkaConstants {
 
+    /**
+     * 设备操作同步topic
+     */
+    public final static String OPERATE_SYNC_CAMERA_INFO = "operate_camera_info";
+
+    /**
+     * 区域操作同步topic
+     */
+    public final static String OPERATE_SYNC_USER_INFO = "operate_user_info";
+
     public static final String CAMPUS_FACE_SUBSCRIBE = "campus-face-subscribe";
-    public static final String CAMPUS_FACE_SUBSCRIBE_LIST = "campus-face-subscribe_list";
-    public static final String BUS_OD_TOPIC = "bus_od";
+
 }
