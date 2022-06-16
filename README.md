@@ -42,7 +42,10 @@ com.gumo.demo.service.impl.BaseTypeServiceImpl.getLineCorridorTravelTime
 
 ### 引入fastdfs 文件存储工具
 
-### 引入main 邮件发送工具
+### 引入email 邮件发送工具
+
+### 引入xxl-job 定时任务工具
+
 
 
 
