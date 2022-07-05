@@ -1,6 +1,7 @@
 package com.gumo.demo.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.dto.vo.CommonResult;
@@ -52,8 +53,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         try {
             List<UserVO> users = userMapper.queryUserList();
             EasyExcel.write(byteArrayOutputStream, UserVO.class)
-                    .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
-                    .sheet().doWrite(users);
+                    .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())  //自动设置行宽
+                    .excelType(ExcelTypeEnum.XLSX)
+                    .sheet("模板").doWrite(users);
         } catch (Exception e) {
             log.error("getUserExport_error", e);
         }

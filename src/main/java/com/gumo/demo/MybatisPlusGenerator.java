@@ -37,16 +37,16 @@ public class MybatisPlusGenerator {
     private static String authorName = "gumo";
     //要生成的表名
 //    private static String[] tables = {"t_drug_hour_abnormal_num"};
-    private static String[] tables = {"t_base_type"};
+    private static String[] tables = {"t_dictionary"};
     //table前缀
     private static String prefix = "t_";
 
     //数据库配置四要素
     //数据库类型默认配置的是： DbType.MYSQL ，如有改变修改gen.setDataSource
     private static String driverName = "com.mysql.jdbc.Driver";
-    private static String url = "jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false";
+    private static String url = "jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false";
     private static String username = "root";
-    private static String password = "introcks1234";
+    private static String password = "123456";
 
     //模块相关名称
     //controller包名

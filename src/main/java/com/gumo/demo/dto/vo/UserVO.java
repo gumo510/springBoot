@@ -12,6 +12,7 @@ import lombok.Data;
 public class UserVO {
     @ExcelIgnore
     private Integer id;
+//    @ContentLoopMerge(eachRow = 2)  表示姓名这一列每隔两行就进行合并
     @ExcelProperty(value = "用户名",index = 0)
     private String userName;
     @ExcelProperty(value = "密码",index = 1)

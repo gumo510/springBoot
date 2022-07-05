@@ -2,20 +2,19 @@ package com.gumo.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.gumo.demo.cache.BusTypeCache;
 import com.gumo.demo.cache.CarTypeCache;
 import com.gumo.demo.dto.vo.CommonResult;
 import com.gumo.demo.entity.BaseType;
+import com.gumo.demo.entity.Dictionary;
 import com.gumo.demo.entity.User;
-import com.gumo.demo.entity.UserReq;
 import com.gumo.demo.enums.ColorCrowedEnum;
+import com.gumo.demo.service.IDictionaryService;
 import com.gumo.demo.service.IUserService;
 import com.gumo.demo.utils.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +36,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IDictionaryService dictionaryService;
 
     @Autowired
     private BusTypeCache busTypeCache;
@@ -63,10 +65,18 @@ public class UserController {
         return colorCrowedEnum.getValue();
     }
 
-//
-//    @PostMapping("save/user")
-//    public void saveUser(){
-//        userService.saveUser();
-//    }
+
+    @PostMapping("save/dictionary")
+    public void saveUser(){
+        String dir = System.getProperty("user.dir");
+        String excelPath = dir+ File.separator+"/doc/区域.xlsx";
+        try {
+            List<Dictionary> excelEntities = ExcelUtil.readExcel2Bean(new FileInputStream(new File(excelPath)), Dictionary.class);
+            dictionaryService.saveBatch(excelEntities);
+            System.out.println(">>>>>oooooo");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

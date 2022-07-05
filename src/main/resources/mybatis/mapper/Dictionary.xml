@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.DictionaryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.Dictionary">
+        <id column="dict_id" property="dictId" />
+        <result column="dict_area" property="dictArea" />
+        <result column="dict_street" property="dictStreet" />
+        <result column="dict_community" property="dictCommunity" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        dict_id, dict_area, dict_street, dict_community
+    </sql>
+
+</mapper>
