@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.DeviceInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.DeviceInfo">
+        <id column="id" property="id" />
+        <result column="model_id" property="modelId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="device_name" property="deviceName" />
+        <result column="creater" property="creater" />
+        <result column="updater" property="updater" />
+        <result column="delete_sign" property="deleteSign" />
+        <result column="device_point" property="devicePoint" />
+        <result column="third_id" property="thirdId" />
+        <result column="ip_address" property="ipAddress" />
+        <result column="address" property="address" />
+        <result column="place_label" property="placeLabel" />
+        <result column="mac_address" property="macAddress" />
+        <result column="device_manage_id" property="deviceManageId" />
+        <result column="rtsp" property="rtsp" />
+        <result column="geo_string" property="geoString" />
+        <result column="port" property="port" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="login_name" property="loginName" />
+        <result column="login_password" property="loginPassword" />
+        <result column="status" property="status" />
+        <result column="is_old" property="isOld" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, model_id, create_time, update_time, device_name, creater, updater, delete_sign, device_point, third_id, ip_address, address, place_label, mac_address, device_manage_id, rtsp, geo_string, port, longitude, latitude, login_name, login_password, status, is_old
+    </sql>
+
+    <select id="queryDeviceInfoRows" resultType="com.gumo.demo.webserver.DeviceInfoRow">
+        select 'add' as type , a.* from t_device_info a
+        where create_time <![CDATA[ >= ]]> #{startTime}
+        and create_time <![CDATA[ < ]]> #{endTime}
+        order by create_time
+    </select>
+
+</mapper>
