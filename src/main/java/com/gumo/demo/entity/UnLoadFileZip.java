@@ -3,7 +3,7 @@ package com.gumo.demo.entity;
 import com.gumo.demo.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
-import org.springframework.mock.web.MockMultipartFile;
+//import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,8 +67,8 @@ public class UnLoadFileZip {
                     try {
                         //解析处理图片文件
                         InputStream fileInputStream  = new FileInputStream(oneFile);
-                        MultipartFile multipartFile = new MockMultipartFile(oneFile.getName(), oneFile.getName(),
-                                ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream );
+//                        MultipartFile multipartFile = new MockMultipartFile(oneFile.getName(), oneFile.getName(),
+//                                ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream );
                         System.out.println("1111");
                     } catch (Exception e) {
                         log.error(e.getMessage());

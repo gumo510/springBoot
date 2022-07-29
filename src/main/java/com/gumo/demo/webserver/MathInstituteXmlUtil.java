@@ -12,6 +12,10 @@ public class MathInstituteXmlUtil {
     public static String toXml(Row[] rows) {
         Table table = new Table();
         table.setRow(rows);
+        // 使用 @XStreamAlias("row")等注解生效
+        xstream.processAnnotations(Table.class);
+        xstream.processAnnotations(Row.class);
+        xstream.processAnnotations(DeviceInfoRow.class);
         return xstream.toXML(table);
     }
 
