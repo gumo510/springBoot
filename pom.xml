@@ -116,11 +116,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.45</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>4.3.12.RELEASE</version>
-        </dependency>
         <!-- swagger2 api自动生成工具 -->
         <!-- 统一指定依赖的guava，否则swagger会导致项目报错 https://github.com/springfox/springfox/issues/2581-->
 <!--        <dependency>-->
@@ -185,16 +180,27 @@
             <version>0.7.0</version>
         </dependency>
 
-        <!-- Elasticsearch Client -->
+        <!-- Spring Data Elasticsearch -->
         <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.9.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
+        <!-- Elasticsearch Client -->
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch.client</groupId>-->
+<!--            <artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+<!--            <version>7.9.2</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch</groupId>-->
+<!--            <artifactId>elasticsearch</artifactId>-->
+<!--            <version>7.9.2</version>-->
+<!--        </dependency>-->
+        <!--获取所有添加@Document注解的实体类-->
         <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>7.9.2</version>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
         <!-- email -->
         <dependency>

@@ -13,7 +13,8 @@ class DemoApplicationTests {
     private BusTypeCache busTypeCache;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        System.out.println("****************");
     }
 
     @Test

@@ -104,6 +104,12 @@ spring:
     migration-prefix: V
     locations: [ "classpath:db/migration" ]  #版本控制文件存放目录
 
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200 # es地址，多个地址用逗号隔开
+      username: elastic # es开启了security的需要添加用户名和账户
+      password: elastic # es开启了security的需要添加用户名和账户
+
 mybatis-plus:
   mapper-locations: classpath:mybatis/mapper/*.xml
 #  config-location: classpath:mybatis/mybatis.cfg.xml
