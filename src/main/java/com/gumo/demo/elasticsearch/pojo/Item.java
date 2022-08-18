@@ -1,5 +1,6 @@
 package com.gumo.demo.elasticsearch.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -35,6 +36,7 @@ public class Item {
     private String images; // 图片地址
 
     @Field(type = FieldType.Date, name = "create_date", format = DateFormat.custom, pattern="yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")  // 数据格式转换,返回序列化并加上8小时
     private Date createDate;
 
     public Item(Long id, String title, String category, String brand, Double price, String images) {

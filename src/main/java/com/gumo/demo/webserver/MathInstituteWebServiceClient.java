@@ -38,11 +38,11 @@ public class MathInstituteWebServiceClient {
     @Value("${math.institute.retry.limit:3}")
     private Integer retryLimit;
 
-    @PostConstruct
-    public void init() {
-        initClinet();
-        refreshLogin();
-    }
+//    @PostConstruct
+//    public void init() {
+//        initClinet();
+//        refreshLogin();
+//    }
 
     private void initClinet() {
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();

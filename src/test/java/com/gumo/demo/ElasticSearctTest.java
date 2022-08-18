@@ -2,6 +2,7 @@ package com.gumo.demo;
 
 import com.gumo.demo.elasticsearch.pojo.Item;
 import com.gumo.demo.elasticsearch.repository.ItemRepository;
+import com.gumo.demo.utils.DateUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -20,10 +21,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author john
@@ -68,8 +66,8 @@ public class ElasticSearctTest {
      */
     @Test
     public void testUpdate() {
-        Item item = new Item(1L, "小米手机7777", " 手机",
-                "小米", 4499.00, "http://image.leyou.com/13123.jpg");
+        Item item = new Item(6L, "坚果手机R3", "手机",
+                "锤子", 2699.00, "http://image.leyou.com/13123.jpg");
         itemRepository.save(item);
     }
 
@@ -124,6 +122,18 @@ public class ElasticSearctTest {
         items.forEach(item-> System.out.println(item));
     }
 
+    /**
+     * 自定义方法，按时间查询
+     */
+    @Test
+    public void testFindDate(){
+        // 查询创建时间
+        Date startDate = DateUtil.strToDate2("2022-08-09 10:00:00");
+        Date endDate = DateUtil.strToDate2("2022-08-18 18:00:00");
+        Iterable<Item> items = itemRepository.findByCreateDateBetween(startDate, endDate);
+        items.forEach(item-> System.out.println(item));
+    }
+
 
     //虽然基本查询和自定义方法已经很强大了，但是如果是复杂查询（模糊、通配符、词条查询等）就显得力不从心了。此时，我们只能使用原生查询。
 
@@ -134,6 +144,14 @@ public class ElasticSearctTest {
 //    public void testBaseQuery(){
 //        // 词条查询
 //        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("title", "小米");
+//        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+//            .withQuery(QueryBuilders.boolQuery()
+//                    .should(QueryBuilders.termQuery("title", "开发"))
+//                    .should(QueryBuilders.termQuery("title", "青春"))
+//                    .mustNot(QueryBuilders.termQuery("title", "潮头")))
+//            .withSort(SortBuilders.fieldSort("id").order(SortOrder.DESC))
+//            .withPageable(PageRequest.of(0, 50))
+//            .build();
 //        // 执行查询
 //        restTemplate.search((Query) queryBuilder, Item.class);
 //        Iterable<Item> items = restTemplate.search(queryBuilder, Item.class);

@@ -3,6 +3,7 @@ package com.gumo.demo.elasticsearch.repository;
 import com.gumo.demo.elasticsearch.pojo.Item;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,15 @@ public interface ItemRepository extends ElasticsearchRepository<Item,Long> {
      * @return
      */
     List<Item> findByPriceBetween(double price1, double price2);
+
+    /**
+     * 自定义方法
+     * 根据时间区间查询
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<Item> findByCreateDateBetween(Date startDate, Date endDate);
 
     /**
      * 自定义方法
