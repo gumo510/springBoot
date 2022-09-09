@@ -24,7 +24,7 @@ public class JwtUtils {
      * @return String
      *
      */
-    public static String createJWT(String id, String secretKey, long ttlMillis) {
+    public static String createJwt(String id, String secretKey, long ttlMillis) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
@@ -47,11 +47,11 @@ public class JwtUtils {
      * @param jwtStr
      * @return
      */
-    public static CheckResult validateJWT(String jwtStr, String appKey) {
+    public static CheckResult validateJwt(String jwtStr, String appKey) {
         CheckResult checkResult = new CheckResult();
         Claims claims = null;
         try {
-            claims = parseJWT(jwtStr, appKey);
+            claims = parseJwt(jwtStr, appKey);
             checkResult.setSuccess(true);
             checkResult.setClaims(claims);
         } catch (ExpiredJwtException e) {
@@ -81,7 +81,7 @@ public class JwtUtils {
      * @return
      * @throws Exception
      */
-    public static Claims parseJWT(String jwt, String appKey) throws Exception {
+    public static Claims parseJwt(String jwt, String appKey) throws Exception {
         SecretKey secretKey = generalKey(appKey);
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
     }

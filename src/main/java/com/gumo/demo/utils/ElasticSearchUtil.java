@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author gumo
+ */
 @Slf4j
 public class ElasticSearchUtil {
 
@@ -35,8 +38,8 @@ public class ElasticSearchUtil {
                 .operator(Operator.OR)
                 .minimumShouldMatch("50%");
         try {
-            SearchResponse t_view_building_address = getESPageResults("11111", queryBuilder, null, null, 1, pageSize);
-            List<Address> list = processSearchResponse(t_view_building_address, Address.class);
+            SearchResponse viewBuildingAddress = getEsPageResults("11111", queryBuilder, null, null, 1, pageSize);
+            List<Address> list = processSearchResponse(viewBuildingAddress, Address.class);
             return list;
         } catch (Exception e) {
             log.error("查询数据失败", e);
@@ -53,7 +56,7 @@ public class ElasticSearchUtil {
         return list;
     }
 
-    public SearchResponse getESPageResults(String index, QueryBuilder queryBuilder, String sortName, SortOrder sortOrder, Integer page, Integer pageSize) throws IOException {
+    public SearchResponse getEsPageResults(String index, QueryBuilder queryBuilder, String sortName, SortOrder sortOrder, Integer page, Integer pageSize) throws IOException {
 
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();

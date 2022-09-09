@@ -36,14 +36,16 @@ public class HttpUtil {
                 .setConnectTimeout(10000).build();
         get.setConfig(requestConfig);
         if (headerMap != null && !headerMap.isEmpty()) {
-            for (String key : headerMap.keySet())
+            for (String key : headerMap.keySet()) {
                 get.setHeader(key, headerMap.get(key));
+            }
         }
         CloseableHttpResponse response = null;
         try {
             response = httpClient.execute(get);
-            if (response != null)
+            if (response != null) {
                 System.out.println(".....Get return code:" + response.getStatusLine().getStatusCode());
+            }
             if (response != null && response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 result = EntityUtils.toString(entity, Charset.forName("UTF-8"));
@@ -79,8 +81,9 @@ public class HttpUtil {
         post.setHeader("Connection", "Close");
 
         if (headerMap != null && !headerMap.isEmpty()) {
-            for (String key : headerMap.keySet())
+            for (String key : headerMap.keySet()) {
                 post.setHeader(key, headerMap.get(key));
+            }
         }
 
         StringEntity inEntity = new StringEntity(parmValue, Charset.forName("UTF-8"));
@@ -92,8 +95,9 @@ public class HttpUtil {
         CloseableHttpResponse response = null;
         try {
             response = httpClient.execute(post);
-            if (response != null)
+            if (response != null) {
                 System.out.println(".....Get return code:" + response.getStatusLine().getStatusCode());
+            }
             if (response != null && response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 result = EntityUtils.toString(entity, Charset.forName("UTF-8"));

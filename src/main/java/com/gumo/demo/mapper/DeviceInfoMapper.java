@@ -3,7 +3,7 @@ package com.gumo.demo.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gumo.demo.entity.DeviceInfo;
-import com.gumo.demo.webserver.DeviceInfoRow;
+import com.gumo.demo.webserver.DeviceInfoBaseRow;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,6 +20,6 @@ import java.util.List;
 @Mapper
 public interface DeviceInfoMapper extends BaseMapper<DeviceInfo> {
 
-    List<DeviceInfoRow> queryDeviceInfoRows(IPage<DeviceInfoRow> logPage, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<DeviceInfoBaseRow> queryDeviceInfoRows(IPage<DeviceInfoBaseRow> logPage, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
 }

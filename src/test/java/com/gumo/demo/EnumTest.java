@@ -1,9 +1,18 @@
-package com.gumo.demo.enums;
+package com.gumo.demo;
+
+import com.gumo.demo.enums.CameraInfoOnlineEnum;
+import com.gumo.demo.enums.DeviceInfoStatusEnum;
+import org.junit.jupiter.api.Test;
 
 /**
  *  策略枚举映射测试类
  */
 public class EnumTest {
+
+    @Test
+    public void test() {
+
+    }
 
     public static void main(String[] args) {
 

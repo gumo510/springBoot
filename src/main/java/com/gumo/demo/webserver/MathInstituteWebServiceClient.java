@@ -6,7 +6,6 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -69,13 +68,13 @@ public class MathInstituteWebServiceClient {
         return "";
     }
 
-    public void pushRow(String catalogId, List<? extends Row> rows) {
-        Row[] newRows = rows.toArray(new Row[ rows.size()]);
+    public void pushRow(String catalogId, List<? extends BaseRow> rows) {
+        BaseRow[] newRows = rows.toArray(new BaseRow[ rows.size()]);
         doRetryPushRow(catalogId, MathInstituteXmlUtil.toXml(newRows));
     }
 
-    public void pushRow(String catalogId, Row row) {
-        doRetryPushRow(catalogId, MathInstituteXmlUtil.toXml((new Row[] {row})));
+    public void pushRow(String catalogId, BaseRow row) {
+        doRetryPushRow(catalogId, MathInstituteXmlUtil.toXml((new BaseRow[] {row})));
     }
 
     private void doRetryPushRow(String catalogId, String xmlStr) {

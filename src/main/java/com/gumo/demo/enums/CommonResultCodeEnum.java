@@ -10,7 +10,15 @@
 
 package com.gumo.demo.enums;
 
+/**
+ * @author gumo
+ */
+
 public enum CommonResultCodeEnum {
+
+    /**
+     * 返回描述
+     */
 
     SUCCESS(10000000, "success", "成功"),
 

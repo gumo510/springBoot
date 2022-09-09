@@ -45,7 +45,7 @@ public class FileUtil {
     }
 
 
-    public static MultipartFile base64TOFile(String base64Str) {
+    public static MultipartFile base64ToFile(String base64Str) {
         try {
             byte[] faceBytes = Base64Utils.decodeFromString(base64Str);
             InputStream inputStream = new ByteArrayInputStream(faceBytes);
@@ -57,7 +57,7 @@ public class FileUtil {
         return null;
     }
 
-    public static String FileTOBase64(MultipartFile file) throws Exception{
+    public static String fileToBase64(MultipartFile file) throws Exception{
         String imageStr = Base64.getEncoder().encodeToString(file.getBytes());
         return imageStr;
     }

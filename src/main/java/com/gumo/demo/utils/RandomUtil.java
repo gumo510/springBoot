@@ -7,9 +7,9 @@ import java.util.Random;
  * Created by charlin on 2017/9/9.
  */
 public class RandomUtil {
-    public static final String allChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static final String letterChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static final String numberChar = "0123456789";
+    public static final String ALL_CHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String LETTER_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String NUMBER_CHAR = "0123456789";
 
 
     /**
@@ -21,7 +21,7 @@ public class RandomUtil {
         StringBuffer sb = new StringBuffer();
         Random random = new Random();
         for (int i = 0; i <len ; i++) {
-            sb.append(allChar.charAt(random.nextInt(allChar.length())));
+            sb.append(ALL_CHAR.charAt(random.nextInt(ALL_CHAR.length())));
         }
         return  sb.toString();
     }
@@ -35,7 +35,7 @@ public class RandomUtil {
         StringBuffer sb = new StringBuffer();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
-            sb.append(letterChar.charAt(random.nextInt(letterChar.length())));
+            sb.append(LETTER_CHAR.charAt(random.nextInt(LETTER_CHAR.length())));
         }
         return sb.toString();
     }

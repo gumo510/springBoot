@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gumo.demo.constants.GlobalConstants;
 import com.gumo.demo.mapper.DeviceInfoMapper;
 import com.gumo.demo.utils.DateUtil;
-import com.gumo.demo.webserver.DeviceInfoRow;
+import com.gumo.demo.webserver.DeviceInfoBaseRow;
 import com.gumo.demo.webserver.MathInstituteWebServiceClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,8 +37,8 @@ public class PushDataJob {
         String endTime = DateUtil.getTodyDateStr() + " 00:00:00";
         Integer page = BigDecimal.ONE.intValue();
         while (true) {
-            IPage<DeviceInfoRow> logPage = new Page<>(page, pushDataSize);
-            List<DeviceInfoRow> deviceInfos = deviceInfoMapper.queryDeviceInfoRows(logPage, startTime, endTime);
+            IPage<DeviceInfoBaseRow> logPage = new Page<>(page, pushDataSize);
+            List<DeviceInfoBaseRow> deviceInfos = deviceInfoMapper.queryDeviceInfoRows(logPage, startTime, endTime);
             if (CollectionUtils.isEmpty(deviceInfos)) {
                 break;
             }

@@ -18,9 +18,9 @@ public abstract class CommonThreadPool {
      * 线程池，io密集型
      * CommonThreadPool.synExecutor.execute(()->{});
      */
-    public static final ExecutorService executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1,2*Runtime.getRuntime().availableProcessors() + 1,10,TimeUnit.MINUTES, new LinkedBlockingQueue<>(GlobalConstants.threadBlockingQueue));
+    public static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1,2*Runtime.getRuntime().availableProcessors() + 1,10,TimeUnit.MINUTES, new LinkedBlockingQueue<>(GlobalConstants.THREAD_BLOCKING_QUEUE));
 
-    public static final ExecutorService executorServiceQueueMaxInteger = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1,2*Runtime.getRuntime().availableProcessors() + 1,10,TimeUnit.MINUTES, new LinkedBlockingQueue<>(Integer.MAX_VALUE));
+    public static final ExecutorService EXECUTOR_SERVICE_QUEUE_MAX_INTEGER = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1,2*Runtime.getRuntime().availableProcessors() + 1,10,TimeUnit.MINUTES, new LinkedBlockingQueue<>(Integer.MAX_VALUE));
 
 
 }

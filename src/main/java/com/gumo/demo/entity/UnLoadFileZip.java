@@ -47,7 +47,7 @@ public class UnLoadFileZip {
         String fileType = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase(Locale.US);
         String uuid = UUID.randomUUID().toString();
         //判断文件是不是zip类型
-        if(fileType.equals("zip")){
+        if("zip".equals(fileType)){
 
             String dir = System.getProperty("user.dir");
             String desPath = "D:/test" + File.separator + uuid.replaceAll("-", "");

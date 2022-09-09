@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Data
 @XStreamAlias("row")
-public class DeviceInfoRow extends Row {
+public class DeviceInfoBaseRow extends BaseRow {
     @XStreamAlias("id")
     private Integer id;
     @XStreamAlias("create_time")

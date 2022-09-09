@@ -8,5 +8,5 @@ import lombok.Data;
 @XStreamAlias("table")
 public class Table {
     @XStreamImplicit
-    private Row[] row;
+    private BaseRow[] row;
 }

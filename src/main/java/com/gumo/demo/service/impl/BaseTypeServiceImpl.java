@@ -72,8 +72,8 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
         }, pool)).collect(Collectors.toList());
         //线程聚合等待
 //        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
-        List<Map<String, BigDecimal>> TravelTimeList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
-        List<CorridorTravelTimeVO> travelTimeVOList = buildTravelTimeStatistics(TravelTimeList);
+        List<Map<String, BigDecimal>> travelTimeList = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        List<CorridorTravelTimeVO> travelTimeVOList = buildTravelTimeStatistics(travelTimeList);
         pool.shutdown();
         //存入缓存
         redisTemplate.opsForValue().set(cacheKey, JSON.toJSONString(travelTimeVOList), redisCacheTimeout, TimeUnit.HOURS);
@@ -91,16 +91,16 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
         }
         //Map求和
         Integer totalCount = summaryMap.values().stream().mapToInt(BigDecimal::intValue).sum();
-        List<CorridorTravelTimeVO> TravelTimeList = new ArrayList<>();
+        List<CorridorTravelTimeVO> corridorTravelTimeList = new ArrayList<>();
         summaryMap.forEach((key, value) -> {
             CorridorTravelTimeVO travelTimeVO = new CorridorTravelTimeVO();
             travelTimeVO.setTravelTime(key);
             travelTimeVO.setOdNumber(value);
             Double odRate = Double.parseDouble(String.valueOf(value)) / totalCount;
             travelTimeVO.setOdRate(CommonUtil.formatRate(odRate));
-            TravelTimeList.add(travelTimeVO);
+            corridorTravelTimeList.add(travelTimeVO);
         });
-        return TravelTimeList;
+        return corridorTravelTimeList;
     }
 
     /**

@@ -7,15 +7,15 @@ import com.thoughtworks.xstream.XStream;
  */
 public class MathInstituteXmlUtil {
 
-      private static final XStream xstream = XStreamFactory.getXStream();
+      private static XStream xstream = XStreamFactory.getXStream();
 
-    public static String toXml(Row[] rows) {
+    public static String toXml(BaseRow[] rows) {
         Table table = new Table();
         table.setRow(rows);
         // 使用 @XStreamAlias("row")等注解生效
         xstream.processAnnotations(Table.class);
-        xstream.processAnnotations(Row.class);
-        xstream.processAnnotations(DeviceInfoRow.class);
+        xstream.processAnnotations(BaseRow.class);
+        xstream.processAnnotations(DeviceInfoBaseRow.class);
         return xstream.toXML(table);
     }
 

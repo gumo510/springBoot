@@ -20,7 +20,7 @@ public class DesUtil {
 
     public final static String DES = "DES";
     public final static String ENCODE = "utf-8";
-    public final static String defaultKey = "intellifLG";
+    public final static String DEFAULT_KEY = "intellifLG";
 
     public static void main(String[] args) throws Exception {
         String data = "测试ss";
@@ -39,7 +39,7 @@ public class DesUtil {
      * @date 2015-3-17 下午02:46:43
      */
     public static String encrypt(String data) throws Exception {
-        byte[] bt = encrypt(data.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+        byte[] bt = encrypt(data.getBytes(ENCODE), DEFAULT_KEY.getBytes(ENCODE));
         String strs = new BASE64Encoder().encode(bt);
         return strs;
     }
@@ -52,11 +52,12 @@ public class DesUtil {
      * @date 2015-3-17 下午02:49:52
      */
     public static String decrypt(String data) throws IOException, Exception {
-        if (data == null)
+        if (data == null) {
             return null;
+        }
         BASE64Decoder decoder = new BASE64Decoder();
         byte[] buf = decoder.decodeBuffer(data);
-        byte[] bt = decrypt(buf, defaultKey.getBytes(ENCODE));
+        byte[] bt = decrypt(buf, DEFAULT_KEY.getBytes(ENCODE));
         return new String(bt, ENCODE);
     }
 
@@ -70,7 +71,7 @@ public class DesUtil {
      * @throws Exception
      */
     public static String encrypt(String data, String key) throws Exception {
-        byte[] bt = encrypt(data.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+        byte[] bt = encrypt(data.getBytes(ENCODE), DEFAULT_KEY.getBytes(ENCODE));
         String strs = new BASE64Encoder().encode(bt);
         return strs;
     }
@@ -87,8 +88,9 @@ public class DesUtil {
      */
     public static String decrypt(String data, String key) throws IOException,
             Exception {
-        if (data == null)
+        if (data == null) {
             return null;
+        }
         BASE64Decoder decoder = new BASE64Decoder();
         byte[] buf = decoder.decodeBuffer(data);
         byte[] bt = decrypt(buf, key.getBytes(ENCODE));

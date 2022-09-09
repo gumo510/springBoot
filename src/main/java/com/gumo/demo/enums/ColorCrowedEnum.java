@@ -5,10 +5,14 @@ package com.gumo.demo.enums;
  *
  * </p>
  *
- * @author pbb
+ * @author gumo
  * @since 2021-07-04 15:30
  */
 public enum ColorCrowedEnum {
+
+    /**
+     * colorCrowed字段，颜色枚举
+     */
     DEFAULT(0),
     GREEN(1),
     BLUE(2),

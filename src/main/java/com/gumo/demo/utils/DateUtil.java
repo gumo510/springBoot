@@ -136,7 +136,7 @@ public class DateUtil {
 
     }
 
-    public static String DateToStr(Date date) {
+    public static String dateToStr(Date date) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -219,12 +219,14 @@ public class DateUtil {
      * @return
      */
     public static String stepMonth(Date sourceDate, int month, String format) {
-        if (format == null) format = DTF_YMD;
+        if (format == null) {
+            format = DTF_YMD;
+        }
         return date2String(stepMonth(sourceDate, month), format);
     }
 
 
-    public static Date getFirstDayfOMonth() {
+    public static Date getFirstDayMonth() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, 0);
         c.set(Calendar.DAY_OF_MONTH, 1);//1:本月第一天
@@ -271,6 +273,8 @@ public class DateUtil {
                 break;
             case SECOND:
                 value = duration.toMinutes();
+                break;
+            default:
                 break;
         }
         return value;
@@ -355,8 +359,8 @@ public class DateUtil {
      */
     public static String getStartWeekDate(LocalDate localDate, int delay) {
         localDate = localDate.plusWeeks(delay);
-        TemporalAdjuster FIRST_OF_WEEK = TemporalAdjusters.ofDateAdjuster(date -> date.minusDays(date.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue()));
-        LocalDate startFirstWeek = localDate.with(FIRST_OF_WEEK);  //开始周开始日期
+        TemporalAdjuster firstOfWeek = TemporalAdjusters.ofDateAdjuster(date -> date.minusDays(date.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue()));
+        LocalDate startFirstWeek = localDate.with(firstOfWeek);  //开始周开始日期
         return startFirstWeek.format(DTF_YMD_FORMAT);
     }
 
@@ -369,8 +373,8 @@ public class DateUtil {
      */
     public static String getEndWeekDate(LocalDate localDate, int delay) {
         localDate = localDate.plusWeeks(delay);
-        TemporalAdjuster LAST_OF_WEEK = TemporalAdjusters.ofDateAdjuster(date -> date.plusDays(DayOfWeek.SUNDAY.getValue() - date.getDayOfWeek().getValue()));
-        LocalDate endFirstWeek = localDate.with(LAST_OF_WEEK);     //开始周结束日期
+        TemporalAdjuster lastOfWeek = TemporalAdjusters.ofDateAdjuster(date -> date.plusDays(DayOfWeek.SUNDAY.getValue() - date.getDayOfWeek().getValue()));
+        LocalDate endFirstWeek = localDate.with(lastOfWeek);     //开始周结束日期
         return endFirstWeek.format(DTF_YMD_FORMAT);
     }
 
@@ -433,7 +437,7 @@ public class DateUtil {
         return sp.format(cal.getTime());
 
     }
-    public static String DateToStr2(Date date) {
+    public static String dateToStr2(Date date) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

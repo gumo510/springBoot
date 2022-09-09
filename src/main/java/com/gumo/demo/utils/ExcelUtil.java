@@ -32,26 +32,26 @@ public class ExcelUtil {
      * @param title     文档标题
      * @param sheetName 导出的SHEET名字 当前sheet数目只为1
      * @param headers   导出的表格的表头
-     * @param ds_titles 导出的数据 map.get(key) 对应的 key
-     * @param ds_format 导出数据的样式 1: left; 2: center 3: right
+     * @param dsTitles 导出的数据 map.get(key) 对应的 key
+     * @param dsFormat 导出数据的样式 1: left; 2: center 3: right
      * @param widths    表格的列宽度 默认为 256*14
      * @param data      数据集 List<Map>
      * @throws IOException
      */
-    public static byte[] export(String title, String sheetName, List<String> headers, List<String> ds_titles,
-                                int[] ds_format, int[] widths, List<Map<String, Object>> data) throws IOException {
+    public static byte[] export(String title, String sheetName, List<String> headers, List<String> dsTitles,
+                                int[] dsFormat, int[] widths, List<Map<String, Object>> data) throws IOException {
         // session.setAttribute("state", null);
         log.info("export------>");
         if (widths == null) {
-            widths = new int[ds_titles.size()];
-            for (int i = 0; i < ds_titles.size(); i++) {
+            widths = new int[dsTitles.size()];
+            for (int i = 0; i < dsTitles.size(); i++) {
                 widths[i] = width;
             }
         }
-        if (ds_format == null) {
-            ds_format = new int[ds_titles.size()];
-            for (int i = 0; i < ds_titles.size(); i++) {
-                ds_format[i] = 1;
+        if (dsFormat == null) {
+            dsFormat = new int[dsTitles.size()];
+            for (int i = 0; i < dsTitles.size(); i++) {
+                dsFormat[i] = 1;
             }
         }
         // 创建一个工作薄
@@ -77,7 +77,7 @@ public class ExcelUtil {
             style.setBorderTop(BorderStyle.THIN);
             cell.setCellStyle(style);
             //合并单   元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, ds_titles.size() - 1));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, dsTitles.size() - 1));
             headerrow++;
         }
         if (headers != null) {
@@ -106,7 +106,7 @@ public class ExcelUtil {
         if (data != null) {
             List<XSSFCellStyle> styleList = new ArrayList<>();
 
-            for (int i = 0; i < ds_titles.size(); i++) { // 列数
+            for (int i = 0; i < dsTitles.size(); i++) { // 列数
                 XSSFCellStyle style = wb.createCellStyle();
                 XSSFFont font = wb.createFont();
                 font.setFontName(excelfont);
@@ -116,11 +116,11 @@ public class ExcelUtil {
                 style.setBorderLeft(BorderStyle.THIN);
                 style.setBorderRight(BorderStyle.THIN);
                 style.setBorderTop(BorderStyle.THIN);
-                if (ds_format[i] == 1) {
+                if (dsFormat[i] == 1) {
                     style.setAlignment(HorizontalAlignment.LEFT);
-                } else if (ds_format[i] == 2) {
+                } else if (dsFormat[i] == 2) {
                     style.setAlignment(HorizontalAlignment.CENTER);
-                } else if (ds_format[i] == 3) {
+                } else if (dsFormat[i] == 3) {
                     style.setAlignment(HorizontalAlignment.RIGHT);
 
                 }
@@ -129,10 +129,10 @@ public class ExcelUtil {
             for (int i = 0; i < data.size(); i++) { // 行数
                 XSSFRow row = sheet.createRow(headerrow);
                 Map<String, Object> map = data.get(i);
-                for (int j = 0; j < ds_titles.size(); j++) { // 列数
+                for (int j = 0; j < dsTitles.size(); j++) { // 列数
                     XSSFCell cell = row.createCell(j);
 
-                    Object o = map.get(ds_titles.get(j));
+                    Object o = map.get(dsTitles.get(j));
                     //增加对对象的处理
                     if (o != null && !(o instanceof String) && !(o instanceof Integer) && !(o instanceof byte[])) {
                         JSONObject obj = JSONObject.parseObject(o.toString());
@@ -143,10 +143,10 @@ public class ExcelUtil {
 
                     if (o == null || "".equals(o)) {
                         cell.setCellValue("");
-                    } else if (ds_format[j] == 4) {
+                    } else if (dsFormat[j] == 4) {
                         // int
                         cell.setCellValue((Long.valueOf(o + "")).longValue());
-                    } else if (ds_format[j] == 5 || ds_format[j] == 6) {
+                    } else if (dsFormat[j] == 5 || dsFormat[j] == 6) {
                         // float
                         cell.setCellValue((Double.valueOf(o + "")).doubleValue());
                     } else {
@@ -253,16 +253,17 @@ public class ExcelUtil {
         /** 循环Excel的行 */
         for (int r = 0; r < totalRows; r++) {
             Row row = sheet.getRow(r);
-            if (row == null)
+            if (row == null) {
                 continue;
+            }
             List<String> rowLst = new ArrayList<String>();
             /** 循环Excel的列 */
             for (int c = 0; c < totalCells; c++) {
                 Cell cell = row.getCell(c);
                 String cellValue = "";
                 if (null != cell) {
-                    HSSFDataFormatter hSSFDataFormatter = new HSSFDataFormatter();
-                    cellValue = hSSFDataFormatter.formatCellValue(cell);
+                    HSSFDataFormatter hssfDataFormatter = new HSSFDataFormatter();
+                    cellValue = hssfDataFormatter.formatCellValue(cell);
                 }
                 rowLst.add(cellValue);
             }

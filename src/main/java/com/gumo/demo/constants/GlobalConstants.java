@@ -10,7 +10,7 @@ public class GlobalConstants {
     /**
      * 线程数
      */
-    public static final Integer threadBlockingQueue = 100;
+    public static final Integer THREAD_BLOCKING_QUEUE = 100;
 
     /**
      * 推送数据catalogId

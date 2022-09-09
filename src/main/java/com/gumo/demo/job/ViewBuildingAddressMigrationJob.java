@@ -94,7 +94,7 @@ public class ViewBuildingAddressMigrationJob {
     public String queryByBuildingId(String buildingId) {
         TermQueryBuilder queryBuilder = QueryBuilders.termQuery("buildingId", buildingId);
         try {
-            SearchResponse results = getESPageResults(StringUtils.isBlank(buildingAddressIndex) ? "building_address" : buildingAddressIndex, queryBuilder, null, null, null, null);
+            SearchResponse results = getEsPageResults(StringUtils.isBlank(buildingAddressIndex) ? "building_address" : buildingAddressIndex, queryBuilder, null, null, null, null);
             if (results != null && results.getHits().getHits().length > 0) {
                 return results.getHits().getHits()[0].getId();
             }
@@ -105,7 +105,7 @@ public class ViewBuildingAddressMigrationJob {
         return null;
     }
 
-    public SearchResponse getESPageResults(String index, QueryBuilder queryBuilder, String sortName, SortOrder sortOrder, Integer page, Integer pageSize) throws IOException {
+    public SearchResponse getEsPageResults(String index, QueryBuilder queryBuilder, String sortName, SortOrder sortOrder, Integer page, Integer pageSize) throws IOException {
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(queryBuilder);

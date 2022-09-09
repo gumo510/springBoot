@@ -33,7 +33,7 @@ public class KafkaSendService {
             userOperateDTO.setOperateDate(new Date());
             kafkaTemplate.send(KafkaConstants.OPERATE_SYNC_USER_INFO, JSON.toJSONString(userOperateDTO));
         } catch (BeansException e) {
-            log.error("operate_sync_area_info send kafka error areaId: {}, exception: {}",user.getId(), e);
+            log.error("sendKafkaAreaOperate send kafka error userId: {}, exception: {}",user.getId(), e);
         }
     }
 

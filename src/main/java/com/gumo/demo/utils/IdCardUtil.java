@@ -35,7 +35,7 @@ public class IdCardUtil {
             // 10位身份证，港澳台地区
             case 10: {
                 String[] cardval = isValidCard10(idCard);
-                return null != cardval && cardval[2].equals("true");
+                return null != cardval && "true".equals(cardval[2]);
             }
             default:
                 return false;
@@ -302,9 +302,9 @@ public class IdCardUtil {
         if (idCard.matches("^[a-zA-Z][0-9]{9}$")) {
             info[0] = "台湾";
             String char2 = idCard.substring(1, 2);
-            if (char2.equals("1")) {
+            if ("1".equals(char2)) {
                 info[1] = "M";
-            } else if (char2.equals("2")) {
+            } else if ("2".equals(char2)) {
                 info[1] = "F";
             } else {
                 info[1] = "N";
@@ -484,9 +484,9 @@ public class IdCardUtil {
      */
     private static int getPowerSum(char[] iArr) {
         int iSum = 0;
-        if (power.length == iArr.length) {
+        if (POWER.length == iArr.length) {
             for (int i = 0; i < iArr.length; i++) {
-                iSum += Integer.valueOf(String.valueOf(iArr[i])) * power[i];
+                iSum += Integer.valueOf(String.valueOf(iArr[i])) * POWER[i];
             }
         }
         return iSum;
@@ -625,7 +625,7 @@ public class IdCardUtil {
     /**
      * 每位加权因子
      */
-    private static final int[] power = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+    private static final int[] POWER = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
 
     /**
      * 省市代码表

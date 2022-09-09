@@ -20,17 +20,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MessageReceiveListener {
 
-	@Value("${kafka.receive.retry.milliseconds:60000}")
-	private long RETRY_INTEVAL;
-
-	private void sleep() {
-		try {
-			Thread.sleep(RETRY_INTEVAL);
-		} catch (Exception e) {
-			log.error("线程sleep异常：", e);
-		}
-	}
-
 	@KafkaListener(topics = KafkaConstants.CAMPUS_FACE_SUBSCRIBE, containerFactory = "campusFaceContainerFactory")
 	public void campusFaceListen(ConsumerRecord<?, ?> consumerRecord, Acknowledgment ack) {
 		long startTime = System.currentTimeMillis();
@@ -46,7 +35,6 @@ public class MessageReceiveListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error("MessageReceiveListener_campusFaceSubscribeListen：e: {}", e);
-				sleep();
 			}
 		}
 		log.info("campus-face-subscribe kafka message end ：{}   ", System.currentTimeMillis() - startTime);

@@ -170,8 +170,8 @@ public class FileUtils {
         //file name list
         String[] filePaths = file.list();
         for (String filePath : filePaths) {
-            String oldFullPath = oldPath + file.separator + filePath;
-            String newFullPath = newPath + file.separator + filePath;
+            String oldFullPath = oldPath + File.separator + filePath;
+            String newFullPath = newPath + File.separator + filePath;
             File oldFile = new File(oldFullPath);
             File newFile = new File(newFullPath);
             if (oldFile.isDirectory()) {
@@ -259,21 +259,6 @@ public class FileUtils {
             File del = new File(file.toURI());
             del.delete();
         }
-    }
-
-    public static File multipartFileToFile(MultipartFile file) throws Exception {
-
-        File toFile = null;
-        if (file.equals("") || file.getSize() <= 0) {
-            file = null;
-        } else {
-            InputStream ins = null;
-            ins = file.getInputStream();
-            toFile = new File(file.getOriginalFilename());
-            inputStreamToFile(ins, toFile);
-            ins.close();
-        }
-        return toFile;
     }
 
     //获取流文件

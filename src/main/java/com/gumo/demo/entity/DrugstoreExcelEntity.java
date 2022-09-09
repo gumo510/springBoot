@@ -25,7 +25,7 @@ public class DrugstoreExcelEntity {
     /**
      * 登记id
      */
-    private Integer registerID;
+    private Integer registerId;
 
     /**
      * 创建时间
@@ -65,7 +65,6 @@ public class DrugstoreExcelEntity {
         String excelPath = dir+ File.separator+"/doc/推送省药监.xls";
         try {
             List<DrugstoreExcelEntity> excelEntities = ExcelUtil.readExcel2Bean(new FileInputStream(new File(excelPath)), DrugstoreExcelEntity.class);
-
             System.out.println(">>>>>oooooo");
         } catch (Exception e) {
             e.printStackTrace();
