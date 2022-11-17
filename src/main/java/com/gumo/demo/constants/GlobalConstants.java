@@ -17,4 +17,10 @@ public class GlobalConstants {
      */
     public static String CATALOG_ID_9 = "WEB9";
     public static String CATALOG_ID_10 = "WEB10";
+
+    public static final String PASS_RECORD_PERSON_SELECT_URI = "/capture/person/records";
+
+    public static final String PASS_RECORD_STRANGER_SELECT_URI = "/capture/stranger/records";
+
+    public static final String PASS_RECORD_DELETE_URI = "/capture/person/delete";
 }

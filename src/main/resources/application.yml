@@ -125,6 +125,9 @@ logging:
 springfox:
   documentation:
     enabled: true
+#  swagger Failed to start bean ‘documentationPluginsBootstrapper‘问题及解决
+#  原因： 这是因为Springfox使用的路径匹配是基于AntPathMatcher的，而Spring Boot 2.6.X使用的是PathPatternMatcher。
+#  解决：在application.properties里配置：spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER。
 
 # rabbitmq 配置
 rabbitmq:
