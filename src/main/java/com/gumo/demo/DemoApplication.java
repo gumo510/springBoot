@@ -12,6 +12,8 @@ import org.springframework.jmx.support.RegistrationPolicy;
 
 // Fdfs注册
 @Import(FdfsClientConfig.class)
+// Apollo
+//@EnableApolloConfig({"application","vesionbook.common", "vesionbook.job"})
 @EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 @MapperScan("com.gumo.demo.mapper") //扫描的mapper
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class) //添加排除原生Druid的配置类。
