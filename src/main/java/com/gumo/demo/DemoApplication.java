@@ -6,6 +6,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
@@ -14,6 +15,8 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @Import(FdfsClientConfig.class)
 // Apollo
 //@EnableApolloConfig({"application","vesionbook.common", "vesionbook.job"})
+// 开启 feign
+@EnableFeignClients
 @EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 @MapperScan("com.gumo.demo.mapper") //扫描的mapper
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class) //添加排除原生Druid的配置类。

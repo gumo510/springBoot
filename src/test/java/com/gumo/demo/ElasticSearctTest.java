@@ -22,6 +22,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author john
@@ -176,14 +177,15 @@ public class ElasticSearctTest {
         // 打印总条数
         System.out.println(search.getTotalHits());
         //得到查询返回的内容
-        List<SearchHit<Item>> searchHits = search.getSearchHits();
-        //设置一个最后需要返回的实体类集合
-        List<Item> items = new ArrayList<>();
-        //遍历返回的内容进行处理
-        for(SearchHit<Item> searchHit:searchHits){
-            //放到实体类中
-            items.add(searchHit.getContent());
-        }
+//        List<SearchHit<Item>> searchHits = search.getSearchHits();
+//        //设置一个最后需要返回的实体类集合
+//        List<Item> items = new ArrayList<>();
+//        //遍历返回的内容进行处理
+//        for(SearchHit<Item> searchHit:searchHits){
+//            //放到实体类中
+//            items.add(searchHit.getContent());
+//        }
+        List<Item> items = search.stream().map(e -> e.getContent()).collect(Collectors.toList());
         items.forEach(System.out::println);
 
 //        // 执行搜索，获取结果
