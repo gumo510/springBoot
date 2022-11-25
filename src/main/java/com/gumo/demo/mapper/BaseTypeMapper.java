@@ -1,5 +1,6 @@
 package com.gumo.demo.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
 import com.gumo.demo.dto.vo.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
@@ -24,4 +25,5 @@ public interface BaseTypeMapper extends BaseMapper<BaseType> {
 
     List<CorridorTravelTimeVO> selectLineCorridorTravelTime(StatisticsReq req);
 
+    IPage<BaseType> selectPageTest(IPage<BaseType> page);
 }

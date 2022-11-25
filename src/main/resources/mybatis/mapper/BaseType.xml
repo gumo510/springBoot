@@ -46,4 +46,8 @@
         </if>
         GROUP BY travelTime;
     </select>
+
+    <select id="selectPageTest" resultType="com.gumo.demo.entity.BaseType">
+        select * from t_base_type
+    </select>
 </mapper>
