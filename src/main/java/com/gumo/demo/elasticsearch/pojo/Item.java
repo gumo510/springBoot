@@ -3,10 +3,7 @@ package com.gumo.demo.elasticsearch.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 
@@ -14,8 +11,9 @@ import java.util.Date;
  * @author
  * @date 2022/07/8 - 14:39
  */
-@Document(indexName = "item", shards = 1, replicas = 0)
+@Document(indexName = "item")
 @Data
+@Setting(shards=1, replicas = 0)//创建一个索引的分片，索引的一个副本数量
 public class Item {
     @Id
     private Long id;

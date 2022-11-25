@@ -1,5 +1,6 @@
 package com.gumo.demo;
 
+import cn.hutool.core.collection.ListUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -32,4 +33,31 @@ public class CompletableFutureTest {
 //        Map<Long, String> lastSnapMap = future1.get();
 //        Map<Long, AreaPeopleFlowVo> devicePeopleFlowMap = future2.get();
     }
+
+//    @Test
+//    public void parallelStream() {
+//        // 拆分多个子任务执行
+//        List<List<PassAuthPersonDevicePojo>> subs = ListUtil.partition(list , 500);
+//        subs.parallelStream().forEach(data -> {
+//            buildPassAuthPersonDevicePojoList(list);
+//            // 2.同步到ES，实现批量新增
+//            passAuthPersonDeviceSupport.saveAll(list);
+//            // 3. 记录到同步历史表
+//            saveSyncLog(list);
+//        });
+//    }
+
+
+//    @Test
+//    public void parallelStreamJoin() {
+//        // List parallelStream 聚合
+//        List<SourceFlowStatistics> sourceFlowStatisticList = Collections.synchronizedList(new ArrayList<>());
+//
+//        tableNameList.parallelStream().forEach(data -> {
+//            List<SourceFlowStatistics> result = eventInfoMapper.getSourceFlowStatistics(GlobalConsts.IFAAS_ANTIEPIDEMIC_DATA_DB, data.getTableName(), start, end);
+//            sourceFlowStatisticList.addAll(result);
+//        });
+//    }
+
+
 }
