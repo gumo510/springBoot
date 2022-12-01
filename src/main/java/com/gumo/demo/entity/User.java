@@ -36,6 +36,9 @@ public class User extends Model<User> {
     @TableField("realName")
     private String realName;
 
+    @TableField("salary")
+    private Long salary;
+
     public User() {
 
     }
