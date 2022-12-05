@@ -85,10 +85,12 @@ public class ElasticSearchConfig {
                         new SSLIOSessionStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
                 clientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.disableAuthCaching()
                         .setSSLStrategy(sessionStrategy).setDefaultCredentialsProvider(credentialsProvider)
-                        .setMaxConnTotal(maxConnectNum).setMaxConnPerRoute(maxConnectPerRoute));
+                        .setMaxConnTotal(maxConnectNum).setMaxConnPerRoute(maxConnectPerRoute)
+                        .setKeepAliveStrategy((response, context) -> 1000 * 60));
             } else {
                 clientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder
-                        .setMaxConnTotal(maxConnectNum).setMaxConnPerRoute(maxConnectPerRoute));
+                        .setMaxConnTotal(maxConnectNum).setMaxConnPerRoute(maxConnectPerRoute)
+                        .setKeepAliveStrategy((httpResponse, httpContext) -> 1000 * 60));
             }
         } catch (Exception e) {
             log.error("SkyGraphESFactory TransportClient create error!!", e);
