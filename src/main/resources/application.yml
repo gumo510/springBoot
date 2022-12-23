@@ -116,6 +116,7 @@ mybatis-plus:
   type-aliases-package: com.gumo.demo.entity
 #showSql
 logging:
+  config: classpath:log4j2.xml
   level:
     com:
       example:
