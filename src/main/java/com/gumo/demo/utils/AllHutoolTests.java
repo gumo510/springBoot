@@ -269,7 +269,6 @@ public class AllHutoolTests {
         List<String> splitList = StrUtil.split(joinStr, ',');
         log.info("collUtil split:{}", splitList);
         //创建新的Map、Set、List
-        HashMap<Object, Object> newMap = CollUtil.newHashMap();
         HashSet<Object> newHashSet = CollUtil.newHashSet();
         ArrayList<Object> newList = CollUtil.newArrayList();
         //判断列表是否为空

@@ -15,14 +15,28 @@ public class StreamTest {
 
     private List<User> list;
 
+    public static void main(String[] args) {
+
+        List<User> userList = new ArrayList<>();
+        userList.add(new User(1,"古默", "12", "gumo"));
+        userList.add(new User(2,"古默", "123", "gumo"));
+        userList.add(new User(3,"古默", "1234", "gumo"));
+        userList.add(new User(4,"古默", "12345", "gumo"));
+        userList.add(new User(2,"古默", "123456", "gumo"));
+//        Collections.sort(userList, (o1, o2) -> (int) (o1.getId() - o2.getId()));
+//        List<User> sorted = userList.stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
+        Map<Integer, User> devicePeopleFlowMap = userList.stream().collect(Collectors.toMap(bi -> bi.getId(), bi -> bi ,(b1,b2)->b1));
+        System.out.println(devicePeopleFlowMap);
+    }
+
     @Test
     public void test1() {
 
         // distinctByKey 去重
         List<User> userList = list.stream().filter(distinctByKey(bi -> bi.getUserName())).collect(Collectors.toList());
 
-        // 转换Map
-        Map<Integer, User> devicePeopleFlowMap = list.stream().collect(Collectors.toMap(bi -> bi.getId(), bi -> bi));
+        // 转换Map 当 Key 冲突时，调用的合并方法
+        Map<Integer, User> devicePeopleFlowMap = list.stream().collect(Collectors.toMap(bi -> bi.getId(), bi -> bi ,(b1,b2) -> b1));
 
         // 获取属性
         List<String> strList = list.stream().map(User::getUserName).distinct().collect(Collectors.toList());

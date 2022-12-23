@@ -43,6 +43,13 @@ public class User extends Model<User> {
 
     }
 
+    public User(Integer id, String userName, String passWord, String realName) {
+        this.id = id;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.realName = realName;
+    }
+
     public User(String userName, String passWord, String realName) {
         this.userName = userName;
         this.passWord = passWord;
