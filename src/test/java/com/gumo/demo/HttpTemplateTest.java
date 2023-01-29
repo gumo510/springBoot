@@ -3,18 +3,23 @@ package com.gumo.demo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.gumo.demo.constants.DoorConst;
 import com.gumo.demo.entity.UserReq;
 import com.gumo.demo.utils.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -97,6 +102,51 @@ public class HttpTemplateTest {
             }
         }
     }
+
+    @Test
+    public void getChannels() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(DoorConst.Header.ACCEPT, MediaType.APPLICATION_JSON.toString());
+        httpHeaders.setContentType(MediaType.parseMediaType(DoorConst.VehicleChannel.MEDIA_TYPE));
+//        httpHeaders.add(DoorConst.VehicleChannel.ACCESS_Token, getToken());
+        HttpEntity<String> httpEntity = new HttpEntity<>("", httpHeaders);
+        log.info("getChannels httpHeaders: {}, url:{}", JSONObject.toJSONString(httpEntity), url);
+        ResponseEntity<JSONObject> entity = restTemplate.postForEntity(url, httpEntity, JSONObject.class);
+        log.info("getChannels entity: {}", JSONObject.toJSONString(entity));
+        JSONObject result = entity.getBody();
+    }
+
+/*    private String getToken() throws Exception {
+        String token = redisUtil.get(DoorConst.Token.TOKEN_KEY, 0);
+        if (StringUtils.isBlank(token) || config.getExpires() == 0) {
+            // 设置请求头
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(DoorConst.Header.CONTENT_TYPE, DoorConst.Token.MEDIA_TYPE);
+            // 设置请求参数
+            MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap();
+            postParameters.add(DoorConst.Token.LOGIN_NAME, config.getLoginName());
+            postParameters.add(DoorConst.Token.PASSWORD, config.getPssWord());
+            postParameters.add(DoorConst.Token.LOGIN_TYPE, config.getLoginType());
+            postParameters.add(DoorConst.Token.BOX_ID, config.getBoxId());
+
+            HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(postParameters, headers);
+            log.info("getToken httpHeaders: {}, url:{}", JSONObject.toJSONString(httpEntity), config.getTokenUrl());
+            ResponseEntity<DoorTokenRespVo> entity = restTemplate.postForEntity(config.getTokenUrl(), httpEntity, DoorTokenRespVo.class);
+            log.info("getToken entity: {}", JSONObject.toJSONString(entity));
+            DoorTokenRespVo doorTokenRespVo = entity.getBody();
+
+            if (Objects.nonNull(doorTokenRespVo) && doorTokenRespVo.getStatus() == 1 && Objects.nonNull(doorTokenRespVo.getData())) {
+                token = doorTokenRespVo.getData().getToken();
+                if (StringUtils.isNotBlank(token)) {
+                    redisUtil.setex(DoorConst.Token.TOKEN_KEY, config.getExpires(), token);
+                }
+            } else {
+                log.error("Request Vehicle Channel Token Error: {}", doorTokenRespVo);
+                throw new Exception("Request Vehicle Channel Token Error: " + doorTokenRespVo);
+            }
+        }
+        return token;
+    }*/
 
     public static void main(String[] args) {
         String dir = System.getProperty("user.dir");

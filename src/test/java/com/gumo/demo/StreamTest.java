@@ -83,6 +83,25 @@ public class StreamTest {
     }
 
     @Test
+    public void steam() {
+        list.stream().collect(Collectors.groupingBy(User::getUserName, Collectors.counting()));
+        Map<String, Integer> hashMap = new HashMap();
+        List<Integer> collect = hashMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+
+        List<User> syncList = Collections.synchronizedList(new ArrayList<>());
+        list.parallelStream().forEach(data ->{
+            List<User> objects = new ArrayList<>();
+            syncList.addAll(objects);
+        });
+
+        List<List<User>> partition = ListUtil.partition(list, 500);
+        partition.parallelStream().forEach(data ->{
+            clearDate(data);
+        });
+
+    }
+
+    @Test
     public void test2() {
         // List parallelStream 聚合
         List<User> sourceFlowStatisticList = Collections.synchronizedList(new ArrayList<>());
