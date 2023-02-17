@@ -27,7 +27,7 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${spring.kafka.consumer.second.bootstrap.servers:192.168.12.59:9092}")
+    @Value("${spring.kafka.consumer.second.bootstrap.servers:192.168.13.59:31090}")
     private String servers;
     @Value("${spring.kafka.consumer.enable-auto-commit:false}")
     private Boolean autoCommit;

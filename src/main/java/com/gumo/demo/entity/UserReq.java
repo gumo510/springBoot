@@ -26,11 +26,11 @@ import java.util.List;
 public class UserReq {
 
     @NotBlank(message = "账号不能为空")
-    @Length(max = 32, message = "账号长度不超过10")
+    @Length(max = 10, message = "账号长度不超过10")
     private String login;
 
     @NotBlank(message = "密码不能为空")
-    @Length(max = 32, message = "密码长度不超过20")
+    @Length(max = 20, message = "密码长度不超过20")
     private String password;
 
     @NotBlank(message = "所属单位不能为空")

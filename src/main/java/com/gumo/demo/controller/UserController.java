@@ -4,11 +4,14 @@ package com.gumo.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.gumo.demo.cache.BusTypeCache;
 import com.gumo.demo.cache.CarTypeCache;
+import com.gumo.demo.dto.vo.BaseDataRespVo;
 import com.gumo.demo.dto.vo.CommonResult;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.entity.Dictionary;
 import com.gumo.demo.entity.User;
+import com.gumo.demo.entity.UserReq;
 import com.gumo.demo.enums.ColorCrowedEnum;
+import com.gumo.demo.enums.CommonResultCodeEnum;
 import com.gumo.demo.service.IDictionaryService;
 import com.gumo.demo.service.IUserService;
 import com.gumo.demo.utils.ExcelUtil;
@@ -16,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
@@ -79,4 +83,9 @@ public class UserController {
         }
     }
 
+    @PostMapping("test/valid")
+    public BaseDataRespVo testValid(@Valid @RequestBody UserReq userReq){
+
+        return new BaseDataRespVo(null, CommonResultCodeEnum.SUCCESS.getResultCode(), "成功", "SUCCESS");
+    }
 }
