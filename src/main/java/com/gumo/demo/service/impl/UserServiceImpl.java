@@ -5,6 +5,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.dto.vo.CommonResult;
+import com.gumo.demo.dto.vo.UserDeviceVO;
 import com.gumo.demo.dto.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.lock.annonation.DistributedLock;
@@ -63,6 +64,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         byte[] bytes = byteArrayOutputStream.toByteArray();
         String fileUrl = prefix + '/' + fastClientWrapper.uploadFile(bytes, "xlsx", null);
         return CommonResult.success(fileUrl);
+    }
+
+    @Override
+    public UserDeviceVO getUserDevice(String login, String password) {
+        return userMapper.getUserDevice(login, password);
     }
 
     @Async                                                                                                                  //异步执行

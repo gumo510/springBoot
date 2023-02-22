@@ -1,6 +1,7 @@
 package com.gumo.demo.service;
 
 import com.gumo.demo.dto.vo.CommonResult;
+import com.gumo.demo.dto.vo.UserDeviceVO;
 import com.gumo.demo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IUserService extends IService<User> {
 
     CommonResult getUserExport();
+
+    UserDeviceVO getUserDevice(String login, String password);
+
 }

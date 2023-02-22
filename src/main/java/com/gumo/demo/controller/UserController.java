@@ -6,6 +6,7 @@ import com.gumo.demo.cache.BusTypeCache;
 import com.gumo.demo.cache.CarTypeCache;
 import com.gumo.demo.dto.vo.BaseDataRespVo;
 import com.gumo.demo.dto.vo.CommonResult;
+import com.gumo.demo.dto.vo.UserDeviceVO;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.entity.Dictionary;
 import com.gumo.demo.entity.User;
@@ -86,6 +87,7 @@ public class UserController {
     @PostMapping("test/valid")
     public BaseDataRespVo testValid(@Valid @RequestBody UserReq userReq){
 
-        return new BaseDataRespVo(null, CommonResultCodeEnum.SUCCESS.getResultCode(), "成功", "SUCCESS");
+        UserDeviceVO userDevice = userService.getUserDevice(userReq.getLogin(), userReq.getPassword());
+        return new BaseDataRespVo(userDevice, CommonResultCodeEnum.SUCCESS.getResultCode(), "成功", "SUCCESS");
     }
 }

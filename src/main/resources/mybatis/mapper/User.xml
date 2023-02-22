@@ -10,6 +10,24 @@
         <result column="realName" property="realName" />
     </resultMap>
 
+    <resultMap id="GroupResultMap" type="com.gumo.demo.dto.vo.UserDeviceVO">
+        <id column="id" property="id" />
+        <result column="userName" property="userName" />
+        <result column="passWord" property="passWord" />
+        <result column="realName" property="realName" />
+        <collection property="deviceIds" ofType="com.gumo.demo.dto.vo.DeviceIdVO" columnPrefix="md_">
+            <result column="device_id" property="id"/>
+            <result column="device_name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserDevice" resultMap="GroupResultMap">
+        select u.*, ud.device_id md_device_id,ud.device_name md_device_name
+        from user u
+                 left join t_user_device ud on u.id = ud.user_id
+        where u.userName = #{userName} and u.passWord = #{passWord}
+    </select>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, userName, passWord, realName

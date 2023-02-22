@@ -1,9 +1,11 @@
 package com.gumo.demo.mapper;
 
+import com.gumo.demo.dto.vo.UserDeviceVO;
 import com.gumo.demo.dto.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +22,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     List<UserVO> queryUserList();
+
+    UserDeviceVO getUserDevice(@Param("userName") String login, @Param("passWord") String password);
 }
