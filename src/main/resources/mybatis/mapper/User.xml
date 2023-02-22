@@ -10,6 +10,7 @@
         <result column="realName" property="realName" />
     </resultMap>
 
+    <!--实际工作不建议用 *，left join 为空时 存在数据问题 -->
     <resultMap id="GroupResultMap" type="com.gumo.demo.dto.vo.UserDeviceVO">
         <id column="id" property="id" />
         <result column="userName" property="userName" />
