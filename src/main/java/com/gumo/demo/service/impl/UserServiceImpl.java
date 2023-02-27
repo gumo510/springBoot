@@ -1,7 +1,9 @@
 package com.gumo.demo.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.dto.vo.CommonResult;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -64,6 +67,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         byte[] bytes = byteArrayOutputStream.toByteArray();
         String fileUrl = prefix + '/' + fastClientWrapper.uploadFile(bytes, "xlsx", null);
         return CommonResult.success(fileUrl);
+    }
+
+    @Override
+    public CommonResult getUserExport2() {
+        // 方法3 如果写到不同的sheet 不同的对象
+        String fileName = System.getProperty("user.dir") + File.separator +"/doc/测试多个Sheet导出.xlsx";;
+        // 这里 指定文件
+        try (ExcelWriter excelWriter = EasyExcel.write(fileName).build()) {
+            // 去调用写入,这里我调用了五次，实际使用时根据数据库分页的总的页数来。这里最终会写到5个sheet里面
+            for (int i = 0; i < 5; i++) {
+                // 每次都要创建writeSheet 这里注意必须指定sheetNo 而且sheetName必须不一样。这里注意DemoData.class 可以每次都变，我这里为了方便 所以用的同一个class
+                // 实际上可以一直变
+                WriteSheet writeSheet = EasyExcel.writerSheet(i, "模板" + i).head(UserVO.class).build();
+                // 分页去数据库查询数据 这里可以去数据库查询每一页的数据
+                List<UserVO> users = userMapper.queryUserList();
+                excelWriter.write(users, writeSheet);
+            }
+        }
+        return CommonResult.success(null);
     }
 
     @Override

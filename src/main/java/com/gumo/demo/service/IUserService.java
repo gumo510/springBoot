@@ -17,6 +17,8 @@ public interface IUserService extends IService<User> {
 
     CommonResult getUserExport();
 
+    CommonResult getUserExport2();
+
     UserDeviceVO getUserDevice(String login, String password);
 
 }

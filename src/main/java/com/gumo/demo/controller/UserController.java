@@ -60,6 +60,12 @@ public class UserController {
         return urlStr;
     }
 
+    @PostMapping("getUser/export2")
+    public CommonResult getUserExport2(){
+        CommonResult urlStr = userService.getUserExport2();
+        return urlStr;
+    }
+
     @GetMapping("getColorCrowed")
     public Integer getColorCrowed(){
         // 测试Redis缓存
