@@ -2,8 +2,8 @@ package com.gumo.demo.kafka.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.gumo.demo.constants.KafkaConstants;
-import com.gumo.demo.dto.vo.CameraOperateDTO;
-import com.gumo.demo.dto.vo.UserOperateDTO;
+import com.gumo.demo.model.dto.CameraOperateDTO;
+import com.gumo.demo.model.dto.UserOperateDTO;
 import com.gumo.demo.entity.CameraInfo;
 import com.gumo.demo.entity.User;
 import lombok.extern.slf4j.Slf4j;

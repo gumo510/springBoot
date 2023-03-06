@@ -1,7 +1,7 @@
 package com.gumo.demo.service;
 
 
-import com.gumo.demo.dto.vo.MailVO;
+import com.gumo.demo.model.vo.MailVO;
 
 /**
  * @Author Liusy

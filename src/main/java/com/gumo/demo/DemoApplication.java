@@ -10,16 +10,16 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-// Fdfs注册
-@Import(FdfsClientConfig.class)
-// Apollo
-//@EnableApolloConfig({"application","vesionbook.common", "vesionbook.job"})
-// 开启 feign
-@EnableFeignClients
-@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
+
+@Import(FdfsClientConfig.class)     // Fdfs注册
+//@EnableApolloConfig({"application","vesionbook.common", "vesionbook.job"}) // Apollo
+@EnableFeignClients                 // 开启 feign
+@EnableScheduling                   // 开启 定时任务
 @MapperScan("com.gumo.demo.mapper") //扫描的mapper
-@SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class) //添加排除原生Druid的配置类。
+@SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)    //添加排除原生Druid的配置类。
+@EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 @EnableConfigurationProperties()
 public class DemoApplication {
 

@@ -1,4 +1,4 @@
-package com.gumo.demo.dto.vo;
+package com.gumo.demo.model.dto;
 
 import com.gumo.demo.entity.CameraInfo;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.gumo.demo.service;
 
-import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
-import com.gumo.demo.dto.vo.StatisticsReq;
+import com.gumo.demo.model.vo.CorridorTravelTimeVO;
+import com.gumo.demo.model.req.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.baomidou.mybatisplus.extension.service.IService;
 

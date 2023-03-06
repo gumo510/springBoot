@@ -1,8 +1,7 @@
-package com.gumo.demo.dto.vo;
+package com.gumo.demo.model.vo;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

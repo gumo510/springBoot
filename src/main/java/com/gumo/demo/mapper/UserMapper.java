@@ -1,7 +1,7 @@
 package com.gumo.demo.mapper;
 
-import com.gumo.demo.dto.vo.UserDeviceVO;
-import com.gumo.demo.dto.vo.UserVO;
+import com.gumo.demo.model.vo.UserDeviceVO;
+import com.gumo.demo.model.vo.UserVO;
 import com.gumo.demo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

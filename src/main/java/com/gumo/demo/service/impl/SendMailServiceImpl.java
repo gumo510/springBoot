@@ -1,7 +1,7 @@
 package com.gumo.demo.service.impl;
 
 
-import com.gumo.demo.dto.vo.MailVO;
+import com.gumo.demo.model.vo.MailVO;
 import com.gumo.demo.service.ISendMailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

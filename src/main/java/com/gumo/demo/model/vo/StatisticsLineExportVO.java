@@ -1,4 +1,4 @@
-package com.gumo.demo.dto.vo;
+package com.gumo.demo.model.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;

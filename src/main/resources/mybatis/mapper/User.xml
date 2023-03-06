@@ -11,12 +11,12 @@
     </resultMap>
 
     <!--实际工作不建议用 *，left join 为空时 存在数据问题 -->
-    <resultMap id="GroupResultMap" type="com.gumo.demo.dto.vo.UserDeviceVO">
+    <resultMap id="GroupResultMap" type="com.gumo.demo.model.vo.UserDeviceVO">
         <id column="id" property="id" />
         <result column="userName" property="userName" />
         <result column="passWord" property="passWord" />
         <result column="realName" property="realName" />
-        <collection property="deviceIds" ofType="com.gumo.demo.dto.vo.DeviceIdVO" columnPrefix="md_">
+        <collection property="deviceIds" ofType="com.gumo.demo.model.vo.DeviceIdVO" columnPrefix="md_">
             <result column="device_id" property="id"/>
             <result column="device_name" property="name"/>
         </collection>
@@ -34,7 +34,7 @@
         id, userName, passWord, realName
     </sql>
 
-    <select id="queryUserList" resultType="com.gumo.demo.dto.vo.UserVO">
+    <select id="queryUserList" resultType="com.gumo.demo.model.vo.UserVO">
         select * from user
     </select>
 

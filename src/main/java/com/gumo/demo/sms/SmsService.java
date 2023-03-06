@@ -1,8 +1,8 @@
 package com.gumo.demo.sms;
 
 
-import com.gumo.demo.dto.vo.BaseDataRespVo;
-import com.gumo.demo.dto.vo.BuilderSendSmsVo;
+import com.gumo.demo.model.vo.BaseDataRespVo;
+import com.gumo.demo.model.vo.BuilderSendSmsVo;
 
 public interface SmsService{
     String getName();

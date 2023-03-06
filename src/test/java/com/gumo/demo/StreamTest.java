@@ -61,6 +61,13 @@ public class StreamTest {
         //降序取前三
         List<User> reversed = list.stream().sorted(Comparator.comparing(User::getId).reversed()).limit(3).collect(Collectors.toList());
 
+        //3.组合,按最新时间排序切割返回
+        List<User> retData = Stream.of(sorted, reversed, list)
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(User::getId).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+
         // stream group 分组校对
         Map<String, List<User>> collectMap = list.stream().collect(Collectors.groupingBy(User::getUserName, Collectors.toList()));
 

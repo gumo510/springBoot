@@ -1,4 +1,4 @@
-package com.gumo.demo.dto.vo;
+package com.gumo.demo.model.dto;
 
 
 import io.jsonwebtoken.Claims;

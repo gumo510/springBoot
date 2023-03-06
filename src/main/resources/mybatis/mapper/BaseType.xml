@@ -30,7 +30,7 @@
         where is_delete = 0
     </select>
 
-    <select id="selectLineCorridorTravelTime" resultType="com.gumo.demo.dto.vo.CorridorTravelTimeVO">
+    <select id="selectLineCorridorTravelTime" resultType="com.gumo.demo.model.vo.CorridorTravelTimeVO">
         SELECT
         elt(
         INTERVAL (travel_time,0, 10, 20,30, 40, 50, 60),

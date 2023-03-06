@@ -1,7 +1,7 @@
 package com.gumo.demo.sms.impl;
 
-import com.gumo.demo.dto.vo.BaseDataRespVo;
-import com.gumo.demo.dto.vo.BuilderSendSmsVo;
+import com.gumo.demo.model.vo.BaseDataRespVo;
+import com.gumo.demo.model.vo.BuilderSendSmsVo;
 import com.gumo.demo.enums.CommonResultCodeEnum;
 import com.gumo.demo.enums.SmsPlatfromEnum;
 import com.gumo.demo.sms.SmsService;

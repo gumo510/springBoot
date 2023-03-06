@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.gumo.demo.constants.RedisConstants;
-import com.gumo.demo.dto.vo.BusTypeCrowedVO;
+import com.gumo.demo.model.vo.BusTypeCrowedVO;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.enums.ColorCrowedEnum;
 import com.gumo.demo.mapper.BaseTypeMapper;

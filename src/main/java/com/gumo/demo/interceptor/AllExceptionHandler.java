@@ -1,10 +1,8 @@
 package com.gumo.demo.interceptor;
 
-import com.gumo.demo.dto.vo.BaseDataRespVo;
+import com.gumo.demo.model.vo.BaseDataRespVo;
 import com.gumo.demo.enums.CommonResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

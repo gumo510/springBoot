@@ -23,7 +23,7 @@ import java.util.concurrent.*;
  */
 @Slf4j
 @Component
-public class SyncOfflineTime {
+public class SyncOfflineTimeJob {
 
     @Autowired
     private RedisTemplate redisTemplate;

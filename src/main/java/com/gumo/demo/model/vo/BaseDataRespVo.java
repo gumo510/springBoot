@@ -1,4 +1,4 @@
-package com.gumo.demo.dto.vo;
+package com.gumo.demo.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

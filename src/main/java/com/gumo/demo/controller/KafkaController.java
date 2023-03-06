@@ -1,6 +1,6 @@
 package com.gumo.demo.controller;
 
-import com.gumo.demo.dto.vo.CommonResult;
+import com.gumo.demo.model.dto.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;

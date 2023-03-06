@@ -1,13 +1,12 @@
 package com.gumo.demo.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.gumo.demo.dto.vo.CorridorTravelTimeVO;
-import com.gumo.demo.dto.vo.StatisticsReq;
+import com.gumo.demo.model.vo.CorridorTravelTimeVO;
+import com.gumo.demo.model.req.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

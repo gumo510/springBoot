@@ -1,6 +1,6 @@
 package com.gumo.demo.utils;
 
-import com.gumo.demo.dto.vo.CheckResult;
+import com.gumo.demo.model.dto.CheckResult;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import io.jsonwebtoken.*;
 

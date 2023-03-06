@@ -1,6 +1,6 @@
 package com.gumo.demo.enums;
 
-import com.gumo.demo.dto.vo.IErrorCode;
+import com.gumo.demo.model.dto.IErrorCode;
 
 /**
  * 枚举了一些常用API操作码
