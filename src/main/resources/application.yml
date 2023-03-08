@@ -12,7 +12,7 @@ spring:
     # Redis服务器连接端口
     port: 6379
     # Redis服务器地址
-    host: 192.168.12.59
+    host: 192.168.14.54
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器连接密码（默认为空）
@@ -28,7 +28,7 @@ spring:
     # 连接超时时间（毫秒）
     timeout: 5000ms
   kafka:
-    bootstrap-servers: 192.168.13.59:31090  # kafka服务地址:1:端口,kafka服务地址2:端口,kafka服务地址3:端口
+    bootstrap-servers: 192.168.14.54:9092  # kafka服务地址:1:端口,kafka服务地址2:端口,kafka服务地址3:端口
     producer:
       # 写入失败时，重试次数。当leader节点失效，一个repli节点会替代成为leader节点，此时可能出现写入失败，
       # 当retris为0时，produce不会重复。retirs重发，此时repli节点完全成为leader节点，不会产生消息丢失。
@@ -55,8 +55,8 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   datasource:
 #    username: root
-#    password: introcks1234
-#    url: jdbc:mysql://192.168.13.77:32000/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    password: 123456
+#    url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
 #    driver-class-name: com.mysql.jdbc.Driver
 #   多数据源
     dynamic:
@@ -65,13 +65,13 @@ spring:
       datasource:
         master:
             username: root
-            password: 123456
-            url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+            password: introcks1234
+            url: jdbc:mysql://192.168.14.54:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
 #            driver-class-name: com.mysql.cj.jdbc.Driver
         test:
             username: root
-            password: 123456
-            url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false
+            password: introcks1234
+            url: jdbc:mysql://192.168.14.54:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
 #            driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     # 163 邮箱

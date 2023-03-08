@@ -47,7 +47,7 @@ public class BusTypeCache {
         this.redisTemplate = redisTemplate;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         log.info("init postConstruct start...");
         Map<String, String> carTypeMap = baseTypeMapper.selectBaseBusTypes().stream().filter(carType -> Objects.nonNull(carType.getTypeName())).collect(Collectors.toMap(BaseType::getTypeName, JSON::toJSONString));

@@ -1,19 +1,13 @@
 package com.gumo.demo.controller;
 
 
-import com.gumo.demo.entity.User;
-import com.gumo.demo.enums.CommonResultCodeEnum;
 import com.gumo.demo.model.vo.BaseDataRespVo;
-import com.gumo.demo.service.IUserService;
 import com.gumo.demo.service.IWeChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * <p>

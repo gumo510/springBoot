@@ -33,15 +33,15 @@ import javax.net.ssl.SSLContext;
 @Slf4j
 public class ElasticSearchConfig {
 
-    @Value("${elasticsearch.scheme:http}")
+    @Value("${elasticsearch.scheme:https}")       //http
     private String scheme;
-    @Value("${elasticsearch.host:127.0.0.1}")  //192.168.13.31
+    @Value("${elasticsearch.host:192.168.2.11}")  //127.0.0.1
     private String host;
-    @Value("${elasticsearch.port:9200}")
+    @Value("${elasticsearch.port:30002}")         //9200
     private Integer port;
-    @Value("${elasticsearch.username:elastic}")
+    @Value("${elasticsearch.username:intellif}")  //elastic
     private String username;
-    @Value("${elasticsearch.password:introcks1234}")
+    @Value("${elasticsearch.password:Intellifusion@01}") //introcks1234
     private String password;
 
     @Value("${elasticsearch.maxRetryTimeoutMillis:60000}")
