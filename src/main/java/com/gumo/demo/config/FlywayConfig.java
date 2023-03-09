@@ -15,7 +15,7 @@ public class FlywayConfig {
         this.dataSource = dataSource;
     }
 
-//    @PostConstruct
+    @PostConstruct
     public void migrate() {
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)

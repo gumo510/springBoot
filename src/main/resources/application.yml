@@ -130,14 +130,6 @@ springfox:
 #  原因： 这是因为Springfox使用的路径匹配是基于AntPathMatcher的，而Spring Boot 2.6.X使用的是PathPatternMatcher。
 #  解决：在application.properties里配置：spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER。
 
-# rabbitmq 配置
-rabbitmq:
-  mqtt:
-    url: tcp://localhost:1883
-    username: guest
-    password: guest
-    defaultTopic: testTopic
-
 # 分布式文件系统fastdfs配置
 fdfs:
   # socket连接超时时长

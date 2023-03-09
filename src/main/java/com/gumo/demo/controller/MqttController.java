@@ -1,13 +1,12 @@
 package com.gumo.demo.controller;
 
-import com.gumo.demo.config.MqttGateway;
 import com.gumo.demo.model.dto.CommonResult;
+import com.gumo.demo.mqtt.MqttMessageListener;
+import com.gumo.demo.mqtt.MqttTemplate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * MQTT测试接口
@@ -19,19 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class MqttController {
 
     @Autowired
-    private MqttGateway mqttGateway;
+    private MqttTemplate mqttTemplate;
 
-    @PostMapping("/sendToDefaultTopic")
-    @ApiOperation("向默认主题发送消息")
-    public CommonResult sendToDefaultTopic(String payload) {
-        mqttGateway.sendToMqtt(payload);
+    @PostMapping("/listener")
+    @ApiOperation("MQTT订阅主题")
+    public CommonResult listener(@RequestParam(value = "clientId", required = false, defaultValue = "ClientId_local") String clientId,
+                                 @RequestParam(value = "topic", required = false, defaultValue = "test") String topic) {
+        mqttTemplate.subscribe(clientId, topic, new MqttMessageListener());
         return CommonResult.success(null);
     }
 
-    @PostMapping("/sendToTopic")
-    @ApiOperation("向指定主题发送消息")
-    public CommonResult sendToTopic(String payload, String topic) {
-        mqttGateway.sendToMqtt(payload, topic);
+    @PostMapping("/send")
+    @ApiOperation("MQTT发送消息")
+    public CommonResult send(@RequestParam(value = "clientId", required = false, defaultValue = "ClientId_local") String clientId,
+                             @RequestParam(value = "topic", required = false, defaultValue = "test") String topic,
+                             @RequestBody Object data) {
+        mqttTemplate.send(clientId, topic, data);
         return CommonResult.success(null);
     }
 }

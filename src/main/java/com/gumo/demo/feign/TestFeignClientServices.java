@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TestFeignClientServices {
 
     @RequestMapping(value = "/test/get", method = RequestMethod.POST)
-    public String get(@RequestParam String name);
+    String get(@RequestParam String name);
 
     @GetMapping("/testFegin")
-    public String testPutStringToMq(@RequestParam (value = "id") String id);
+    String testPutStringToMq(@RequestParam (value = "id") String id);
 
 }

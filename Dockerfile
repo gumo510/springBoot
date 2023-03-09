@@ -7,8 +7,8 @@ LABEL author="gumo"
 VOLUME /tmp
 # 向基础镜像内添加文件，并重命名为`docker_boot.jar`
 add target/demo-0.0.1-SNAPSHOT.jar docker_boot.jar
-# 执行前置脚本。据说是修改文件时间？不太明白具体作用，望有大佬指点迷津！
-RUN bash -c 'touch /docker_boot.jar'
+# 保持和宿主机时间一致
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 最终执行脚本
 ENTRYPOINT ["java", "-jar", "/docker_boot.jar"]
 # 暴露端口
