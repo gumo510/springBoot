@@ -117,25 +117,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.45</version>
         </dependency>
-        <!-- swagger2 api自动生成工具 -->
-        <!-- 统一指定依赖的guava，否则swagger会导致项目报错 https://github.com/springfox/springfox/issues/2581-->
-<!--        <dependency>-->
-<!--            <groupId>com.google.guava</groupId>-->
-<!--            <artifactId>guava</artifactId>-->
-<!--            <version>20.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger2</artifactId>-->
-<!--            <version>2.9.2</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger-ui</artifactId>-->
-<!--            <version>2.9.2</version>-->
-<!--        </dependency>-->
-        <!-- swagger2 end -->
-
         <!--springfox swagger官方Starter-->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -186,17 +167,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-        <!-- Elasticsearch Client -->
-<!--        <dependency>-->
-<!--            <groupId>org.elasticsearch.client</groupId>-->
-<!--            <artifactId>elasticsearch-rest-high-level-client</artifactId>-->
-<!--            <version>7.9.2</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.elasticsearch</groupId>-->
-<!--            <artifactId>elasticsearch</artifactId>-->
-<!--            <version>7.9.2</version>-->
-<!--        </dependency>-->
         <!--获取所有添加@Document注解的实体类-->
         <dependency>
             <groupId>org.reflections</groupId>
@@ -279,10 +249,6 @@
             <artifactId>apollo-client</artifactId>
             <version>1.3.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>

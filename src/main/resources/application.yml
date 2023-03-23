@@ -65,13 +65,13 @@ spring:
       datasource:
         master:
             username: root
-            password: introcks1234
-            url: jdbc:mysql://192.168.14.54:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
+            password: 123456
+            url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
 #            driver-class-name: com.mysql.cj.jdbc.Driver
         test:
             username: root
-            password: introcks1234
-            url: jdbc:mysql://192.168.14.54:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
+            password: 123456
+            url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
 #            driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     # 163 邮箱

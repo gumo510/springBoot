@@ -2,6 +2,7 @@ package com.gumo.demo;
 
 import cn.hutool.core.collection.ListUtil;
 import com.alibaba.fastjson.JSON;
+import com.gumo.demo.cache.CarTypeCache;
 import com.gumo.demo.entity.Menu;
 import com.gumo.demo.entity.User;
 import org.junit.jupiter.api.Test;
@@ -89,6 +90,18 @@ public class StreamTest {
         // 过滤两个list 差值
         List<User> users = list.stream().filter(a -> !collect.stream().map(User::getUserName).collect(Collectors.toList()).contains(a.getUserName())).collect(Collectors.toList());
 
+        // 对缺失值建模
+        //String strNull = Optional.ofNullable(req.getEndDate()).orElse("");
+
+        List<String> items = Arrays.asList("北京 天安门", "上海 东方明珠", "厦门 鼓浪屿");
+        //flatMap方法 (flatMap需要一个处理嵌套列表的函数，然后将结果串连起来。)
+        items.stream().flatMap(item -> Stream.of(item.split(" "))).forEach(System.out::println);
+        //结果： 北京 天安门 上海 东方明珠 厦门 鼓浪屿
+        // Map方法   (map对列表中的每个元素应用一个函数，返回应用后的元素所组成的列表。)
+        items.stream().map(item -> Arrays.stream(item.split(" "))).collect(Collectors.toList()).forEach(System.out::println);
+        //java.util.stream.ReferencePipeline$Head@ffaa6af
+        //java.util.stream.ReferencePipeline$Head@53ce1329
+        //java.util.stream.ReferencePipeline$Head@316bcf94
     }
 
     @Test

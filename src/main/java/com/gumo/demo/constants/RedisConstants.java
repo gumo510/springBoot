@@ -19,4 +19,6 @@ public class RedisConstants {
      */
     public final static String CAMERA_SDC_TOKEN = "sdcToken";
 
+    public static final String CLEAR_USELESS_TYPE = "clear_useless_type:";
+
 }

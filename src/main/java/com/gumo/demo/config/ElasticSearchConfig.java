@@ -29,7 +29,6 @@ import javax.net.ssl.SSLContext;
  */
 @Data
 @Configuration
-//@ConfigurationProperties(prefix = "elasticsearch")
 @Slf4j
 public class ElasticSearchConfig {
 

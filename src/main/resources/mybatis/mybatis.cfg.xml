@@ -5,7 +5,7 @@
 <configuration>
     <!-- 进行Mybatis的相应的环境的属性定义 -->
     <settings>    <!-- 在本项目之中开启二级缓存 -->
-        <setting name="cacheEnabled" value="true"/>
+        <setting name="cacheEnabled" value="true"/>UserDeviceVO
         <setting name="logImpl" value="LOG4J2"/>
         <!-- 设置打印sql语句。注释掉就不打印 -->
         <setting name="logImpl" value="STDOUT_LOGGING" />

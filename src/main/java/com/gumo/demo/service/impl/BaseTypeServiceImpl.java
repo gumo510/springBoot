@@ -1,21 +1,28 @@
 package com.gumo.demo.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ListUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gumo.demo.constants.RedisConstants;
+import com.gumo.demo.enums.PassAuthPersonTypeEnum;
 import com.gumo.demo.model.vo.CorridorTravelTimeVO;
 import com.gumo.demo.model.req.StatisticsReq;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.mapper.BaseTypeMapper;
+import com.gumo.demo.model.vo.PassAuthPersonDeviceVO;
 import com.gumo.demo.service.IBaseTypeService;
 import com.gumo.demo.utils.CommonUtil;
 import com.gumo.demo.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
@@ -45,6 +52,48 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
 
     @Value("${travelTime.cache.timeout:12}")
     private Integer redisCacheTimeout;
+
+    @Value("${person.auth.clear.useless.max.number:100000}")
+    public Integer clearUselessMaxNumber;
+
+    @Value("${person.auth.clear.useless.size:1000}")
+    public Integer clearUselessSize;
+
+    private static Integer corePoolSize;
+
+    private static Integer maxPoolSize;
+
+    private static Integer queueSize;
+
+    private static ThreadPoolTaskExecutor executor;
+
+    @Value("${wechat.send.pool.core:2}")
+    public void setCorePoolSize(Integer corePoolSize) {
+        BaseTypeServiceImpl.corePoolSize = corePoolSize;
+    }
+
+    @Value("${wechat.send.pool.max:8}")
+    public void setMaxPoolSize(Integer maxPoolSize) {
+        BaseTypeServiceImpl.maxPoolSize = maxPoolSize;
+    }
+
+    @Value("${wechat.send.pool.queue:1000}")
+    public void setQueueSize(Integer queueSize) {
+        BaseTypeServiceImpl.queueSize = queueSize;
+    }
+
+    @PostConstruct
+    public void init() {
+        executor = new ThreadPoolTaskExecutor();
+        //如果池中的实际线程数小于corePoolSize,无论是否其中有空闲的线程，都会给新的任务产生新的线程
+        executor.setCorePoolSize(corePoolSize);
+        executor.setMaxPoolSize(maxPoolSize);
+        //queueCapacity 线程池所使用的缓冲队列
+        executor.setQueueCapacity(queueSize);
+        // 设置默认线程名称
+        executor.setThreadNamePrefix("Wechat-Message-Push-");
+        executor.initialize();
+    }
 
     @Override
     public List<CorridorTravelTimeVO> getLineCorridorTravelTime(StatisticsReq req) {
@@ -146,4 +195,54 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
         return null;
     }*/
 
+    /**
+     * 清理大表数据
+     * @param
+     * @return
+     */
+    public void clearUselessPersonAuthority() {
+        log.info("clearUselessPersonAuthority_start... ");
+        long start = System.currentTimeMillis();
+        PassAuthPersonDeviceVO authPersonType1 = PassAuthPersonDeviceVO.builder().pageSize(clearUselessSize).status(0).type(1).authorizationType(1).personType(2).build();
+        PassAuthPersonDeviceVO authPersonType2 = PassAuthPersonDeviceVO.builder().pageSize(clearUselessSize).status(0).type(2).build();
+        PassAuthPersonDeviceVO authPersonType3 = PassAuthPersonDeviceVO.builder().pageSize(clearUselessSize).status(0).type(3).build();
+        //
+        CompletableFuture<Integer> CompletableFuture1 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType1), executor);
+        CompletableFuture<Integer> CompletableFuture2 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType2), executor);
+        CompletableFuture<Integer> CompletableFuture3 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType3), executor);
+        CompletableFuture.allOf(CompletableFuture1, CompletableFuture2, CompletableFuture3).join();
+        log.info("clearUselessPersonAuthority_end 耗时{}", System.currentTimeMillis() - start);
+    }
+
+    private Integer syncClearUselessPersonAuth(PassAuthPersonDeviceVO authPersonVo) {
+        Integer clearMaxNum = 0;
+        long midStart = System.currentTimeMillis();
+        try {
+            //1.查询缓存偏移量
+            String value = redisTemplate.opsForValue().get(RedisConstants.CLEAR_USELESS_TYPE + authPersonVo.getType());
+            Long offset = StringUtils.isEmpty(value) ? 0L :Long.valueOf(value);
+            while (clearMaxNum < clearUselessMaxNumber) {
+                //2.查询无用数据
+                authPersonVo.setOffset(offset);
+                List<Long> ids = new ArrayList<>();  //authorityMapper.selectUselessPersonAuth(authPersonVo);
+                if (CollectionUtil.isEmpty(ids)) {
+                    redisTemplate.opsForValue().set(RedisConstants.CLEAR_USELESS_TYPE + authPersonVo.getType(), String.valueOf(0));
+                    log.info("clearUselessPersonAuthority 记录类型{} 清理完成", PassAuthPersonTypeEnum.getName(authPersonVo.getType()));
+                    break;
+                }
+                //3.清理数据
+                List<List<Long>> partition = ListUtil.partition(ids, 500);
+                partition.parallelStream().forEach(data ->{
+//                    authorityMapper.deleteAuthByIds(ids);
+                });
+                clearMaxNum += ids.size();
+                offset = Collections.max(ids);
+                log.info("clearUselessPersonAuthority 记录类型{} 已清理{}条, taskTime:{}ms", PassAuthPersonTypeEnum.getName(authPersonVo.getType()), clearMaxNum, System.currentTimeMillis() - midStart);
+            }
+            redisTemplate.opsForValue().set(RedisConstants.CLEAR_USELESS_TYPE + authPersonVo.getType(), String.valueOf(offset));
+        } catch (Exception e) {
+            log.error("clearUselessPersonAuthority_error 记录类型{} 清理异常： {}", PassAuthPersonTypeEnum.getName(authPersonVo.getType()), e.getMessage());
+        }
+        return clearMaxNum;
+    }
 }
