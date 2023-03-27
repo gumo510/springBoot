@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AddressResolutionUtil {
+public class AddressUtil {
     /**
      * 解析地址
      *

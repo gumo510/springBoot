@@ -1,10 +1,5 @@
 package com.gumo.demo.utils;
 
-import com.alibaba.fastjson.JSONObject;
-import com.gumo.demo.config.WeChatConfigure;
-import com.gumo.demo.model.dto.Weather;
-import org.springframework.web.client.RestTemplate;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

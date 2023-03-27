@@ -1,16 +1,15 @@
-package com.gumo.demo.entity;
+package com.gumo.demo.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.listener.PageReadListener;
+import com.gumo.demo.entity.ExcelEntity;
+import com.gumo.demo.service.IUploadFileService;
+import com.gumo.demo.utils.ExcelUtil;
 import com.gumo.demo.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.entity.ContentType;
-//import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -19,36 +18,35 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/file")
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author gumo
+ * @since 2021-10-28
+ */
+@Service
 @Slf4j
-public class UnLoadFileZip {
+public class UploadFileServiceImpl implements IUploadFileService {
 
-    /**
-     * 这个deomo入参的类型是MultipartFile，很多网上的例子是File类型
-     * @param file (zip)
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/addPersonsFileOfZip")
-    public String addPersonsFileOfZip(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
 
-        //原则上这个uploadZipFilesAndParse方法需要写到service和serviceImpl中
-        String result = uploadZipFilesAndParse(file);
-        return  result;
+    @Override
+    public String uploadExcel(MultipartFile file) throws Exception {
+        List<ExcelEntity> excelEntities = ExcelUtil.readExcel2Bean(file.getInputStream(), ExcelEntity.class);
+        return null;
     }
 
     /**
-     *解压压缩包zip
+     *  解压压缩包zip
      */
-    public static String uploadZipFilesAndParse(MultipartFile file) throws Exception {
+    @Override
+    public String uploadZipFilesAndParse(MultipartFile file) throws Exception {
         String filename = file.getOriginalFilename();
         String fileType = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase(Locale.US);
         String uuid = UUID.randomUUID().toString();
         //判断文件是不是zip类型
         if("zip".equals(fileType)){
-
             String dir = System.getProperty("user.dir");
             String desPath = "D:/test" + File.separator + uuid.replaceAll("-", "");
             //下面这三行的代码就是把上传文件copy到服务器，一定不要遗漏了。
@@ -58,7 +56,7 @@ public class UnLoadFileZip {
             file.transferTo(savefile);
 
             FileUtils fileUtil = new FileUtils();
-            //解压zip文件，我是写在公共类里面，FileUtil类代码评论区见
+            //解压zip文件
             FileUtils.unZip(file, desPath, savePath);
             List<File> fileList = new ArrayList<>();
             fileList = fileUtil.getSubFiles(desPath,fileList);
@@ -75,10 +73,21 @@ public class UnLoadFileZip {
                     }
                 }
             }
-            //最后要删除文件，删除文件的方法见评论区FileUtil类
+            //最后要删除文件
             FileUtils.clearFiles(desPath);
 
         }
         return uuid;
+    }
+
+    public static void main(String[] args) {
+        String dir = System.getProperty("user.dir");
+        String excelPath = dir+ File.separator+"/doc/推送省药监.xls";
+        try {
+            List<ExcelEntity> excelEntities = ExcelUtil.readExcel2Bean(new FileInputStream(new File(excelPath)), ExcelEntity.class);
+            System.out.println(">>>>>oooooo");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

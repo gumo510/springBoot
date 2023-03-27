@@ -1,6 +1,5 @@
-package com.gumo.demo.utils;
+package com.gumo.demo;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
@@ -13,7 +12,6 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.XmlUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HttpUtil;
@@ -21,14 +19,11 @@ import cn.hutool.http.webservice.SoapClient;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.gumo.demo.controller.SwaggerController;
 import com.gumo.demo.entity.User;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
@@ -44,7 +39,8 @@ public class AllHutoolTests {
     /**
      * Convert 类型转换工具类，用于各种类型数据的转换
      */
-    public static void convert(){
+    @Test
+    public void convert() {
         //转换为字符串
         int a = 1;
         String aStr = Convert.toStr(a);
@@ -63,7 +59,8 @@ public class AllHutoolTests {
      * DateUtil 日期时间工具类，定义了一些常用的日期时间操作方法。
      * JDK自带的Date和Calendar对象真心不好用，有了它操作日期时间就简单多了！
      */
-    public static void dateUtil(){
+    @Test
+    public void dateUtil() {
         //Date、long、Calendar之间的相互转换
         //当前时间
         Date date = DateUtil.date();
@@ -94,7 +91,8 @@ public class AllHutoolTests {
     /**
      * JSON解析工具类，可用于对象与JSON之间的互相转化。
      */
-    public static void jsonUtil(){
+    @Test
+    public void jsonUtil() {
         User brand = new User();
         brand.setId(1);
         brand.setUserName("gumo");
@@ -131,7 +129,8 @@ public class AllHutoolTests {
     /**
      * StrUtil: 字符串工具类，定义了一些常用的字符串操作方法。StrUtil比StringUtil名称更短，用起来也更方便！
      */
-    public static void strUtil(){
+    @Test
+    public void strUtil() {
         //判断是否为空字符串
         String str = "test";
         StrUtil.isEmpty(str);
@@ -148,7 +147,8 @@ public class AllHutoolTests {
     /**
      * 字段验证器，可以对不同格式的字符串进行验证，比如邮箱、手机号、IP等格式。
      */
-    public static void validator() {
+    @Test
+    public void validator() {
         //判断是否为邮箱地址
         boolean result = Validator.isEmail("macro@qq.com");
         log.info("Validator isEmail:{}", result);
@@ -175,7 +175,8 @@ public class AllHutoolTests {
     /**
      * 摘要算法工具类，支持MD5、SHA-256、Bcrypt等算法。
      */
-    public static void digestUtil() {
+    @Test
+    public void digestUtil() {
         String password = "123456";
         //计算MD5摘要值，并转为16进制字符串
         String result = DigestUtil.md5Hex(password);
@@ -192,7 +193,8 @@ public class AllHutoolTests {
     /**
      * ClassPath单一资源访问类，可以获取classPath下的文件，在Tomcat等容器下，classPath一般是WEB-INF/classes。
      */
-    public static void classPathResource() throws IOException {
+    @Test
+    public void classPathResource() throws IOException {
         //获取定义在src/main/resources文件夹中的配置文件
         ClassPathResource resource = new ClassPathResource("generator.properties");
         Properties properties = new Properties();
@@ -203,7 +205,8 @@ public class AllHutoolTests {
     /**
      * Java反射工具类，可用于反射获取类的方法及创建对象。
      */
-    public static void reflectUtil(){
+    @Test
+    public void reflectUtil() {
         //获取某个类的所有方法
         Method[] methods = ReflectUtil.getMethods(User.class);
         //获取某个类的指定方法
@@ -217,7 +220,8 @@ public class AllHutoolTests {
     /**
      * 数字处理工具类，可用于各种类型数字的加减乘除操作及类型判断。
      */
-    public static void numberUtil(){
+    @Test
+    public void numberUtil() {
         double n1 = 1.234;
         double n2 = 1.234;
         double result;
@@ -238,7 +242,8 @@ public class AllHutoolTests {
     /**
      * JavaBean工具类，可用于Map与JavaBean对象的互相转换以及对象属性的拷贝。
      */
-    public static void beanUtil(){
+    @Test
+    public void beanUtil(){
         User brand = new User();
         brand.setId(1);
         brand.setUserName("gumo");
@@ -258,7 +263,8 @@ public class AllHutoolTests {
     /**
      * 集合操作的工具类，定义了一些常用的集合操作。
      */
-    public static void collUtil(){
+    @Test
+    public void collUtil() {
         //数组转换为列表
         String[] array = new String[]{"a", "b", "c", "d", "e"};
         List<String> list = CollUtil.newArrayList(array);
@@ -278,7 +284,8 @@ public class AllHutoolTests {
     /**
      * Map操作工具类，可用于创建Map对象及判断Map是否为空。
      */
-    public static void mapUtil(){
+    @Test
+    public void mapUtil() {
         //将多个键值对加入到Map中
         Map<Object, Object> map = MapUtil.of(new String[][]{
                 {"key1", "value1"},
@@ -291,23 +298,10 @@ public class AllHutoolTests {
     }
 
     /**
-     * 注解工具类，可用于获取注解与注解中指定的值。
-     */
-    public static void annotationUtil(){
-        //获取指定类、方法、字段、构造器上的注解列表
-        Annotation[] annotationList = AnnotationUtil.getAnnotations(SwaggerController.class, false);
-        log.info("annotationUtil annotations:{}", annotationList);
-        //获取指定类型注解
-        Api api = AnnotationUtil.getAnnotation(SwaggerController.class, Api.class);
-        log.info("annotationUtil api value:{}", api.description());
-        //获取指定类型注解的值
-        Object annotationValue = AnnotationUtil.getAnnotationValue(SwaggerController.class, RequestMapping.class);
-    }
-
-    /**
      * 加密解密工具类，可用于MD5加密。
      */
-    public static void secureUtil(){
+    @Test
+    public void secureUtil() {
         //MD5加密
         String str = "123456";
         String md5Str = SecureUtil.md5(str);
@@ -317,13 +311,14 @@ public class AllHutoolTests {
     /**
      * Http请求工具类，可以发起GET/POST等请求。
      */
-    public void httpUtil(){
+    @Test
+    public void httpUtil() {
         String response = HttpUtil.get("http://localhost:8080/hutool/covert");
         log.info("HttpUtil get:{}", response);
     }
 
-    public static void main(String[] args) {
-
+    @Test
+    public void xmlUtil() {
         JSONObject put = JSONUtil.createObj()
                 .set("aaa", "你好")
                 .set("键2", "test");

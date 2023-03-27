@@ -1,12 +1,10 @@
 package com.gumo.demo.utils;
 
 import org.apache.http.entity.ContentType;
-//import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.mock.web.MockMultipartFile;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 
@@ -49,8 +47,8 @@ public class FileUtil {
         try {
             byte[] faceBytes = Base64Utils.decodeFromString(base64Str);
             InputStream inputStream = new ByteArrayInputStream(faceBytes);
-//            MultipartFile multipartFile = new MockMultipartFile(ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
-            return null;
+            MultipartFile multipartFile = new MockMultipartFile(ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
+            return multipartFile;
         } catch (Exception e) {
             e.printStackTrace();
         }

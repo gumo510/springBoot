@@ -6,14 +6,22 @@ import com.google.common.collect.Maps;
 import com.gumo.demo.constants.DoorConst;
 import com.gumo.demo.model.req.UserReq;
 import com.gumo.demo.utils.ExcelUtil;
+import com.gumo.demo.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -40,7 +48,7 @@ public class HttpTemplateTest {
         paramMap.put("phone","手机号");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-//        buildHeaders(headers);
+        buildHeaders(headers);
         HttpEntity<String> request = new HttpEntity(JSONObject.toJSONString(paramMap), headers);
         log.info("url:{},params:{}",url, JSONObject.toJSONString(paramMap));
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, request, String.class);
@@ -69,6 +77,26 @@ public class HttpTemplateTest {
             if (jsonObject != null && jsonObject.getInteger("code") != null && 10000 == jsonObject.getInteger("code")) {
                 String string = jsonObject.getJSONObject("data").getString("access_token");
             }
+        }
+    }
+
+    @Test
+    public void postFile(String base64Str){
+        try {
+            byte[] faceBytes = Base64Utils.decodeFromString(base64Str);
+            InputStream inputStream = new ByteArrayInputStream(faceBytes);
+            MultipartFile multipartFile = new MockMultipartFile(ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
+
+            Map<String,String> headerMap = new HashMap();
+            headerMap.put("token", token);
+            Map<String, String> otherParams = new HashMap();
+            otherParams.put("type","0");
+            String result = HttpUtil.postResultMultipartFile(url, multipartFile, headerMap, otherParams);
+            log.info("IsolatedWorkPersonServiceImpl_postFile, result = {}",  result);
+            JSONObject response = JSONObject.parseObject(result);
+        } catch (Exception e) {
+            log.error("IsolatedWorkPersonServiceImpl_postFile, error = {}", e);
+            e.printStackTrace();
         }
     }
 

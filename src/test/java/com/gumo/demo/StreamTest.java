@@ -2,7 +2,10 @@ package com.gumo.demo;
 
 import cn.hutool.core.collection.ListUtil;
 import com.alibaba.fastjson.JSON;
-import com.gumo.demo.cache.CarTypeCache;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.gumo.demo.entity.Menu;
 import com.gumo.demo.entity.User;
 import org.junit.jupiter.api.Test;
@@ -13,12 +16,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamTest {
 
     private List<User> list;
 
-    public static void main(String[] args) {
+    @Test
+    public void test0() {
 
         List<User> userList = new ArrayList<>();
         userList.add(new User(1,"古默", "12", "gumo"));
@@ -50,6 +55,11 @@ public class StreamTest {
         // 过滤转大写
         List<String> upperCase = strList.stream().filter(s -> s.length() > 3).map(s -> s.toUpperCase()).collect(Collectors.toList());
 
+        // 字符串转数组
+        List<Integer> typeList = Arrays.stream("1,2,3".split(",")).map(Integer::valueOf).collect(Collectors.toList());
+        List<String> joinList = Lists.newArrayList(Splitter.on(",").split("1,2,3"));
+        String join = Joiner.on(",").join(typeList);
+
         // 属性去重数量
         Long sourceIdNum = list.stream().mapToLong(User::getId).distinct().count();
 
@@ -80,6 +90,14 @@ public class StreamTest {
 
         // 循环Map 获取Value Set
         List<List<User>> listList = collectMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+
+        // 计算数组最大 最小值
+        List<Integer> listInt = Arrays.asList(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
+        Integer max = listInt.stream().filter(e -> e != null).max(Comparator.naturalOrder()).orElse(null);
+        Integer min = listInt.stream().filter(e -> e != null).min(Comparator.naturalOrder()).orElse(null);
+
+        // 首先过滤属性不为空的,将需要比较的值转出map然后去重,最后取出最大值/最小值
+        userList.stream().filter(o -> o.getSalary() != null).map(User::getSalary).distinct().max((e1, e2) -> e1.compareTo(e2)).get();
 
         // 分组 每组最小值设置标签
         listList.stream().forEach(ls -> ls.stream().min(Comparator.comparing(User::getPassWord)).get().setUserName("最小值"));

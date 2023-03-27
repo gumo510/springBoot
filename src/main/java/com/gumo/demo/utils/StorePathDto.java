@@ -2,11 +2,13 @@ package com.gumo.demo.utils;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.exception.FdfsUnsupportStorePathException;
+import lombok.Data;
 import org.apache.commons.lang3.Validate;
 
 /**
  * @author Zac
  */
+@Data
 public class StorePathDto extends StorePath {
 
     /** 解析路径 */
@@ -20,35 +22,9 @@ public class StorePathDto extends StorePath {
      */
     private static final String SPLIT_IFSTORE_NAME = "ifstore";
 
-
     private Long currByte;
     private Integer currChunk;
     private Integer totalChunks;
-
-    public Integer getTotalChunks() {
-        return totalChunks;
-    }
-
-    public void setTotalChunks(Integer totalChunks) {
-        this.totalChunks = totalChunks;
-    }
-
-    public Integer getCurrChunk() {
-        return currChunk;
-    }
-
-    public void setCurrChunk(Integer currChunk) {
-        this.currChunk = currChunk;
-    }
-
-    public Long getCurrByte() {
-        return currByte;
-    }
-
-    public void setCurrByte(Long currByte) {
-        this.currByte = currByte;
-    }
-
 
     /**
      * 从Url当中解析存储路径对象
