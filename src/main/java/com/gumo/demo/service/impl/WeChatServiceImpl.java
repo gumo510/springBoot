@@ -71,9 +71,9 @@ public class WeChatServiceImpl implements IWeChatService {
         if(DataUtils.getBirthDays(weChatConfigure.Love_Day) == 0){
             remark = "今天是恋爱周年纪念日！永远爱你~";
         }else if(girl_birthday == 0){
-            remark = "今天是xx宝贝的生日！生日快乐哟~";
+            remark = "今天是婉婉宝贝的生日！生日快乐哟~";
         }else if(boy_birthday == 0){
-            remark = "今天是xx的生日！别忘了好好爱他~";
+            remark = "今天是主人的生日！别忘了好好爱他~";
         }
         resultVo.setAttribute("remark",new DataItem(remark,"#FF1493"));
         //5.发送请求，推送消息

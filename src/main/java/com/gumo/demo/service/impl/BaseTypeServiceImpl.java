@@ -207,10 +207,27 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
         PassAuthPersonDeviceVO authPersonType2 = PassAuthPersonDeviceVO.builder().pageSize(clearUselessSize).status(0).type(2).build();
         PassAuthPersonDeviceVO authPersonType3 = PassAuthPersonDeviceVO.builder().pageSize(clearUselessSize).status(0).type(3).build();
         //
-        CompletableFuture<Integer> CompletableFuture1 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType1), executor);
-        CompletableFuture<Integer> CompletableFuture2 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType2), executor);
-        CompletableFuture<Integer> CompletableFuture3 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType3), executor);
-        CompletableFuture.allOf(CompletableFuture1, CompletableFuture2, CompletableFuture3).join();
+        //配置执行类型
+        List<Integer> typeList = Arrays.stream("1,2,3".split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        List<CompletableFuture<Integer>> CompletableFutureList = new ArrayList<>();
+        for (Integer type : typeList) {
+            if(PassAuthPersonTypeEnum.ADD.getValue().equals(type)){
+                CompletableFuture<Integer> CompletableFuture1 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType1), executor);
+                CompletableFutureList.add(CompletableFuture1);
+            }else if(PassAuthPersonTypeEnum.UPDATE.getValue().equals(type)){
+                CompletableFuture<Integer> CompletableFuture2 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType2), executor);
+                CompletableFutureList.add(CompletableFuture2);
+            }else if(PassAuthPersonTypeEnum.DELETE.getValue().equals(type)){
+                CompletableFuture<Integer> CompletableFuture3 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType3), executor);
+                CompletableFutureList.add(CompletableFuture3);
+            }
+        }
+        CompletableFuture.allOf(CompletableFutureList.toArray(new CompletableFuture[0])).join();
+//        CompletableFuture<Integer> CompletableFuture1 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType1), executor);
+//        CompletableFuture<Integer> CompletableFuture2 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType2), executor);
+//        CompletableFuture<Integer> CompletableFuture3 = CompletableFuture.supplyAsync(() -> syncClearUselessPersonAuth(authPersonType3), executor);
+//        CompletableFuture.allOf(CompletableFuture1, CompletableFuture2, CompletableFuture3).join();
+
         log.info("clearUselessPersonAuthority_end 耗时{}", System.currentTimeMillis() - start);
     }
 
@@ -225,7 +242,7 @@ public class BaseTypeServiceImpl extends ServiceImpl<BaseTypeMapper, BaseType> i
                 //2.查询无用数据
                 authPersonVo.setOffset(offset);
                 List<Long> ids = new ArrayList<>();  //authorityMapper.selectUselessPersonAuth(authPersonVo);
-                if (CollectionUtil.isEmpty(ids)) {
+                if (CollectionUtils.isEmpty(ids)) {
                     redisTemplate.opsForValue().set(RedisConstants.CLEAR_USELESS_TYPE + authPersonVo.getType(), String.valueOf(0));
                     log.info("clearUselessPersonAuthority 记录类型{} 清理完成", PassAuthPersonTypeEnum.getName(authPersonVo.getType()));
                     break;

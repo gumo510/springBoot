@@ -1,13 +1,13 @@
 package com.gumo.demo.utils;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.mock.web.MockMultipartFile;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Base64;
 
+import java.io.*;
+import java.util.Base64;
 /**
  * 文件工具类
  *
@@ -53,6 +53,13 @@ public class FileUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static MultipartFile filePathToMultipartFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", IOUtils.toByteArray(input));
+        return multipartFile;
     }
 
     public static String fileToBase64(MultipartFile file) throws Exception{
