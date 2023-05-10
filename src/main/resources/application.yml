@@ -110,6 +110,16 @@ spring:
       username: elastic # es开启了security的需要添加用户名和账户
       password: elastic # es开启了security的需要添加用户名和账户
 
+  data:
+    mongodb:
+#      uri: mongodb://192.168.12.143:30017/vesionbook
+#      host: 192.168.12.143
+#      port: 30017
+#      database: vesionbook
+      authentication-database: admin
+      username: admin
+      password: intellif
+
 mybatis-plus:
   mapper-locations: classpath:mybatis/mapper/*.xml
 #  config-location: classpath:mybatis/mybatis.cfg.xml
