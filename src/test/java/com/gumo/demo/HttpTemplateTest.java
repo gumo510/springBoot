@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.Base64Utils;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
+@SpringBootTest(classes = DemoApplication.class)
 public class HttpTemplateTest {
 
     @Autowired

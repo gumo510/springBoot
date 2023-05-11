@@ -40,11 +40,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private final HashMap<Long, String> corpMap = Maps.newHashMap();
 
-    @PostConstruct
-    public void initCorpMap() {
+    public AuthorizationServiceImpl(WxworkConfig config) {
         log.info("init initCorpMap start...");
-        corpMap.put(config.getAgentId(), config.getCorpSecret());
-        corpMap.put(config.getVisitorAgentId(), config.getVisitorCorpSecret());
+        String[] strArr = config.getVisitorAgentIdSecretStr().split(";");
+        for (String s : strArr) {
+            String[] keyValue = s.split(",");
+            if(StringUtils.isNotBlank(keyValue[0]) && StringUtils.isNotBlank(keyValue[1])){
+                corpMap.put(Long.valueOf(keyValue[0]), keyValue[1]);
+            }
+        }
     }
 
 

@@ -55,4 +55,10 @@ public class WxworkConfig {
      */
     @Value("${wxwork.visitor.message.linkUrl:https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww029cb29d55b64700&redirect_uri=http%3A%2F%2Fai-campus-sit.vesionbook.com%2Fuser%2Flogin%3Fpage%3Dvisitor&response_type=code&scope=snsapi_privateinfo&state=intellif2023&agentid=1000002#wechat_redirect}")
     private String visitorMessageLinkUrl;
+
+    /**
+     * 应用ID
+     */
+    @Value("${wxwork.visitor.agentId.secret.str:1000004,ZMgYK6rrIzSghIDaKRXy-tDPMXgMIiM2kwHQhHvxXZw;1000002,ezi_J0BWeUBbaO9dLWlWLsB53vL1Tul-aVCTrGODazM}")
+    private String visitorAgentIdSecretStr;
 }

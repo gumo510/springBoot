@@ -3,6 +3,8 @@ package com.gumo.demo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.HashMap;
@@ -10,10 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@SpringBootTest(classes = DemoApplication.class)
 public class RedisTest {
 
-    // 模拟注入
-    private final RedisTemplate<String, String> redisTemplate = new RedisTemplate();
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * https://blog.csdn.net/pengjunlee/article/details/81427894
