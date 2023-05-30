@@ -1,12 +1,14 @@
 package com.gumo.demo;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gumo.demo.cache.BusTypeCache;
 import com.gumo.demo.entity.BaseType;
 import com.gumo.demo.enums.ColorCrowedEnum;
 import com.gumo.demo.mapper.BaseTypeMapper;
+import com.gumo.demo.model.dto.CommonResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
