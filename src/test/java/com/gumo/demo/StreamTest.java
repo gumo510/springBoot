@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.gumo.demo.entity.Menu;
+import com.gumo.demo.model.dto.MenuTest;
 import com.gumo.demo.entity.User;
+import com.gumo.demo.hik.model.resp.HikCameraGetResp;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -111,6 +111,12 @@ public class StreamTest {
         // 对缺失值建模
         //String strNull = Optional.ofNullable(req.getEndDate()).orElse("");
 
+        // 可以使用flatMap()方法获取所有的`DeviceResource`对象，然后将其收集到一个新的List中。
+        List<HikCameraGetResp> respList = new ArrayList<>();
+        List<HikCameraGetResp.DeviceResource> deviceResources = respList.stream()
+                .flatMap(resp -> resp.getList().stream())
+                .collect(Collectors.toList());
+
         List<String> items = Arrays.asList("北京 天安门", "上海 东方明珠", "厦门 鼓浪屿");
         //flatMap方法 (flatMap需要一个处理嵌套列表的函数，然后将结果串连起来。)
         items.stream().flatMap(item -> Stream.of(item.split(" "))).forEach(System.out::println);
@@ -180,23 +186,23 @@ public class StreamTest {
     @Test
     public void test5() {
 
-        List<Menu> menus = Arrays.asList(
-                new Menu(1,"根节点",0),
-                new Menu(2,"子节点1",1),
-                new Menu(3,"子节点1.1",2),
-                new Menu(4,"子节点1.2",2),
-                new Menu(5,"根节点1.3",2),
-                new Menu(6,"根节点2",1),
-                new Menu(7,"根节点2.1",6),
-                new Menu(8,"根节点2.2",6),
-                new Menu(9,"根节点2.2.1",7),
-                new Menu(10,"根节点2.2.2",7),
-                new Menu(11,"根节点3",1),
-                new Menu(12,"根节点3.1",11)
+        List<MenuTest> menus = Arrays.asList(
+                new MenuTest(1,"根节点",0),
+                new MenuTest(2,"子节点1",1),
+                new MenuTest(3,"子节点1.1",2),
+                new MenuTest(4,"子节点1.2",2),
+                new MenuTest(5,"根节点1.3",2),
+                new MenuTest(6,"根节点2",1),
+                new MenuTest(7,"根节点2.1",6),
+                new MenuTest(8,"根节点2.2",6),
+                new MenuTest(9,"根节点2.2.1",7),
+                new MenuTest(10,"根节点2.2.2",7),
+                new MenuTest(11,"根节点3",1),
+                new MenuTest(12,"根节点3.1",11)
         );
 
         //获取父节点
-        List<Menu> collect = menus.stream().filter(m -> m.getParentId() == 0).map(
+        List<MenuTest> collect = menus.stream().filter(m -> m.getParentId() == 0).map(
                 (m) -> {
                     m.setChildList(getChildrens(m, menus));
                     return m;
@@ -212,8 +218,8 @@ public class StreamTest {
      * @param all   所有节点
      * @return 根节点信息
      */
-    private List<Menu> getChildrens(Menu root, List<Menu> all) {
-        List<Menu> children = all.stream().filter(m -> {
+    private List<MenuTest> getChildrens(MenuTest root, List<MenuTest> all) {
+        List<MenuTest> children = all.stream().filter(m -> {
             return Objects.equals(m.getParentId(), root.getId());
         }).map(
                 (m) -> {

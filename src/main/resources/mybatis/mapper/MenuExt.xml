@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.MenuExtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.MenuExt">
+        <id column="id" property="id" />
+        <result column="menu_id" property="menuId" />
+        <result column="menu_name" property="menuName" />
+        <result column="permission_type" property="permissionType" />
+        <result column="menu_url" property="menuUrl" />
+        <result column="remark" property="remark" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, menu_id, menu_name, permission_type, menu_url,remark, type
+    </sql>
+
+</mapper>

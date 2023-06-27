@@ -21,4 +21,9 @@ public class RedisConstants {
 
     public static final String CLEAR_USELESS_TYPE = "clear_useless_type:";
 
+    /**
+     * 用户账号 验证码
+     */
+    public static final String BUILDING_USER_CAPTCHA = "CAPTCHA:image:";
+
 }
