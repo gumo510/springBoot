@@ -67,7 +67,7 @@ class DemoApplicationTests {
     public void menuExtUploadTest() throws Exception {
 
         String dir = System.getProperty("user.dir");
-        String excelPath = dir+ File.separator+"/doc/运维管理.xlsx";
+        String excelPath = dir+ File.separator+"/doc/菜单扩展.xlsx";
         List<MenuExtVO> menuExtList = ExcelUtil.readExcel2Bean(new FileInputStream(new File(excelPath)), MenuExtVO.class);
         System.out.println("menuExtList size: " + menuExtList.size());
         menuExtList.forEach(menuExtVO -> {

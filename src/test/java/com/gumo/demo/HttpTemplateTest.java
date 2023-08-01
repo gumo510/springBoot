@@ -9,6 +9,8 @@ import com.gumo.demo.utils.ExcelUtil;
 import com.gumo.demo.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +20,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +60,15 @@ public class HttpTemplateTest {
                 JSONObject data = jsonObject.getJSONObject("data");
             }
         }
+    }
+
+    private void buildHeaders(HttpHeaders headers) {
+        String nonce = UUID.randomUUID().toString().trim().replaceAll("-", "");
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        headers.set("appKey","appKey");
+        headers.set("appSecretVersion","appSecretVersion");
+        headers.set("nonce",nonce);
+        headers.set("timestamp",timestamp);
     }
 
     /**
@@ -174,7 +182,7 @@ public class HttpTemplateTest {
         return token;
     }*/
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         String dir = System.getProperty("user.dir");
         String excelPath = dir+ File.separator+"/doc/用户.xlsx";
         try {
@@ -195,12 +203,26 @@ public class HttpTemplateTest {
         }
     }
 
-    private void buildHeaders(HttpHeaders headers) {
-        String nonce = UUID.randomUUID().toString().trim().replaceAll("-", "");
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        headers.set("appKey","appKey");
-        headers.set("appSecretVersion","appSecretVersion");
-        headers.set("nonce",nonce);
-        headers.set("timestamp",timestamp);
+    public static void main(String[] args) {
+        String novelUrl = "https://blog.csdn.net/qq_43649937/article/details/131073227";
+        String fileName = "san_ti.txt";
+        downloadNovel(novelUrl, fileName);
+    }
+
+    public static void downloadNovel(String url, String fileName) {
+        try {
+            // 发起GET请求获取网页内容
+            Document doc = Jsoup.connect(url).get();
+            String novelContent = doc.body().text();
+
+            // 将网页内容保存到txt文件
+            try (FileWriter fileWriter = new FileWriter(fileName)) {
+                fileWriter.write(novelContent);
+            }
+
+            System.out.println("小说已成功下载到" + fileName);
+        } catch (IOException e) {
+            System.out.println("下载失败：" + e.getMessage());
+        }
     }
 }
