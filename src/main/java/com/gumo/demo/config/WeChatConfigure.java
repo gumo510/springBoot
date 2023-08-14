@@ -27,8 +27,8 @@ public class WeChatConfigure {
     @Value("${WeChat.AppSecret:9afd0b38e0b8f4666d92e11beb1a052e}")
     public String App_Secret;
 
-    @Value("${WeChat.OpenID:ofW1C6aVzFL97B-MJQoXb3XwDKjc}")     //gril
-//    @Value("${WeChat.OpenID:ofW1C6f3PtMANUFC59g9U_EpAZGQ}")   //boy
+    @Value("${WeChat.OpenID:ofW1C6aVzFL97B-MJQoXb3XwDKjc}")     //boy
+//    @Value("${WeChat.OpenID:ofW1C6f3PtMANUFC59g9U_EpAZGQ}")   //gril
     public String Open_ID;
 
     @Value("${WeChat.TemplateID:wOLgQ6XqwXaoFMxDEMGqh7AaM_OAqmW7Yn8YFJjA4bY}")
