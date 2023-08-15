@@ -1,188 +1,141 @@
 package com.gumo.demo.utils;
 
+import com.google.common.base.Joiner;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 中文名字转拼音工具类
  *
- * @author zhangcy
- * @date 2021-11-04
+ * @author gumo
+ * @date 2023-08-15
  */
 @Slf4j
 public class PinYinUtils {
 
+    public static String convert(String chineseName) {
+        Set<String> nameVar1 = PinYinUtils.getPinyinOfName(chineseName);
+        Set<String> nameVar2 = PinYinUtils.getPinYinHeadChar(chineseName);
+        String result = Joiner.on(",").join(nameVar1) + "," + Joiner.on(",").join(nameVar2);
+        return result;
+    }
+
     /**
-     * 提取每个汉字的首字母(大写)
+     * 提取每个汉字的首字母(支持多音字)
      *
      * @param str
      * @return
      */
-    public static String getPinYinHeadChar(String str) {
+    public static Set<String> getPinYinHeadChar(String str) {
         if (isNull(str)) {
-            return "";
+            return new HashSet<>();
         }
-        String convert = "";
-        for (int j = 0; j < str.length(); j++) {
-            char word = str.charAt(j);
-            // 提取汉字的首字母
-            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
-            if (pinyinArray != null) {
-                convert += pinyinArray[0].charAt(0);
+        Set<String> result = new HashSet<>();
+        getPinYinHeadCharHelper(str, 0, "", result);
+        return result;
+    }
+
+    private static void getPinYinHeadCharHelper(String str, int index, String currentAbbreviation, Set<String> result) {
+        if (index >= str.length()) {
+            result.add(currentAbbreviation.toLowerCase());
+            return;
+        }
+
+        char word = str.charAt(index);
+        String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+        if (pinyinArray != null) {
+            for (String pinyin : pinyinArray) {
+                getPinYinHeadCharHelper(str, index + 1, currentAbbreviation + pinyin.charAt(0), result);
             }
-            else {
-                convert += word;
-            }
         }
-        if (isNull(convert)) {
-            return "";
+        else {
+            getPinYinHeadCharHelper(str, index + 1, currentAbbreviation + word, result);
         }
-        convert = convert.trim().replace(" ", "");
-        return convert.toLowerCase();
+    }
+
+    private static boolean isNull(String str) {
+        return str == null || str.trim().length() == 0;
     }
 
     /**
-     * 首字母大写
+     * 提取每个汉字的拼音字母(支持多音字)
      *
      * @param name 参数中文字符串
      * @return result
      * @throws {@link BadHanyuPinyinOutputFormatCombination}
      */
-    public static String getChinesePinyinFromName(String name) {
-        String result = null;
+    public static Set<String> getPinyinOfName(String name) {
+        if (isNull(name)) {
+            return new HashSet<>();
+        }
+        Set<String> result = new HashSet<>();
+        getPinyinOfNameHelper(name, 0, "", result);
+        return result;
+    }
+
+    private static void getPinyinOfNameHelper(String name, int index, String currentPinyin, Set<String> result) {
+        if (index >= name.length()) {
+            result.add(currentPinyin);
+            return;
+        }
+
+        char ch = name.charAt(index);
+        HanyuPinyinOutputFormat outputFormat = new HanyuPinyinOutputFormat();
+        outputFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        outputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+
         try {
-            HanyuPinyinOutputFormat pyFormat = new HanyuPinyinOutputFormat();
-            pyFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-            pyFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-            pyFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
-            result = PinyinHelper.toHanyuPinyinString(name, pyFormat, "");
-        } catch (Exception e) {
+            String[] pinyins = PinyinHelper.toHanyuPinyinStringArray(ch, outputFormat);
+            if (pinyins != null && pinyins.length > 0) {
+                for (String pinyin : pinyins) {
+                    getPinyinOfNameHelper(name, index + 1, currentPinyin + pinyin, result);
+                }
+            } else {
+                getPinyinOfNameHelper(name, index + 1, currentPinyin + ch, result);
+            }
+        } catch (BadHanyuPinyinOutputFormatCombination e) {
             e.printStackTrace();
         }
-        return result;
     }
 
-    public static boolean isChineseName(String name) {
-        boolean result = true;
-        if (StringUtils.isNotEmpty(name)) {
-            String[] strChars = name.split("");
-            for (String singleStr : strChars) {
-                if (!isContainChinese(singleStr)) {
-                    result = false;
-                    break;
-                }
-            }
+    public static boolean containsChinese(String str) {
+        if (str == null || str.trim().length() == 0) {
+            return false;
         }
-        return result;
-    }
-
-    public static boolean isContainChinese(String str) {
-        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-        Matcher m = p.matcher(str);
-        if (m.find()) {
-            return true;
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (isChinese(ch)) {
+                return true;
+            }
         }
         return false;
     }
 
-    public static String getChineseFirstPingYingName(String str) {
-        String[] split = str.split("");
-        return PinYinUtils.getChinesePinyinFromName(split[0]);
-    }
-
-    public static String convert(String chineseName) {
-        String nameVar1 = getChinesePinyinFromName(chineseName);
-        String nameVar2 = getPinYinHeadChar(chineseName);
-        String nameVar3 = getChineseFirstPingYingName(chineseName);
-        String result = nameVar1 + "," + nameVar2 + "," + nameVar3;
-        return result;
-    }
-
-    public static boolean isMixedStr(String realname) {
-        String[] splitStr = realname.split("");
-        List<String> allStrs = Arrays.asList(splitStr);
-        List<String> allLastStr = new ArrayList<>();
-        boolean hasChinese = false;
-        for (String single : splitStr) {
-            if (isChineseName(single)) {
-                hasChinese = true;
-            } else {
-                allLastStr.add(single);
-            }
-        }
-        if (hasChinese) {
-            if (CollectionUtils.isNotEmpty(allStrs) && CollectionUtils.isNotEmpty(allLastStr) && allLastStr.size() < allStrs.size()) {
-                hasChinese = true;
-            }
-        }
-        return hasChinese;
-    }
-
-    /*
-     * 判断字符串是否为空
-     */
-
-    public static boolean isNull(Object strData) {
-        if (strData == null || String.valueOf(strData).trim().equals("")) {
-            return true;
-        }
-        return false;
-    }
-
-
-    public static void main(String[] args) {
-        String chineseName = "沐栋";
-        String nameVar1 = PinYinUtils.getChinesePinyinFromName(chineseName);
-        String nameVar2 = PinYinUtils.getPinYinHeadChar(chineseName);
-        String nameVar3 = PinYinUtils.getChineseFirstPingYingName(chineseName);
-        System.out.println(nameVar1);
-        System.out.println(nameVar2);
-        System.out.println(nameVar3);
+    private static boolean isChinese(char ch) {
+        //中文字符Unicode范围：\u4e00-\u9fa5
+        return ch >= 0x4E00 && ch <= 0x9FA5;
     }
 
     /**
-     * 如果是中文何字符串等混合过来的，只需原样解析，比如：111董aaa飞飞333 ，解析为：111dongaaafeifei333
-     *
-     * @param realname
-     * @return
+     * 1、pinYinUtils.containsChinese 判断传入过来的名称是否是中文呢？如果全部是中文的话做基础的解析
+     * 2、pinYinUtils.convert 做拼音转换
+     * 3、如果用户名中不全是中文，比如： 周小斌_bank_1 ,类似这样的，或者 : bank_1_周小斌 ，只转换其中的中文，不改变整个字符串的顺序
      */
-    public static String getMixPinyinStr(String realname) {
-        if (StringUtils.isEmpty(realname)) {
-            return null;
-        }
-        String[] splitStr = realname.split("");
-        StringBuilder stringBuilder = new StringBuilder();
-        int firstIndex = 0;
-        for (String single : splitStr) {
-            if (isChineseName(single)) {
-                //只有第一个中文多音字做解析
-                if (firstIndex == 0 && PinYinMultiCharactersUtils.isMultiChineseWord(single)) {
-                    String chinesePinyinFromName = PinYinMultiCharactersUtils.getMultiCharactersPinYin(single);
-                    stringBuilder.append(chinesePinyinFromName);
-                    continue;
-                }
-                String chinesePinyinFromName = getChinesePinyinFromName(single);
-                stringBuilder.append(chinesePinyinFromName);
-                firstIndex++;
-            } else {
-                stringBuilder.append(single);
-            }
-        }
-        return stringBuilder.toString();
+    public static void main(String[] args) {
+        String chineseName = "曾脉_001";
+        boolean flag = containsChinese(chineseName);
+        Set<String> nameVar1 = PinYinUtils.getPinyinOfName(chineseName);
+        Set<String> nameVar2 = PinYinUtils.getPinYinHeadChar(chineseName);
+        System.out.println(flag);
+        System.out.println(nameVar1);
+        System.out.println(nameVar2);
+        System.out.println(Joiner.on(",").join(nameVar1) + "," + Joiner.on(",").join(nameVar2));
     }
 }
-
-
