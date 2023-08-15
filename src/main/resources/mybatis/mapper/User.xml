@@ -8,6 +8,7 @@
         <result column="userName" property="userName" />
         <result column="passWord" property="passWord" />
         <result column="realName" property="realName" />
+        <result column="key_word" property="keyWord" />
     </resultMap>
 
     <!--实际工作不建议用 *，left join 为空时 存在数据问题 -->
@@ -22,6 +23,10 @@
         </collection>
     </resultMap>
 
+    <update id="updateKeyWordById">
+        update user set key_word = #{user.keyWord} where id = #{user.id}
+    </update>
+
     <select id="getUserDevice" resultMap="GroupResultMap">
         select u.*, ud.device_id md_device_id,ud.device_name md_device_name
         from user u
@@ -31,7 +36,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, userName, passWord, realName
+        id, userName, passWord, realName, key_word
     </sql>
 
     <select id="queryUserList" resultType="com.gumo.demo.model.vo.UserVO">

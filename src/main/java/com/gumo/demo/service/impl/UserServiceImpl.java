@@ -93,11 +93,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userMapper.getUserDevice(login, password);
     }
 
-    @Async                                                                                                                  //异步执行
-    @DistributedLock(lockNamePre = "Statistics_Task", argNum = 2, leaseTime = -1, fairLock = true, lockNamePost = "update") //分布式锁注解样例
-    public void saveUser() throws Exception{
-        User user = new User();
-        userMapper.insert(user);
+//    @Async                                                                                                                  //异步执行
+//    @DistributedLock(lockNamePre = "Statistics_Task", argNum = 2, leaseTime = -1, fairLock = true, lockNamePost = "update") //分布式锁注解样例
+//    public void saveUser() throws Exception{
+//        User user = new User();
+//        userMapper.insert(user);
 //        String key = String.format("data-mining:task_statistic:%d", System.currentTimeMillis());
 //        RLock rLock = redissonClient.getLock(key);
 //        try {
@@ -110,5 +110,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 //        } finally {
 //            rLock.unlock();
 //        }
-    }
+//    }
 }

@@ -24,4 +24,6 @@ public interface UserMapper extends BaseMapper<User> {
     List<UserVO> queryUserList();
 
     UserDeviceVO getUserDevice(@Param("userName") String login, @Param("passWord") String password);
+
+    void updateKeyWordById(@Param("user") User user);
 }

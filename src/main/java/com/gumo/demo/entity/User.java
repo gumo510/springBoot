@@ -7,9 +7,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import java.util.List;
 
+import com.gumo.demo.utils.PinYinMultiCharactersUtils;
+import com.gumo.demo.utils.PinYinUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -38,9 +41,13 @@ public class User extends Model<User> {
     @TableField("realName")
     private String realName;
 
-    @TableField("salary")
+    @TableField("key_word")
+    private String keyWord;
+
+    @TableField(exist = false)
     private Long salary;
 
+    @TableField(exist = false)
     private List<Dictionary> dictionary;
 
     public User() {

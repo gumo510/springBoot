@@ -5,16 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gumo.demo.cache.BusTypeCache;
-import com.gumo.demo.entity.BaseType;
-import com.gumo.demo.entity.Dictionary;
-import com.gumo.demo.entity.Menu;
-import com.gumo.demo.entity.MenuExt;
+import com.gumo.demo.entity.*;
 import com.gumo.demo.enums.ColorCrowedEnum;
 import com.gumo.demo.mapper.BaseTypeMapper;
 import com.gumo.demo.mapper.MenuExtMapper;
 import com.gumo.demo.mapper.MenuMapper;
+import com.gumo.demo.mapper.UserMapper;
 import com.gumo.demo.model.vo.MenuExtVO;
+import com.gumo.demo.model.vo.UserVO;
 import com.gumo.demo.utils.ExcelUtil;
+import com.gumo.demo.utils.PinYinMultiCharactersUtils;
+import com.gumo.demo.utils.PinYinUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +35,9 @@ class DemoApplicationTests {
 
     @Autowired
     private BusTypeCache busTypeCache;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private BaseTypeMapper baseTypeMapper;
@@ -111,7 +116,55 @@ class DemoApplicationTests {
         System.out.println("insert success!");
     }
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void pinYinTest() throws Exception {
+
+
+        List<User> users = userMapper.selectList(new QueryWrapper<User>());
+        if(CollectionUtils.isNotEmpty(users)){
+            for (User user : users) {
+                //设置拼音字段
+                setKeyWordField(user);
+                userMapper.updateKeyWordById(user);
+            }
+        }
+    }
+
+    private void setKeyWordField(User user) {
+        if(StringUtils.isEmpty(user.getRealName())){
+            return;
+        }
+        /**
+         * 1、pinYinUtils.isChineseName 判断传入过来的名称是否是中文呢？如果全部是中文的话做基础的解析
+         * 2、pinYinUtils.convert 做拼音转换
+         * 3、pinYinMultiCharactersUtils.getMultiCharactersPinYin 如果名字中的姓氏是多音字时，还需要做一下特别处理
+         * 4、如果用户名中不全是中文，比如： 周小斌_bank_1 ,类似这样的，或者 : bank_1_周小斌 ，只转换其中的中文，不改变整个字符串的顺序
+         */
+
+        if (PinYinUtils.isChineseName(user.getRealName())) {
+            String originalConvert = PinYinUtils.convert(user.getRealName());
+            String multiConvertResult =  PinYinMultiCharactersUtils.getMultiCharactersPinYin(user.getRealName());
+            if(StringUtils.isNotEmpty(multiConvertResult)){
+                user.setKeyWord(originalConvert.concat(",").concat(multiConvertResult));
+                return;
+            }
+            user.setKeyWord(originalConvert );
+        }else {
+            //如果不全部是中文，即除了中文之外，还有其他字符混在一起的话,这种才做解析
+            if(PinYinUtils.isMixedStr(user.getRealName())){
+                user.setKeyWord(PinYinUtils.getMixPinyinStr(user.getRealName()));
+            }else {
+                user.setKeyWord(user.getRealName());
+            }
+        }
+    }
+
+    /**
+     * 非对称加密
+     * @throws Exception
+     */
+    @Test
+    public void RSATest() throws Exception {
         // 生成RSA密钥对
         KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = new SecureRandom();
