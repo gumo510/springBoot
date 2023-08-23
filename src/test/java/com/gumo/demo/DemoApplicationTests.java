@@ -141,47 +141,4 @@ class DemoApplicationTests {
         }
     }
 
-    /**
-     * 非对称加密
-     * @throws Exception
-     */
-    @Test
-    public void RSATest() throws Exception {
-        // 生成RSA密钥对
-        KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA");
-        SecureRandom random = new SecureRandom();
-        keygen.initialize(2048, random);
-        KeyPair keyPair = keygen.generateKeyPair();
-        PrivateKey privateKey = keyPair.getPrivate();
-        PublicKey publicKey = keyPair.getPublic();
-
-        // 将公钥发送给客户端
-        String publicKeyString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-        System.out.println("Public key: " + publicKeyString);
-
-        // 客户端输入密码，并使用公钥进行加密
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter password: ");
-        String password = reader.readLine();
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] encryptedPassword = cipher.doFinal(password.getBytes());
-        String encryptedPasswordString = Base64.getEncoder().encodeToString(encryptedPassword);
-        System.out.println("Encrypted password: " + encryptedPasswordString);
-
-        // 服务器使用私钥解密密码，并校验是否正确
-        cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedPassword = cipher.doFinal(Base64.getDecoder().decode(encryptedPasswordString));
-        String decryptedPasswordString = new String(decryptedPassword);
-        System.out.println("Decrypted password: " + decryptedPasswordString);
-
-        // 校验密码是否正确
-        if (password.equals(decryptedPasswordString)) {
-            System.out.println("Password is correct!");
-        } else {
-            System.out.println("Password is incorrect!");
-        }
-    }
-
 }

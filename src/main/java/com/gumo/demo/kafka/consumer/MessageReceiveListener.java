@@ -48,6 +48,7 @@ public class MessageReceiveListener {
 			ack.acknowledge();
 		} catch (Exception e) {
 			log.error("consumer exception :{}", e.getMessage());
+			ack.nack(60 * 1000); // 延迟60秒处理消息
 		}
 	}
 }

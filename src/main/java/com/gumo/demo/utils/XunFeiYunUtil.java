@@ -23,7 +23,7 @@ public class XunFeiYunUtil extends WebSocketListener{
     private String answer = "";
     private String question; // 新增成员变量
 
-    public static String hostUrl = "https://spark-api.xf-yun.com/v1.1/chat";
+    public static String hostUrl = "https://spark-api.xf-yun.com/v2.1/chat";
     public static String APPID = "b5703ca0";//从开放平台控制台中获取
     public static String APIKEY = "fb3e86cdfb5d720c30d7908b74c0f908";//从开放平台控制台中获取
     public static String APISecret = "NTdkZDg0NTIyOWFmM2U2ZDVhMzMyYzY4";//从开放平台控制台中获取
@@ -131,7 +131,7 @@ public class XunFeiYunUtil extends WebSocketListener{
         header.addProperty("app_id",APPID);
         header.addProperty("uid","123456789");
         //填充parameter
-        chat.addProperty("domain","general");
+        chat.addProperty("domain","generalv2");
         chat.addProperty("random_threshold",0);
         chat.addProperty("max_tokens",1024);
         chat.addProperty("auditing","default");
