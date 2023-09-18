@@ -12,6 +12,7 @@ import com.gumo.demo.model.baidu.AccessTokenBaiduResp;
 import com.gumo.demo.model.baidu.ChatBaiduReqDto;
 import com.gumo.demo.model.baidu.ChatBaiduResp;
 import com.gumo.demo.utils.XunFeiYunUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+@Slf4j
 @SpringBootTest
 public class FileTest {
 
@@ -115,7 +117,25 @@ public class FileTest {
 
     @Test
     public void test2() {
-        callAlibabaAnswer("介绍一下你自己");
+        // 多线程调用
+        ExecutorService pool = Executors.newFixedThreadPool(3);
+        List<CompletableFuture<String>> futures = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+                String question = "HUMAN:拟举办一个现场会，邀请市委领导参加，市委回复领导同意参加，但建议将时间改为A日。请写出你的办理思路，及现场会前期筹备工作";
+                // Call your API here
+                log.info(question);
+                String answer = callBaiduAnswer(question);
+                log.info("返回结果为：" + answer);
+                log.info("###########");
+                return answer;
+            }, pool);
+            futures.add(future);
+            log.info("执行第" + i + "条数据。");
+        }
+        // 等待线程执行结束
+        List<String> results = futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        log.info("执行完成： **************"  );
     }
 
     private String callAlibabaAnswer(String question) {
@@ -155,7 +175,7 @@ public class FileTest {
     private String callBaiduAnswer(String question) {
         System.out.println(question);
         String prefix = "你是一个答题助手,可以专业的简洁的输出问题的答案,请阅读下面选择题,简洁的输出正确选项前的字母不需要输出答案和多余的字符: ";
-        ChatBaiduReqDto chatBaiduReqDto = new ChatBaiduReqDto(prefix + question);
+        ChatBaiduReqDto chatBaiduReqDto = new ChatBaiduReqDto(question);
 
         // 调用百度接口获取结果
         ChatBaiduResp chatBaiduResp = null;
