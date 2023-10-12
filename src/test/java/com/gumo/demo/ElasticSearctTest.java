@@ -1,18 +1,23 @@
 package com.gumo.demo;
 
+import com.gumo.demo.elasticsearch.pojo.DocumentPojo;
 import com.gumo.demo.elasticsearch.pojo.Item;
+import com.gumo.demo.elasticsearch.repository.DocumentRepository;
 import com.gumo.demo.elasticsearch.repository.ItemRepository;
 import com.gumo.demo.utils.DateUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
@@ -36,6 +41,88 @@ public class ElasticSearctTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private DocumentRepository documentRepository;
+
+    /**
+     *  批量创建
+     */
+    @Test
+    public void testAddDocumentPojo() {
+        List<DocumentPojo> list = new ArrayList<>();
+        list.add(new DocumentPojo("1", "10", "测试文档", "标题1", "*  同步所有文件\n" +
+                "*  1: 搜索指定群组名称的id\n" +
+                "*  2： 搜索群组下的目录\n" +
+                "*  3： 遍历目录 进行请求文件，并判断文件类型； 文件类型为word时转pdf；\n" +
+                "*      文件为目录时需要递归\n" +
+                "*  4： 下载文件并上传到天书平台", 1));
+        list.add(new DocumentPojo("2", "535922786540998660", "天书文档", "标题12", "", 2));
+        list.add(new DocumentPojo("3", "535922786540998660", "测试文档2", "标题13", "在springboot整合spring data elasticsearch项目中，当索引数量较多，mapping结构较为复杂时", 3));
+        // 接收对象集合，实现批量新增
+        documentRepository.saveAll(list);
+    }
+
+    /**
+     * 查询ES过滤
+     */
+    @Test
+    public void queryDocumentPojo() {
+
+        // 根据文件ID数组和内容查询
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        QueryBuilder idQuery = QueryBuilders.termsQuery("documentId", "[\"10\",\"11\",\"12\"]");
+        QueryBuilder keywordQuery = QueryBuilders.queryStringQuery("关键字")
+                .field("documentName")
+                .field("title")
+                .field("content");
+
+        boolQueryBuilder.must(keywordQuery);
+        boolQueryBuilder.filter(idQuery);
+
+        // 设置高亮字段
+        HighlightBuilder.Field documentNameHighlight = new HighlightBuilder.Field("documentName");
+        HighlightBuilder.Field titleHighlight = new HighlightBuilder.Field("title");
+        HighlightBuilder.Field contentHighlight = new HighlightBuilder.Field("content");
+
+        // 高亮设置
+        documentNameHighlight.preTags("<em>");
+        documentNameHighlight.postTags("</em>");
+
+        titleHighlight.preTags("<em>");
+        titleHighlight.postTags("</em>");
+
+        contentHighlight.preTags("<em>");
+        contentHighlight.postTags("</em>");
+        Pageable pageable = PageRequest.of(0, 1);
+
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+        builder.withQuery(boolQueryBuilder);
+        builder.withHighlightFields(documentNameHighlight, titleHighlight, contentHighlight); // 添加高亮字段
+        builder.withPageable(pageable); // 添加分页设置
+
+        SearchHits<DocumentPojo> pojoSearchHits = restTemplate.search(builder.build(), DocumentPojo.class);
+//        List<DocumentPojo> list = pojoSearchHits.stream().map(e -> e.getContent()).collect(Collectors.toList());
+
+        // 获取高亮结果
+        List<DocumentPojo> list = new ArrayList<>();
+        for (SearchHit<DocumentPojo> searchHit : pojoSearchHits.getSearchHits()) {
+            DocumentPojo documentPojo = searchHit.getContent();
+            Map<String, List<String>> highlightFields = searchHit.getHighlightFields();
+
+            if (highlightFields.containsKey("documentName")) {
+                documentPojo.setDocumentName(highlightFields.get("documentName").get(0));
+            }
+            if (highlightFields.containsKey("title")) {
+                documentPojo.setTitle(highlightFields.get("title").get(0));
+            }
+            if (highlightFields.containsKey("content")) {
+                documentPojo.setContent(highlightFields.get("content").get(0));
+            }
+            list.add(documentPojo);
+        }
+    }
+
+
     /**
      * 测试创建索引
      */
@@ -49,6 +136,23 @@ public class ElasticSearctTest {
         // 配置映射，会根据Item类中的id、Field等字段来自动完成映射
 //        restTemplate.putMapping(Item.class);
         indexOperations.putMapping();
+
+    }
+
+    /**
+     * 测试删除索引
+     */
+    @Test
+    public void testDeleteIndex() throws ClassNotFoundException {
+        System.out.println("********");
+        Class<?> clazz = Class.forName("com.gumo.demo.elasticsearch.pojo.DocumentPojo");
+        IndexOperations indexOperations = restTemplate.indexOps(clazz);
+        // 创建索引，会根据Item类的@Document注解信息来创建
+//        restTemplate.createIndex(Item.class);
+        indexOperations.delete();
+        // 配置映射，会根据Item类中的id、Field等字段来自动完成映射
+//        restTemplate.putMapping(Item.class);
+//        indexOperations.putMapping();
 
     }
 
