@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -208,6 +210,19 @@ public class StreamTest {
                     return m;
                 }
         ).collect(Collectors.toList());
+
+        // 调用泛型方法
+        List<MenuTest> collect2 = menus.stream()
+                .filter(t -> t.getParentId() == 0)
+                .map((t) -> {
+                    // 调用泛型 getChildrens 方法
+                    t.setChildList(getChildrens(
+                            t, menus,
+                            (r, m) -> Objects.equals(((MenuTest) m).getParentId(), ((MenuTest) r).getId()),
+                            (m, childList) -> ((MenuTest) m).setChildList(childList)));
+                    return t;
+                }).collect(Collectors.toList());
+
         System.out.println("-------转json输出结果-------");
         System.out.println(JSON.toJSON(collect));
     }
@@ -227,6 +242,25 @@ public class StreamTest {
                     return m;
                 }
         ).collect(Collectors.toList());
+        return children;
+    }
+
+    /**
+     * 递归查询子节点，支持泛型参数
+     * @param root  根节点
+     * @param all   所有节点
+     * @param idMatcher  函数接口，比较节点 parentId 和 id 是否匹配
+     * @param setChildList 函数接口，设置子节点列表
+     * @return 根节点信息
+     */
+    private <T> List<T> getChildrens(T root, List<T> all, BiPredicate<T, T> idMatcher, BiConsumer<T, List<T>> setChildList) {
+        List<T> children = all.stream().filter(m -> {
+            return idMatcher.test(root, m);
+        }).map((m) -> {
+            List<T> childList = getChildrens(m, all, idMatcher, setChildList);
+            setChildList.accept(m, childList);
+            return m;
+        }).collect(Collectors.toList());
         return children;
     }
 

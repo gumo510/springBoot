@@ -7,11 +7,14 @@ import com.gumo.demo.service.IUploadFileService;
 import com.gumo.demo.utils.ExcelUtil;
 import com.gumo.demo.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +81,31 @@ public class UploadFileServiceImpl implements IUploadFileService {
 
         }
         return uuid;
+    }
+
+    @Override
+    public void processUploadedFile(MultipartFile file) {
+        try {
+            InputStream inputStream = file.getInputStream();
+            XWPFDocument document = new XWPFDocument(inputStream);
+
+            // 遍历文档的段落
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                String text = paragraph.getText();
+
+                // 判断段落是否为标题
+                if (paragraph.getStyleID() != null && paragraph.getStyleID().startsWith("Heading")) {
+                    System.out.println("标题: " + text);
+                } else {
+                    System.out.println("内容: " + text);
+                }
+            }
+
+            document.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

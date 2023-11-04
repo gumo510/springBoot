@@ -1,8 +1,11 @@
 package com.gumo.demo;
 
+import org.junit.jupiter.api.Test;
+
 public class MathTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
 
         Math.abs(12.3);					//12.3 返回这个数的绝对值
         Math.abs(-12.3);				//12.3
@@ -87,5 +90,15 @@ public class MathTest {
         Math.toDegrees(angrad);			//角度转换成弧度，返回：angrad * 180d / PI
 
         Math.toRadians(angdeg);			//弧度转换成角度，返回：angdeg / 180d * PI*/
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        double number = 1000;
+        for (int i = 0; i < 365; i++) {
+            System.out.println("第" + i + "天收益总额" + number  + "￥" );
+            number = number * (1 + 0.003);
+            Thread.sleep(100);
+        }
     }
 }

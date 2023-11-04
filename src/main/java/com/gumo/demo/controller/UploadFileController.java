@@ -3,7 +3,6 @@ package com.gumo.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.gumo.demo.service.IUploadFileService;
-import com.gumo.demo.service.impl.UploadFileServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -68,5 +67,11 @@ public class UploadFileController {
             log.error("uploadZipFilesAndParseJob error ", e);
             return null;
         }
+    }
+
+    @PostMapping("upload/word")
+    public JSONObject handleFileUpload(MultipartFile file) {
+        uploadFileService.processUploadedFile(file);
+        return JSON.parseObject("File processed successfully!");
     }
 }

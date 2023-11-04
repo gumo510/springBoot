@@ -28,4 +28,5 @@ public interface IUploadFileService {
      */
     String uploadZipFilesAndParse(MultipartFile file) throws Exception;
 
+    void processUploadedFile(MultipartFile file);
 }

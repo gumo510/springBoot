@@ -3,6 +3,8 @@ package com.gumo.demo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +19,9 @@ public class RedisTest {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * https://blog.csdn.net/pengjunlee/article/details/81427894
@@ -121,4 +126,20 @@ public class RedisTest {
         redisTemplate.opsForSet().remove("setTest",strarrays);
 
     }
+
+    @Test
+    public void redissonLock() {
+        RLock lock = redissonClient.getLock("RedissonConst.SYNC_THIRD_ARCHIVE_LOCK + syncThirdArchiveKafkaDTO.getThirdName()");
+        try {
+            lock.lock();
+            // 业务逻辑
+
+            return;
+        } finally {
+            if (lock.isLocked() && lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
+        }
+    }
+
 }

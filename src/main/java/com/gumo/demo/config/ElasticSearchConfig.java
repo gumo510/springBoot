@@ -34,7 +34,7 @@ public class ElasticSearchConfig {
 
     @Value("${elasticsearch.scheme:https}")       //http
     private String scheme;
-    @Value("${elasticsearch.host:192.168.2.11}")  //127.0.0.1
+    @Value("${elasticsearch.host:192.168.13.59}")  //127.0.0.1
     private String host;
     @Value("${elasticsearch.port:30002}")         //9200
     private Integer port;

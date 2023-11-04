@@ -1,9 +1,12 @@
 package com.gumo.demo;
 
 import lombok.SneakyThrows;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -47,22 +50,22 @@ public class LoadJarTest {
 //        }
     }
 
-    @SneakyThrows
-    public static void main(String[] args) {
-//        String path = "D:/Maven_Repo/repository/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.jar";
+//    @SneakyThrows
+//    public static void main(String[] args) {
+////        String path = "D:/Maven_Repo/repository/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.jar";
+////        loadJar(path);
+////        Class<?> aClass = Class.forName("org.apache.commons.lang3.StringUtils");
+////        Object instance = aClass.newInstance();
+////        Object strip = aClass.getDeclaredMethod("strip", String.class, String.class).invoke(instance, "[1,2,3,4,5,6,2,3,5,1]", "[]");
+////        System.out.println(strip);
+//
+//        String path = "D:/文档/相关项目/ifaas-antiepidemic-core-1.0.jar";
 //        loadJar(path);
-//        Class<?> aClass = Class.forName("org.apache.commons.lang3.StringUtils");
+//        Class<?> aClass = Class.forName("com.intellif.core.sm4.SM4Utils");
 //        Object instance = aClass.newInstance();
-//        Object strip = aClass.getDeclaredMethod("strip", String.class, String.class).invoke(instance, "[1,2,3,4,5,6,2,3,5,1]", "[]");
+//        Object strip = aClass.getDeclaredMethod("strEncode", String.class, String.class).invoke(instance, "admin", "测试");
 //        System.out.println(strip);
-
-        String path = "D:/文档/相关项目/ifaas-antiepidemic-core-1.0.jar";
-        loadJar(path);
-        Class<?> aClass = Class.forName("com.intellif.core.sm4.SM4Utils");
-        Object instance = aClass.newInstance();
-        Object strip = aClass.getDeclaredMethod("strEncode", String.class, String.class).invoke(instance, "admin", "测试");
-        System.out.println(strip);
-    }
+//    }
 
     public static void loadJar(String jarPath) {
         File jarFile = new File(jarPath);
@@ -87,6 +90,34 @@ public class LoadJarTest {
             e.printStackTrace();
         } finally {
             method.setAccessible(accessible);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        try {
+
+            String dir = System.getProperty("user.dir");
+            String excelPath = dir+ File.separator+"/doc/审批制立项请示.docx";
+            FileInputStream file = new FileInputStream(excelPath);
+            XWPFDocument document = new XWPFDocument(file);
+
+            // 遍历文档的段落
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                String text = paragraph.getText();
+
+                // 判断段落是否为标题
+                if (paragraph.getStyleID() != null && paragraph.getStyleID().startsWith("Heading")) {
+                    System.out.println("标题: " + text);
+                } else {
+                    System.out.println("内容: " + text);
+                }
+            }
+
+            document.close();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
