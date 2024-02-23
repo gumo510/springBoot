@@ -73,6 +73,7 @@ public class FileUtil {
     public static MultipartFile filePathToMultipartFile(String filePath) throws IOException {
         File file = new File(filePath);
         FileInputStream input = new FileInputStream(file);
+//        MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "image/jpg", IOUtils.toByteArray(input));
         MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", IOUtils.toByteArray(input));
         return multipartFile;
     }

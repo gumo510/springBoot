@@ -51,6 +51,13 @@ public class StreamTest {
         // 获取属性
         List<String> strList = list.stream().map(User::getUserName).distinct().collect(Collectors.toList());
 
+        // 获取多个属性
+        List<String> nameStrs = list.stream().flatMap(user -> Stream.of(user.getUserName(), user.getRealName()))
+                .collect(Collectors.toList());
+
+        // 判断List中是否存在这个值
+        boolean containsStr = nameStrs.stream().anyMatch(url -> url.equals("name"));
+
         // List<String> 转 List<Long>
         List<Long> names = strList.stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
 
@@ -90,6 +97,11 @@ public class StreamTest {
         // 计算名字出现的次数
         Map<String, Long> counting = list.stream().collect(Collectors.groupingBy(User::getUserName,Collectors.counting()));
 
+        // 按部门分组，使用 Optional.ofNullable 来处理 null 的情况
+        Map<String, List<User>> groupMap = list.stream()
+                .collect(Collectors.groupingBy(user -> Optional.ofNullable(user.getUserName()).orElse("无部门"),
+                        Collectors.toList()));
+
         // 循环Map 获取Value Set
         List<List<User>> listList = collectMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
 
@@ -110,6 +122,9 @@ public class StreamTest {
         // 过滤两个list 差值
         List<User> users = list.stream().filter(a -> !collect.stream().map(User::getUserName).collect(Collectors.toList()).contains(a.getUserName())).collect(Collectors.toList());
 
+        // 判断不为空 设置默认值
+//        group.setCount(Optional.ofNullable(countMap.get(group.getId())).map(Long::intValue).orElse(0));
+//        return Optional.ofNullable(personRecordEntity).map(PersonRecordEntity::getPersonRecordImageUrl).orElse(null);
         // 对缺失值建模
         //String strNull = Optional.ofNullable(req.getEndDate()).orElse("");
 

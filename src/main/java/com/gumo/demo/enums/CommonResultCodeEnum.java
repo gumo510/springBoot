@@ -72,7 +72,9 @@ public enum CommonResultCodeEnum {
 
     DATA_NOT_EXIST(37000010, "dataNotExist", "数据不存在"),
 
-    FILE_EXTENSION_ERROR(37000011, "fileExtensionError", "文件类型错误");
+    FILE_EXTENSION_ERROR(37000011, "fileExtensionError", "文件类型错误"),
+
+    DATA_DES_ERROR(73700012, "DATA_DES_ERROR", "数据加解密失败");
 
 
     private int resultCode;

@@ -27,7 +27,7 @@ public class ExcelEntity {
      */
     private String created;
 
-    /**
+    /**.values()
      * 修改时间
      */
     private String updated;
