@@ -1,6 +1,8 @@
 package com.gumo.demo.elasticsearch.repository;
 
 import com.gumo.demo.elasticsearch.pojo.Item;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.List;
  * @author
  * @date 2022/07/8 - 14:39
  */
+@ConditionalOnBean(ElasticsearchRestTemplate.class)
 public interface ItemRepository extends ElasticsearchRepository<Item,Long> {
 
     /**

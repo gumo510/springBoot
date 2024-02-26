@@ -104,6 +104,10 @@ spring:
     migration-prefix: V
     locations: [ "classpath:db/migration" ]  #版本控制文件存放目录
 
+
+  autoconfigure:       # spring.autoconfigure.exclude 排除自动配置类(自测不使用ES)
+    exclude: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+
   elasticsearch:
     rest:
       uris: http://127.0.0.1:9200 # es地址，多个地址用逗号隔开

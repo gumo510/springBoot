@@ -3,6 +3,7 @@ package com.gumo.demo.elasticsearch;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Configuration
 @Slf4j
 @AllArgsConstructor
+@ConditionalOnBean(ElasticsearchRestTemplate.class)
 public class ElasticCreateIndexStartUp implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ElasticsearchRestTemplate restTemplate;
