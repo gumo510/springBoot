@@ -74,7 +74,15 @@ public enum CommonResultCodeEnum {
 
     FILE_EXTENSION_ERROR(37000011, "fileExtensionError", "文件类型错误"),
 
-    DATA_DES_ERROR(73700012, "DATA_DES_ERROR", "数据加解密失败");
+    DATA_DES_ERROR(73700012, "DATA_DES_ERROR", "数据加解密失败"),
+
+    REQUEST_LIMIT_TYPE_ERROR(71370016, "Unsupported current limiting type", "不支持的限流类型"),
+
+    REQUEST_QPS_LIMIT(71370017, "Currently, other accounts are undergoing related operations. Please wait for the operation to complete", "当前已有其它账号正在进行相关操作，请等待操作完成"),
+
+    REQUEST_CONCURRENCY_LIMIT(71370018, "Currently, other accounts are undergoing related operations. Please wait for the operation to complete", "当前已有其它账号正在进行相关操作，请等待操作完成"),
+
+    REQUEST_LIMIT_HANDLER_ERROR(71370019, "Unsupported current limiting handler", "不支持的限流处理方式");
 
 
     private int resultCode;
