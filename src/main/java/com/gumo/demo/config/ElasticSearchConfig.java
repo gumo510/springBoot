@@ -28,15 +28,15 @@ import javax.net.ssl.SSLContext;
  * @date 2022 04-26 12:03.
  */
 @Data
-@Configuration
+//@Configuration
 @Slf4j
 public class ElasticSearchConfig {
 
-    @Value("${elasticsearch.scheme:https}")       //http
+    @Value("${elasticsearch.scheme:http}")       //http
     private String scheme;
-    @Value("${elasticsearch.host:192.168.13.59}")  //127.0.0.1
+    @Value("${elasticsearch.host:127.0.0.1}")  //127.0.0.1
     private String host;
-    @Value("${elasticsearch.port:30002}")         //9200
+    @Value("${elasticsearch.port:9200}")         //9200
     private Integer port;
     @Value("${elasticsearch.username:intellif}")  //elastic
     private String username;

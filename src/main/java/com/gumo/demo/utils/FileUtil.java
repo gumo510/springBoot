@@ -1,5 +1,7 @@
 package com.gumo.demo.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import com.gumo.demo.model.dto.UrlMultipartFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
@@ -180,6 +182,50 @@ public class FileUtil {
         return null;
     }
 
+    /**
+     * 读取文件 使用正则表达式匹配参数: 文本内容如下
+     * Branch=release_v0.0.4_fix_wtw
+     * commit 893cf11f2dcf627abcbb70f178e25f03bb0eede1
+     * Author: xxx <xx@qq.com>
+     * Date:   Wed Mar 13 16:19:12 2024 +0800
+     *
+     *     feat::gitlab ci测试自建平台
+     *
+     * @param filePath
+     * @param systemVersion
+     * @return
+     * @throws IOException
+     */
+    public JSONObject readerSystemVersion(String filePath, String systemVersion) throws IOException {
+        JSONObject commitVersionVo = new JSONObject();
+        commitVersionVo.put("system", filePath);
+        try {
+            File file = new File(filePath);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            Pattern branchPattern = Pattern.compile("^Branch=(.+)$");
+            Pattern commitPattern = Pattern.compile("^commit (.+)$");
+            Pattern datePattern = Pattern.compile("^Date:\\s+(.+)$");
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Matcher branchMatcher = branchPattern.matcher(line);
+                Matcher commitMatcher = commitPattern.matcher(line);
+                Matcher dateMatcher = datePattern.matcher(line);
+
+                if (branchMatcher.find()) {
+                    commitVersionVo.put("branch", branchMatcher.group(1));
+                } else if (commitMatcher.find()) {
+                    commitVersionVo.put("commit", commitMatcher.group(1));
+                } else if (dateMatcher.find()) {
+                    commitVersionVo.put("date", dateMatcher.group(1));
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+//            log.error("读取系统版本文件失败 filePath: {}, error: {}", filePath, e);
+        }
+        return commitVersionVo;
+    }
 
 
     public static String encodeUrl(String fileUrl) {
@@ -204,70 +250,6 @@ public class FileUtil {
         long size = conn.getContentLengthLong();
         MultipartFile multipartFile = new UrlMultipartFile(in, fileName, contentType, size);
         return multipartFile;
-    }
-
-    private static class UrlMultipartFile implements MultipartFile {
-        private final InputStream inputStream;
-        private final String name;
-        private final String originalFilename;
-        private final String contentType;
-        private final long size;
-
-        public UrlMultipartFile(InputStream inputStream, String fileName, String contentType, long size) {
-            this.inputStream = inputStream;
-            this.name = fileName;
-            this.originalFilename = fileName;
-            this.contentType = contentType;
-            this.size = size;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getOriginalFilename() {
-            return originalFilename;
-        }
-
-        @Override
-        public String getContentType() {
-            return contentType; // 当不需要 contentType 时可以设为 null，或者考虑从 HttpURLConnection 获取 contentType
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public long getSize() {
-            return -1; // 当不需要使用 getSize() 方法时可以设为 -1，或者考虑使用如 URLConnection.getContentLengthLong() 获取大小
-        }
-
-        @Override
-        public byte[] getBytes() throws IOException {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024 * 4];
-            int n;
-            while ((n = inputStream.read(buffer)) != -1) {
-                out.write(buffer, 0, n);
-            }
-            return out.toByteArray();
-        }
-
-        @Override
-        public InputStream getInputStream() throws IOException {
-            return inputStream;
-        }
-
-        @Override
-        public void transferTo(File destination) throws IOException, IllegalStateException {
-            try (FileOutputStream fos = new FileOutputStream(destination)) {
-                fos.write(getBytes());
-            }
-        }
     }
 
     public static boolean isSupportedFileName(String fileName) {
