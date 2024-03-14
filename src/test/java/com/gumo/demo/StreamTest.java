@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.gumo.demo.model.dto.MenuTest;
 import com.gumo.demo.entity.User;
 import com.gumo.demo.hik.model.resp.HikCameraGetResp;
+import com.gumo.demo.service.IResultCodeEnumService;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StreamTest {
+
+//   SpringContextUtils.getBean(ICaptureRecordCommandService.class);
 
     private List<User> list;
 
