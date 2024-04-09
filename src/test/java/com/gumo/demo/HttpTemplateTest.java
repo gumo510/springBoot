@@ -1,5 +1,7 @@
 package com.gumo.demo;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
@@ -203,7 +205,23 @@ public class HttpTemplateTest {
         }
     }
 
+    @Test
+    public void huToolHttpRequest() {
+        HttpResponse response = HttpRequest.post("").header("Content-Type", "application/json")
+                .body("").timeout(5000).execute();
+        if (!response.isOk()) {
+            throw new RuntimeException("notify subscribe fail, url[" + url + "], response[" + response.body() + "]");
+        }
+    }
+
+
+
+
+
     public static void main(String[] args) {
+
+
+
         String novelUrl = "https://blog.csdn.net/qq_43649937/article/details/131073227";
         String fileName = "san_ti.txt";
         downloadNovel(novelUrl, fileName);
