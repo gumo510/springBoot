@@ -92,7 +92,7 @@ public class MathTest {
         Math.toRadians(angdeg);			//弧度转换成角度，返回：angdeg / 180d * PI*/
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main1(String[] args) throws InterruptedException {
 
         double number = 1000;
         for (int i = 0; i < 365; i++) {
@@ -100,5 +100,20 @@ public class MathTest {
             number = number * (1 + 0.003);
             Thread.sleep(100);
         }
+    }
+
+    public static void main(String[] args) {
+        double begin = 140;
+        int year = 0;
+        while (begin > 0 && year < 100){
+            if(begin > 10){
+                begin = (begin - 10) * 1.03 + (10 * 1.02) - 6;
+            }else {
+                begin = begin * 1.02 - 6;
+            }
+//            begin = begin * 1.03 - 6;
+            year++;
+        }
+        System.out.println(year);
     }
 }
