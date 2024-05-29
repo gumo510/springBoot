@@ -72,6 +72,12 @@ public class StreamTest {
         List<String> joinList = Lists.newArrayList(Splitter.on(",").split("1,2,3"));
         String join = Joiner.on(",").join(typeList);
 
+        // 数组字符串转换获取
+        String result = list.stream()
+                .filter(id -> devicePeopleFlowMap.containsKey(id) && devicePeopleFlowMap.get(id) != null)
+                .map(id -> devicePeopleFlowMap.get(id).getUserName())
+                .collect(Collectors.joining(";"));
+
         // 属性去重数量
         Long sourceIdNum = list.stream().mapToLong(User::getId).distinct().count();
 
@@ -107,6 +113,15 @@ public class StreamTest {
 
         // 循环Map 获取Value Set
         List<List<User>> listList = collectMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+
+        // flatMap 合并返回数组  getSettingInfos(Integer... types)： Arrays.stream(types)
+        List<User> combinedList = collectMap.entrySet().stream()
+                .map(Map.Entry::getValue) // Stream<List<SettingInfoDTO>>
+                .flatMap(List::stream) // Stream<SettingInfoDTO>
+                .collect(Collectors.toList()); // List<SettingInfoDTO>
+
+        // 查询多个list总数
+//        int total = tableNameList.stream().mapToInt(tableName -> eventMapper.selectByTime(tableName, param).size()).sum();
 
         // 计算数组最大 最小值
         List<Integer> listInt = Arrays.asList(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);

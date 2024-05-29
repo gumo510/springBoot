@@ -1,10 +1,18 @@
 package com.gumo.demo;
 
+import com.gumo.demo.model.dto.AreaExportMsgParam;
+import com.gumo.demo.model.dto.CommonResult;
+import com.gumo.demo.utils.ExcelUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -78,5 +86,33 @@ public class FileTest {
         }
 
         return null; // 未找到.bin文件
+    }
+
+    private CommonResult excelErrorMsgExport(List<AreaExportMsgParam> msgList) {
+        try {
+            List<String> headers = new ArrayList<>();
+            List<String> ds_titles = new ArrayList<>();
+            List<Map<String, Object>> data = new ArrayList<>();
+
+            headers.add("设备名字");
+            headers.add("异常信息");
+
+            ds_titles.add("name");
+            ds_titles.add("msgException");
+
+            for (AreaExportMsgParam exportMsgParam : msgList) {
+                HashMap<String, Object> dataMap = new HashMap<>();
+                dataMap.put("name", exportMsgParam.getName());
+                dataMap.put("msgException", exportMsgParam.getMsgException());
+                data.add(dataMap);
+            }
+
+            byte[] fileData = ExcelUtil.export(null, null, headers, ds_titles, null, null, data);
+//            String path = fileStoreFactory.getFileStoreStrategyService().upload(fileData, "xlsx", null);
+
+            return CommonResult.failed("导出异常文件失败");
+        } catch (IOException e) {
+            return CommonResult.failed("导出异常文件失败");
+        }
     }
 }
