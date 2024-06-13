@@ -333,5 +333,6 @@ public class CompletableFutureTest {
 //            }
 //        }, threadPoolExecutor)).map(CompletableFuture::join).collect(Collectors.toList());
     }
-
+// 在某个时间点取消这个任务
+//future.cancel(true); // 参数true表示如果需要的话可以中断正在执行的任务
 }
