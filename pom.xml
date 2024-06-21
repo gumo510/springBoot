@@ -280,6 +280,24 @@
 
     <build>
         <plugins>
+            <!-- 全量JAR包配置插件 start -->
+              <plugin>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-maven-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <goals>
+                              <goal>repackage</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+                  <configuration>
+                      <fork>true</fork>
+                      <mainClass>com.intellif.sdc.viid.Application</mainClass>
+                      <includeSystemScope>true</includeSystemScope>
+                  </configuration>
+              </plugin>
+            <!-- 全量JAR包配置插件 end -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
