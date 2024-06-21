@@ -51,7 +51,7 @@ public class TablesDivideJob implements Runnable{
     private TableRecordMapper tableRecordMapper;
 
 //    @PostConstruct
-    @Scheduled(cron = "${table.divide.cron:0 0/30 * * * ?}")
+//    @Scheduled(cron = "${table.divide.cron:0 0/30 * * * ?}")
     public void run() {
         log.info("start execute create partion table...");
         //初始化事件分区表
