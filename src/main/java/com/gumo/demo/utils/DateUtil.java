@@ -1,6 +1,7 @@
 package com.gumo.demo.utils;
 
 import org.apache.logging.log4j.util.Strings;
+import org.joda.time.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -496,5 +497,76 @@ public class DateUtil {
             result.add(sdfYmdFormat.format(end));
         }
         return result;
+    }
+
+    /**
+     * 在当前时间上加上指定的天数
+     *
+     * @param date
+     * @param plus
+     * @return
+     */
+    public static Date getAddDay(Date date, int plus) {
+        return new DateTime(date.getTime()).plusDays(plus).toDate();
+    }
+
+    /**
+     * 在当前时间上减去指定的天数
+     *
+     * @param date
+     * @param plus
+     * @return
+     */
+    public static Date getReduceDay(Date date, int plus) {
+        return new DateTime(date.getTime()).plusDays(-plus).toDate();
+    }
+
+    /**
+     * 返回两个日期的时间差， 返回的时间差格式可以是: Calendar.YEAR, Calendar.MONTH, Calendar.DATE,
+     * Calendar.HOUR, Calendar.MINUTE, Calendar.SECOND 为空时，返回week的差
+     *
+     * @param earlyDate
+     * @param lateDate
+     * @param returnTimeFormat
+     * @return time
+     */
+    public static int getBetweenTime(Date earlyDate, Date lateDate, int returnTimeFormat) {
+        DateTime earlyDateTime = new DateTime(earlyDate);
+        DateTime lateDateTime = new DateTime(lateDate);
+        if (Calendar.YEAR == returnTimeFormat) {
+            return Years.yearsBetween(earlyDateTime, lateDateTime).getYears();
+        } else if (Calendar.MONTH == returnTimeFormat) {
+            return Months.monthsBetween(earlyDateTime, lateDateTime).getMonths();
+        } else if (Calendar.DATE == returnTimeFormat) {
+            return Days.daysBetween(earlyDateTime, lateDateTime).getDays();
+        } else if (Calendar.HOUR == returnTimeFormat) {
+            return Hours.hoursBetween(earlyDateTime, lateDateTime).getHours();
+        } else if (Calendar.MINUTE == returnTimeFormat) {
+            return Minutes.minutesBetween(earlyDateTime, lateDateTime).getMinutes();
+        } else if (Calendar.SECOND == returnTimeFormat) {
+            return Seconds.secondsBetween(earlyDateTime, lateDateTime).getSeconds();
+        } else {
+            return Weeks.weeksBetween(earlyDateTime, lateDateTime).getWeeks();
+        }
+    }
+
+    /**
+     * long型时间转format时间格式字符串
+     *
+     * @param date
+     * @return yyyy-MM-dd HH:mm:ss
+     */
+    public synchronized static String getFormatDate(Date date) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat(DTF_YMD_HMS);
+        return sdf1.format(date);
+    }
+
+    public static Date getCurrentDateZeroByDate(){
+        Date date = new Date();
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setTime(date.getTime() - date.getTime() % 1000);
+        return date;
     }
 }

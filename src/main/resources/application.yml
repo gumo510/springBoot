@@ -68,6 +68,11 @@ spring:
             password: 123456
             url: jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
 #            driver-class-name: com.mysql.cj.jdbc.Driver
+        db1:
+          username: root
+          password: 123456
+          url: jdbc:mysql://127.0.0.1:3306/event?useUnicode=true&characterEncoding=utf8&useSSL=false&useAffectedRows=true&serverTimezone=Asia/Shanghai
+#            driver-class-name: com.mysql.cj.jdbc.Driver
         test:
             username: root
             password: 123456

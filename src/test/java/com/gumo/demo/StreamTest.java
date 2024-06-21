@@ -122,7 +122,9 @@ public class StreamTest {
 
         // 查询多个list总数
 //        int total = tableNameList.stream().mapToInt(tableName -> eventMapper.selectByTime(tableName, param).size()).sum();
-
+        // 分页
+//        int skip = (page - 1) * pageSize; // 计算需要跳过的元素数量
+//        list.stream().skip(skip).limit(pageSize).collect(Collectors.toList()); // 分页结果
         // 计算数组最大 最小值
         List<Integer> listInt = Arrays.asList(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
         Integer max = listInt.stream().filter(e -> e != null).max(Comparator.naturalOrder()).orElse(null);

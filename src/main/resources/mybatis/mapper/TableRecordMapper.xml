@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.TableRecordMapper">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.TableRecord">
+        <id column="id" property="id" />
+        <result column="created" property="created" />
+        <result column="updated" property="updated" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="table_type" property="tableType" />
+        <result column="table_ref_type" property="tableRefType"/>
+        <result column="table_name" property="tableName"/>
+        <result column="table_code" property="tableCode"/>
+        <result column="short_name" property="shortName"/>
+        <result column="total_num" property="totalNum"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,start_time,end_time,table_type,table_name,table_code,short_name,total_num
+    </sql>
+
+
+    <select id="selectCurrentTablesByTime"  resultType="com.gumo.demo.entity.TableRecord" parameterType="map">
+      select <include refid="Base_Column_List" /> from t_table_records where table_type = #{tableType}
+        and table_ref_type = #{tableRefType}
+        and start_time <![CDATA[<=]]> #{time} and end_time <![CDATA[>]]> #{time}
+    </select>
+
+    <select id="selectExistTablesByTime" resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List" /> from t_table_records where table_type = #{tableType}
+        and table_ref_type = #{tableRefType}
+        and start_time <![CDATA[>=]]> #{time}
+    </select>
+
+    <select id="selectLastTimeTableByType" resultType="com.gumo.demo.entity.TableRecord" parameterType="map">
+        select
+        * from t_table_records where end_time =(
+        select max(end_time) from t_table_records where table_type = #{tableType}
+        and table_ref_type = #{tableRefType})
+        and table_type = #{tableType}
+    </select>
+
+
+
+    <!--   动态创建表  -->
+    <update id="createEventTables">
+        CREATE TABLE IF NOT EXISTS  ${tableName} (
+        `id` bigint NOT NULL COMMENT '记录唯一标识',
+        `created` datetime DEFAULT NULL COMMENT '创建时间',
+        `updated` datetime DEFAULT NULL COMMENT '更新时间',
+        `time` datetime NULL COMMENT '采集时间',
+        `task_id` varchar(255) DEFAULT NULL COMMENT '任务唯一标识',
+        `camera_id` bigint NULL COMMENT '设备唯一标识',
+        `channel_no` int NULL COMMENT '设备通道号',
+        `event_type` varchar(255) NULL COMMENT '事件类型',
+        `image_url` varchar(255) NULL COMMENT '小图地址',
+        `from_image_id` bigint NULL COMMENT '大图关联标识',
+        `track_id` varchar(255) DEFAULT NULL COMMENT '跟踪标识',
+        `event_name` varchar(255) DEFAULT NULL COMMENT '事件名称',
+        `arg_name` varchar(100) DEFAULT NULL COMMENT '算法名称',
+        `install_site` varchar(255) DEFAULT NULL COMMENT '摄像头安装地址',
+        `camera_name` varchar(255) DEFAULT NULL COMMENT '设备名称',
+        `lat` double DEFAULT NULL COMMENT '摄像头纬度',
+        `lng` double DEFAULT NULL COMMENT '摄像头经度',
+        `camera_code` varchar(255) DEFAULT NULL COMMENT '摄像头国标码',
+        `schedule_id` varchar(100) DEFAULT NULL COMMENT '大任务id(对应下发任务id)',
+        `vender_type` bigint DEFAULT NULL,
+        `confidence` double DEFAULT NULL COMMENT '置信度',
+        `judgment` int COMMENT '审核状态 0:未审核 1: 已审核 2:忽略',
+        `is_push` int COMMENT '是否推送 0:否 1:是',
+        `platform_type` varchar(30) DEFAULT NULL COMMENT '平台类型\n\nalgStore :算法仓平台  sdc:sdc平台 community-gateway:社区网关平台\nOther:其它平台',
+        `user_data` text,
+        `rect_list` varchar(255) DEFAULT NULL COMMENT '识别框点位信息(目标框左上右下坐标点)',
+        `rect_float_list` varchar(255) DEFAULT NULL COMMENT '识别框点位信息(左上右下坐标所占原图的比例值)',
+        `alg_object_list` varchar(255) DEFAULT NULL COMMENT '算法模型返回原始结果,可能存在多个',
+        `area_id` bigint DEFAULT NULL COMMENT '区域标识',
+        `image_data` text,
+        `attr_json` text DEFAULT NULL COMMENT '目标属性集合',
+        `extend_1` varchar(255) DEFAULT NULL,
+        `extend_2` varchar(255) DEFAULT NULL,
+        `extend_3` varchar(255) DEFAULT NULL,
+        `sequence` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+        `audit_status` int DEFAULT 1 COMMENT '审核状态 0-错误  1-正确',
+        `exist_video` int DEFAULT 0 COMMENT '是否存在视频录像 0-不存在 1-存在',
+        PRIMARY KEY (`sequence`) USING BTREE,
+        KEY `t_event_id` (`id`) USING BTREE,
+        KEY `t_type_area_time` (`time`,`event_type`,`area_id`) USING BTREE,
+        KEY `t_type_camera_time` (`time`,`camera_id`,`event_type`) USING BTREE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='事件表';
+    </update>
+
+    <update id="createEventImageTables">
+        CREATE TABLE  IF NOT EXISTS  ${tableName} (
+        `id` bigint NOT NULL DEFAULT '0',
+        `created` datetime DEFAULT NULL COMMENT '创建时间',
+        `updated` datetime DEFAULT NULL COMMENT '更新时间',
+        `big_image_url` varchar(255) DEFAULT NULL COMMENT '大图URI',
+        `targets` int NULL DEFAULT '0' COMMENT '目标框数',
+        `time` datetime DEFAULT NULL COMMENT '采集时间',
+        `sequence` bigint NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (`sequence`),
+        KEY `t_event_image_id` (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件大图表';
+    </update>
+
+    <select id="getTableRecordList" resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List" /> from t_table_records where table_type = #{tableType}
+        and table_ref_type = #{tableRefType}
+        and start_time <![CDATA[<=]]> #{endTime}
+        and end_time <![CDATA[>]]> #{startTime}
+        order by start_time desc
+    </select>
+
+</mapper>
+
