@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
+import java.time.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -568,5 +568,12 @@ public class DateUtil {
         date.setSeconds(0);
         date.setTime(date.getTime() - date.getTime() % 1000);
         return date;
+    }
+
+    public static Date getExpiryTimeLater(Long minutes) {
+        // 获取当前时间并推迟指定分钟
+        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(minutes);
+        // 将 LocalDateTime 转换成 Date
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

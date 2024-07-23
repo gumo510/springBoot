@@ -142,6 +142,9 @@ public class StreamTest {
         // 过滤两个list 差值
         List<User> users = list.stream().filter(a -> !collect.stream().map(User::getUserName).collect(Collectors.toList()).contains(a.getUserName())).collect(Collectors.toList());
 
+        // 使用 parallelStream 并行流 同时执行多个查询 求和
+//        total = tableNameList.parallelStream().mapToLong(tableName -> eventMapper.countByTime(tableName, totalParam)).sum();
+
         // 判断不为空 设置默认值
 //        group.setCount(Optional.ofNullable(countMap.get(group.getId())).map(Long::intValue).orElse(0));
 //        return Optional.ofNullable(personRecordEntity).map(PersonRecordEntity::getPersonRecordImageUrl).orElse(null);

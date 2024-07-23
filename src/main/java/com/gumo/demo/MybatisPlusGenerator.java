@@ -44,9 +44,9 @@ public class MybatisPlusGenerator {
     //数据库配置四要素
     //数据库类型默认配置的是： DbType.MYSQL ，如有改变修改gen.setDataSource
     private static String driverName = "com.mysql.jdbc.Driver";
-    private static String url = "jdbc:mysql://127.0.0.1:3306/moe?useUnicode=true&characterEncoding=utf8&useSSL=false";
-    private static String username = "root";
-    private static String password = "123456";
+    private static String url = "jdbc:mysql://192.168.12.159:32000/ifaas_oamq_server?useUnicode=true&characterEncoding=utf8&useSSL=false";
+    private static String username = "intellif";
+    private static String password = "Intellifusion@2021";
 
     //模块相关名称
     //controller包名

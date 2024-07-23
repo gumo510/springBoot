@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gumo.demo.mapper.OperateLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gumo.demo.entity.OperateLog">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_account" property="userAccount" />
+        <result column="user_name" property="userName" />
+        <result column="user_role" property="userRole" />
+        <result column="user_organization" property="userOrganization" />
+        <result column="operate_time" property="operateTime" />
+        <result column="create_time" property="createTime" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="operate_platform" property="operatePlatform" />
+        <result column="operate_type" property="operateType" />
+        <result column="operate_content" property="operateContent" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, user_account, user_name, user_role, user_organization, operate_time, create_time, operate_ip, operate_platform, operate_type, operate_content
+    </sql>
+
+</mapper>

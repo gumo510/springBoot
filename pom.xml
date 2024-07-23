@@ -304,6 +304,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--日志操作组件-->
+        <dependency>
+            <groupId>io.github.mouzt</groupId>
+            <artifactId>bizlog-sdk</artifactId>
+            <version>1.0.8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate.validator</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- 热部署导入包 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
